@@ -1,5 +1,17 @@
 # Changelog
 
+## 1.3.0
+
+### Changes
+- State colors come from the Home Assistant theme (`--info-color` running, `--warning-color` paused or action required, `--success-color` finished, `--error-color` error) with the Home Assistant defaults as fallbacks; the Stop button and the open-door chip follow them too.
+- Header aligned with the other juju35 cards: 40px badge, name 18px.
+- Chips, toggles, fields and the progress bar use the shared sizes and radii (12px pills, 10px fields, 6px bar).
+
+### Development
+- The card source moves to `src/home-connect-card.js`; `npm run build` stamps the version from `package.json` into `dist/home-connect-card.js`, and CI checks that `dist/` is up to date.
+- `npm run screenshots` renders the README screenshots with mock Home Connect devices.
+- Releases are published when `version` in `package.json` has no tag yet.
+
 ## 1.2.0
 
 ### What's new

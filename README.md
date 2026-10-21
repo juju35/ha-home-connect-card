@@ -15,8 +15,6 @@ Pick the appliance, the card finds all its entities by itself.
 | Dishwasher | Washing machine |
 |---|---|
 | ![Dishwasher card](https://raw.githubusercontent.com/juju35/ha-home-connect-card/main/screenshots/dishwasher.png) | ![Washing machine card](https://raw.githubusercontent.com/juju35/ha-home-connect-card/main/screenshots/washer.png) |
-| ![Dishwasher card, dark theme](https://raw.githubusercontent.com/juju35/ha-home-connect-card/main/screenshots/dishwasher-dark.png) | ![Washing machine card, dark theme](https://raw.githubusercontent.com/juju35/ha-home-connect-card/main/screenshots/washer-dark.png) |
-| ![Dishwasher card with program options](https://raw.githubusercontent.com/juju35/ha-home-connect-card/main/screenshots/dishwasher-options.png) | |
 
 ## Features
 
@@ -31,7 +29,7 @@ Pick the appliance, the card finds all its entities by itself.
 - Light and dark theme compatible
 - Single file, no dependencies, HACS-ready
 
-## Requirements
+## Prerequisites
 
 - Home Assistant with the [Home Connect](https://www.home-assistant.io/integrations/home_connect/) integration set up
 - To start a program from Home Assistant, **Remote start** must be enabled on the appliance itself (the card shows a hint when it isn't)
@@ -134,6 +132,16 @@ Keys accepted under `entities`:
 
 Every other `switch` and `select` of the device is shown as a program option.
 
+## Screenshots
+
+| Dishwasher | Washing machine |
+|---|---|
+| ![dishwasher](screenshots/dishwasher.png) | ![washer](screenshots/washer.png) |
+| ![dishwasher dark](screenshots/dishwasher-dark.png) | ![washer dark](screenshots/washer-dark.png) |
+| ![dishwasher with program options](screenshots/dishwasher-options.png) | |
+
+Dark screenshots are in French.
+
 ## How it works
 
 The card reads the entity registry to list the entities of the chosen device, then matches each role by its translation key, then by its entity ID (English and French slugs), then by its attributes. Program and option labels use Home Assistant's own translations.
@@ -141,6 +149,21 @@ The card reads the entity registry to list the entities of the chosen device, th
 Home Connect only sends program options when the selected program changes, so after a Home Assistant restart they all stay unavailable. The card then shows them greyed out with a **Load options** button, which switches to another program and back to load them.
 
 **Start** selects the chosen program on the *Active program* entity, which is how the Home Connect integration starts a program. **Stop** asks for a second tap within 3 seconds.
+
+## Development
+
+```bash
+npm install
+npm run build        # stamps the version of package.json into dist/home-connect-card.js
+npm run check        # verifies dist/ is up to date (run in CI)
+npm run screenshots  # renders the cards with mock Home Connect devices into screenshots/
+```
+
+### Releasing
+
+1. Bump `version` in `package.json` and run `npm run build`
+2. Add a `## <version>` section at the top of [CHANGELOG.md](CHANGELOG.md)
+3. Push to `main`: the **Release** workflow creates the tag and the GitHub release with the changelog section as notes, and attaches `home-connect-card.js`
 
 ## Translations
 

@@ -1,4 +1,4 @@
-var HOME_CONNECT_CARD_VERSION = '1.2.0';
+var HOME_CONNECT_CARD_VERSION = '1.3.0';
 
 // ── i18n ──────────────────────────────────────────────────────────────────────
 var HcI18n = {
@@ -137,14 +137,14 @@ function hcEsc(s) {
 
 // ── Appliance profiles ───────────────────────────────────────────────────────
 var HC_STATE_COLORS = {
-  run: '#1e88e5',
-  ready: '#1e88e5',
+  run: 'var(--info-color, #039be5)',
+  ready: 'var(--info-color, #039be5)',
   delayedstart: '#8e24aa',
-  pause: '#fb8c00',
-  actionrequired: '#fb8c00',
-  finished: '#43a047',
-  error: '#e53935',
-  aborting: '#e53935',
+  pause: 'var(--warning-color, #ffa600)',
+  actionrequired: 'var(--warning-color, #ffa600)',
+  finished: 'var(--success-color, #43a047)',
+  error: 'var(--error-color, #db4437)',
+  aborting: 'var(--error-color, #db4437)',
 };
 
 var HC_PROFILES = {
@@ -524,13 +524,13 @@ class HomeConnectBaseCard extends HTMLElement {
       'ha-card { height: 100%; box-sizing: border-box; padding: 16px; display: flex; flex-direction: column; gap: 14px; }' +
       '.empty { display: flex; align-items: center; gap: 10px; color: var(--secondary-text-color); }' +
       '.header { display: flex; align-items: center; gap: 12px; }' +
-      '.badge { width: 44px; height: 44px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0;' +
-        ' background: color-mix(in srgb, var(--hc-color) 18%, transparent); color: var(--hc-color); }' +
-      '.badge ha-icon { --mdc-icon-size: 26px; }' +
+      '.badge { width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0;' +
+        ' background: color-mix(in srgb, var(--hc-color) 15%, transparent); color: var(--hc-color); }' +
+      '.badge ha-icon { --mdc-icon-size: 24px; }' +
       '.badge.running ha-icon { animation: hc-pulse 2s ease-in-out infinite; }' +
       '@keyframes hc-pulse { 0%, 100% { transform: scale(1); opacity: 1; } 50% { transform: scale(0.88); opacity: 0.7; } }' +
       '.titles { flex: 1; min-width: 0; }' +
-      '.name { display: flex; align-items: center; gap: 6px; font-size: 16px; font-weight: 500; color: var(--primary-text-color); }' +
+      '.name { display: flex; align-items: center; gap: 6px; font-size: 18px; font-weight: 500; line-height: 1.25; color: var(--primary-text-color); }' +
       '.name span { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }' +
       '.name .logo { width: 18px; height: 18px; flex-shrink: 0; }' +
       '.status { font-size: 13px; color: var(--hc-color); margin-top: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }' +
@@ -538,45 +538,45 @@ class HomeConnectBaseCard extends HTMLElement {
       'button:disabled { cursor: default; opacity: 0.5; }' +
       '.power { width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0;' +
         ' background: var(--secondary-background-color, rgba(128,128,128,0.12)); color: var(--secondary-text-color); }' +
-      '.power.on { background: color-mix(in srgb, var(--hc-color) 18%, transparent); color: var(--hc-color); }' +
+      '.power.on { background: color-mix(in srgb, var(--hc-color) 15%, transparent); color: var(--hc-color); }' +
       '.chips { display: flex; flex-wrap: wrap; gap: 6px; }' +
-      '.chip { display: inline-flex; align-items: center; gap: 4px; font-size: 12px; padding: 4px 10px 4px 6px; border-radius: 14px;' +
+      '.chip { display: inline-flex; align-items: center; gap: 4px; font-size: 12px; font-weight: 500; padding: 2px 10px 2px 6px; border-radius: 12px;' +
         ' background: var(--secondary-background-color, rgba(128,128,128,0.12)); color: var(--secondary-text-color); }' +
-      '.chip ha-icon { --mdc-icon-size: 16px; }' +
-      '.chip.warn { background: rgba(251,140,0,0.16); color: #ef6c00; }' +
+      '.chip ha-icon { --mdc-icon-size: 14px; }' +
+      '.chip.warn { background: color-mix(in srgb, var(--warning-color, #ffa600) 15%, transparent); color: var(--warning-color, #ffa600); }' +
       '.progress { display: flex; flex-direction: column; gap: 6px; }' +
-      '.bar { height: 8px; border-radius: 4px; background: var(--secondary-background-color, rgba(128,128,128,0.15)); overflow: hidden; }' +
-      '.fill { height: 100%; border-radius: 4px; background: var(--hc-color); transition: width 0.6s ease; }' +
+      '.bar { height: 6px; border-radius: 3px; background: var(--secondary-background-color, rgba(128,128,128,0.15)); overflow: hidden; }' +
+      '.fill { height: 100%; border-radius: 3px; background: var(--hc-color); transition: width 0.6s ease; }' +
       '.progress-info { display: flex; justify-content: space-between; gap: 8px; font-size: 12px; color: var(--secondary-text-color); }' +
-      '.pct { font-weight: 600; color: var(--primary-text-color); }' +
+      '.pct { font-weight: 500; color: var(--primary-text-color); }' +
       '.field { display: flex; flex-direction: column; gap: 4px; min-width: 0; }' +
-      '.field > span { font-size: 11px; color: var(--secondary-text-color); }' +
-      '.prog { font-size: 14px; font-weight: 500; color: var(--primary-text-color); padding: 9px 12px; border-radius: 8px;' +
-        ' background: var(--secondary-background-color, rgba(128,128,128,0.1)); }' +
-      'select { font: inherit; font-size: 14px; color: var(--primary-text-color); padding: 9px 32px 9px 12px; border-radius: 8px; width: 100%;' +
+      '.field > span { font-size: 12px; color: var(--secondary-text-color); }' +
+      '.prog { font-size: 14px; font-weight: 500; color: var(--primary-text-color); padding: 9px 12px; border-radius: 10px;' +
+        ' background: var(--secondary-background-color, rgba(127,127,127,.08)); }' +
+      'select { font: inherit; font-size: 14px; color: var(--primary-text-color); padding: 9px 32px 9px 12px; border-radius: 10px; width: 100%;' +
         ' border: 1px solid var(--divider-color, rgba(128,128,128,0.25)); appearance: none; -webkit-appearance: none; cursor: pointer;' +
         ' background: var(--secondary-background-color, rgba(128,128,128,0.1)) url("data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 24 24\'%3E%3Cpath fill=\'%23888\' d=\'M7 10l5 5 5-5z\'/%3E%3C/svg%3E") no-repeat right 8px center / 20px; }' +
       'select:disabled { opacity: 0.6; cursor: default; }' +
       '.field.small select { font-size: 13px; padding: 7px 28px 7px 10px; }' +
       '.section { display: flex; flex-direction: column; gap: 8px; }' +
-      '.section-title { font-size: 12px; font-weight: 500; color: var(--secondary-text-color); text-transform: uppercase; letter-spacing: 0.04em; }' +
+      '.section-title { font-size: 13px; font-weight: 500; color: var(--secondary-text-color); text-transform: uppercase; letter-spacing: 0.04em; }' +
       '.grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(110px, 1fr)); gap: 8px; }' +
       '.toggles { display: flex; flex-wrap: wrap; gap: 6px; }' +
-      '.toggle { display: inline-flex; align-items: center; gap: 4px; font-size: 12px; padding: 5px 10px 5px 6px; border-radius: 14px;' +
+      '.toggle { display: inline-flex; align-items: center; gap: 4px; font-size: 12px; font-weight: 500; padding: 4px 10px 4px 6px; border-radius: 12px;' +
         ' background: var(--secondary-background-color, rgba(128,128,128,0.12)); color: var(--secondary-text-color); }' +
       '.toggle ha-icon { --mdc-icon-size: 16px; }' +
       '.toggle:disabled { opacity: 0.45; }' +
       '.reload { display: flex; align-items: center; justify-content: space-between; gap: 8px; flex-wrap: wrap; font-size: 12px; color: var(--secondary-text-color); }' +
-      '.link { display: inline-flex; align-items: center; gap: 4px; font-size: 12px; font-weight: 500; padding: 4px 8px; border-radius: 8px; background: none; color: var(--primary-color, #03a9f4); }' +
+      '.link { display: inline-flex; align-items: center; gap: 4px; font-size: 12px; font-weight: 500; padding: 4px 8px; border-radius: 10px; background: none; color: var(--primary-color, #03a9f4); }' +
       '.link ha-icon { --mdc-icon-size: 16px; }' +
-      '.toggle.on { background: color-mix(in srgb, var(--primary-color, #03a9f4) 18%, transparent); color: var(--primary-color, #03a9f4); }' +
+      '.toggle.on { background: color-mix(in srgb, var(--primary-color, #03a9f4) 15%, transparent); color: var(--primary-color, #03a9f4); }' +
       '.controls { display: flex; gap: 8px; }' +
       '.btn { flex: 1; display: inline-flex; align-items: center; justify-content: center; gap: 6px; font-size: 14px; font-weight: 500;' +
         ' padding: 10px 12px; border-radius: 10px; background: var(--secondary-background-color, rgba(128,128,128,0.12)); color: var(--primary-text-color); }' +
       '.btn ha-icon { --mdc-icon-size: 20px; }' +
       '.btn.primary { background: var(--primary-color, #03a9f4); color: var(--text-primary-color, #fff); }' +
-      '.btn.danger { background: rgba(229,57,53,0.14); color: #e53935; }' +
-      '.btn.danger.armed { background: #e53935; color: #fff; }' +
+      '.btn.danger { background: color-mix(in srgb, var(--error-color, #db4437) 15%, transparent); color: var(--error-color, #db4437); }' +
+      '.btn.danger.armed { background: var(--error-color, #db4437); color: #fff; }' +
       '.hint { display: flex; align-items: center; gap: 6px; font-size: 12px; color: var(--secondary-text-color); margin-top: -6px; }' +
       '.hint ha-icon { --mdc-icon-size: 16px; }' +
     '</style>';
