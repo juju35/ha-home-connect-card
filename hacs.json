@@ -2,5 +2,6 @@
   "name": "Home Connect Card",
   "render_readme": true,
   "content_in_root": false,
-  "filename": "home-connect-card.js"
+  "filename": "home-connect-card.js",
+  "homeassistant": "2024.8.0"
 }

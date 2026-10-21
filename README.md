@@ -31,7 +31,7 @@ Pick the appliance, the card finds all its entities by itself.
 
 ## Prerequisites
 
-- Home Assistant with the [Home Connect](https://www.home-assistant.io/integrations/home_connect/) integration set up
+- Home Assistant 2024.8 or later with the [Home Connect](https://www.home-assistant.io/integrations/home_connect/) integration set up
 - To start a program from Home Assistant, **Remote start** must be enabled on the appliance itself (the card shows a hint when it isn't)
 
 ## Installation
