@@ -130,9 +130,7 @@ function hcT(lang, key) {
 }
 
 function hcEsc(s) {
-  return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) {
-    return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
-  });
+  return String(s == null ? '' : s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 }
 
 // ── Appliance profiles ───────────────────────────────────────────────────────
@@ -165,13 +163,13 @@ var HC_PROFILES = {
 // then attributes, so it works whatever language the entities were created in.
 var HC_ROLES = {
   operation_state: { domain: 'sensor', keys: ['operation_state'], id: /(_etat|_operation_state|_state)$/,
-    test: function (s) { var o = s.attributes.options || []; return o.indexOf('run') >= 0 && o.indexOf('finished') >= 0; } },
+    test: (s) => { var o = s.attributes.options || []; return o.indexOf('run') >= 0 && o.indexOf('finished') >= 0; } },
   door: { domain: 'sensor', keys: ['door'], id: /(_porte|_door)$/,
-    test: function (s) { var o = s.attributes.options || []; return o.indexOf('open') >= 0 && o.indexOf('closed') >= 0; } },
+    test: (s) => { var o = s.attributes.options || []; return o.indexOf('open') >= 0 && o.indexOf('closed') >= 0; } },
   progress: { domain: 'sensor', keys: ['program_progress'], id: /progress|progression/,
-    test: function (s) { return s.attributes.unit_of_measurement === '%'; } },
+    test: (s) => s.attributes.unit_of_measurement === '%' },
   finish_time: { domain: 'sensor', keys: ['program_finish_time', 'finish_time'], id: /(finish_time|heure_de_fin)/,
-    test: function (s) { return s.attributes.device_class === 'timestamp'; } },
+    test: (s) => s.attributes.device_class === 'timestamp' },
   selected_program: { domain: 'select', keys: ['selected_program'], id: /(selected_program|programme_selectionne)$/ },
   active_program: { domain: 'select', keys: ['active_program'], id: /(active_program|programme_actif)$/ },
   power: { domain: 'switch', keys: ['power'], id: /(_power|_alimentation|_etat)$/ },
@@ -180,7 +178,7 @@ var HC_ROLES = {
   resume: { domain: 'button', keys: ['resume_program'], id: /(resume_program|reprendre_le_programme)$/ },
   remote_start: { domain: 'binary_sensor', keys: ['remote_start', 'remote_start_allowed'], id: /(remote_start|demarrage_a_distance)$/ },
   connectivity: { domain: 'binary_sensor', keys: ['connectivity'], id: /(connectivity|connectivite)$/,
-    test: function (s) { return s.attributes.device_class === 'connectivity'; } },
+    test: (s) => s.attributes.device_class === 'connectivity' },
   salt: { domain: 'sensor', keys: ['salt_nearly_empty'], id: /(salt_nearly_empty|sel_presque_vide)$/ },
   rinse_aid: { domain: 'sensor', keys: ['rinse_aid_nearly_empty'], id: /(rinse_aid_nearly_empty|liquide_de_rincage_presque_vide)$/ },
 };
@@ -189,18 +187,16 @@ var HC_OVERRIDABLE = ['operation_state', 'door', 'progress', 'finish_time', 'sel
   'active_program', 'power', 'stop', 'pause', 'resume', 'remote_start'];
 
 function hcDeviceEntities(hass, deviceId) {
-  if (!hass || !hass.entities || !deviceId) return [];
-  return Object.values(hass.entities).filter(function (e) {
-    return e.device_id === deviceId && !e.hidden && hass.states[e.entity_id];
-  });
+  if (!hass?.entities || !deviceId) return [];
+  return Object.values(hass.entities).filter((e) => e.device_id === deviceId && !e.hidden && hass.states[e.entity_id]);
 }
 
 function hcFindRole(hass, list, role) {
   var m = HC_ROLES[role];
-  var inDomain = list.filter(function (e) { return e.entity_id.split('.')[0] === m.domain; });
-  var hit = inDomain.find(function (e) { return m.keys.indexOf(e.translation_key) >= 0; });
-  if (!hit && m.id) hit = inDomain.find(function (e) { return m.id.test(e.entity_id); });
-  if (!hit && m.test) hit = inDomain.find(function (e) { return m.test(hass.states[e.entity_id]); });
+  var inDomain = list.filter((e) => e.entity_id.split('.')[0] === m.domain);
+  var hit = inDomain.find((e) => m.keys.indexOf(e.translation_key) >= 0);
+  if (!hit && m.id) hit = inDomain.find((e) => m.id.test(e.entity_id));
+  if (!hit && m.test) hit = inDomain.find((e) => m.test(hass.states[e.entity_id]));
   return hit ? hit.entity_id : undefined;
 }
 
@@ -216,8 +212,8 @@ function hcProgramKind(hass, deviceId) {
 }
 
 function hcFindDevice(hass, kind) {
-  if (!hass || !hass.devices) return undefined;
-  return Object.keys(hass.devices).find(function (id) { return hcProgramKind(hass, id) === kind; });
+  if (!hass?.devices) return undefined;
+  return Object.keys(hass.devices).find((id) => hcProgramKind(hass, id) === kind);
 }
 
 // Fallback label for a Home Connect enum value when HA has no translation for it:
@@ -225,9 +221,9 @@ function hcFindDevice(hass, kind) {
 function hcHumanize(value) {
   var v = String(value || '');
   var m = v.match(/_g_c_(\d+)$/);
-  if (m) return m[1] + ' °C';
+  if (m) return `${m[1]} °C`;
   m = v.match(/_r_p_m_(\d+)$/);
-  if (m) return m[1] + ' rpm';
+  if (m) return `${m[1]} rpm`;
   v = v.replace(/^.*_program_/, '')
     .replace(/^.*_enum_type_(temperature|spin_speed|vario_perfect|drying_target|[a-z]+)_/, '')
     .replace(/^ul_/, '');
@@ -247,12 +243,12 @@ class HomeConnectBaseCard extends HTMLElement {
 
   static getConfigElement() {
     var el = document.createElement('home-connect-card-editor');
-    el.kind = this.kind;
+    el.kind = HomeConnectBaseCard.kind;
     return el;
   }
 
   static getStubConfig(hass) {
-    var id = hcFindDevice(hass, this.kind);
+    var id = hcFindDevice(hass, HomeConnectBaseCard.kind);
     return id ? { device_id: id } : {};
   }
 
@@ -289,7 +285,7 @@ class HomeConnectBaseCard extends HTMLElement {
   getGridOptions() { return { columns: 12, min_columns: 6 }; }
 
   _lang() {
-    var l = (this._config && this._config.language) || (this._hass && this._hass.language) || document.documentElement.lang || 'en';
+    var l = (this._config?.language) || (this._hass?.language) || document.documentElement.lang || 'en';
     l = l.split('-')[0];
     return HcI18n[l] ? l : 'en';
   }
@@ -299,7 +295,7 @@ class HomeConnectBaseCard extends HTMLElement {
   _deviceId() {
     var hass = this._hass, c = this._config;
     if (c.device_id) return c.device_id;
-    if (c.entity && hass.entities && hass.entities[c.entity]) return hass.entities[c.entity].device_id;
+    if (c.entity && hass.entities?.[c.entity]) return hass.entities[c.entity].device_id;
     return hcFindDevice(hass, this.constructor.kind);
   }
 
@@ -309,17 +305,13 @@ class HomeConnectBaseCard extends HTMLElement {
     var list = hcDeviceEntities(hass, deviceId);
     var over = c.entities || {};
     var ent = {};
-    Object.keys(HC_ROLES).forEach(function (role) {
+    Object.keys(HC_ROLES).forEach((role) => {
       ent[role] = over[role] || hcFindRole(hass, list, role);
     });
     var used = Object.values(ent);
     // Everything else the integration exposes as a switch or select is a program option.
-    ent.option_switches = list.map(function (e) { return e.entity_id; }).filter(function (id) {
-      return id.indexOf('switch.') === 0 && used.indexOf(id) < 0;
-    });
-    ent.option_selects = list.map(function (e) { return e.entity_id; }).filter(function (id) {
-      return id.indexOf('select.') === 0 && used.indexOf(id) < 0;
-    });
+    ent.option_switches = list.map((e) => e.entity_id).filter((id) => id.indexOf('switch.') === 0 && used.indexOf(id) < 0);
+    ent.option_selects = list.map((e) => e.entity_id).filter((id) => id.indexOf('select.') === 0 && used.indexOf(id) < 0);
     return { deviceId: deviceId, ent: ent };
   }
 
@@ -343,7 +335,7 @@ class HomeConnectBaseCard extends HTMLElement {
 
   _entityLabel(id, deviceName) {
     var s = this._st(id);
-    var name = (s && s.attributes.friendly_name) || id;
+    var name = (s?.attributes.friendly_name) || id;
     if (deviceName && name.indexOf(deviceName) === 0) name = name.slice(deviceName.length).trim();
     return name.charAt(0).toUpperCase() + name.slice(1);
   }
@@ -355,7 +347,7 @@ class HomeConnectBaseCard extends HTMLElement {
       r.ent.active_program, r.ent.power, r.ent.remote_start, r.ent.connectivity, r.ent.salt, r.ent.rinse_aid,
       r.ent.stop, r.ent.pause, r.ent.resume].concat(r.ent.option_switches, r.ent.option_selects);
     var hass = this._hass;
-    var sig = JSON.stringify([this._lang(), r.deviceId, this._confirming, this._reloading, ids.map(function (id) {
+    var sig = JSON.stringify([this._lang(), r.deviceId, this._confirming, this._reloading, ids.map((id) => {
       var s = id && hass.states[id];
       return s ? [id, s.state, s.attributes.options] : null;
     })]);
@@ -377,7 +369,7 @@ class HomeConnectBaseCard extends HTMLElement {
     var icon = c.icon || profile.icon;
 
     if (!r.deviceId && !c.entities) {
-      this.shadowRoot.innerHTML = this._styles() + '<ha-card><div class="empty"><ha-icon icon="' + icon + '"></ha-icon>' + this._t('no_device') + '</div></ha-card>';
+      this.shadowRoot.innerHTML = `${this._styles()}<ha-card><div class="empty"><ha-icon icon="${icon}"></ha-icon>${this._t('no_device')}</div></ha-card>`;
       return;
     }
 
@@ -395,33 +387,33 @@ class HomeConnectBaseCard extends HTMLElement {
     // Progress and finish time.
     var progress = this._avail(ent.progress) ? Math.max(0, Math.min(100, Number(this._val(ent.progress)))) : null;
     var finish = this._avail(ent.finish_time) ? new Date(this._val(ent.finish_time)) : null;
-    if (finish && isNaN(finish.getTime())) finish = null;
+    if (finish && Number.isNaN(finish.getTime())) finish = null;
     var timeLine = '';
     if (running && finish) {
       var mins = Math.max(0, Math.round((finish.getTime() - Date.now()) / 60000));
       var h = Math.floor(mins / 60), m = mins % 60;
-      var left = h ? h + ' h ' + String(m).padStart(2, '0') : m + ' min';
+      var left = h ? `${h} h ${String(m).padStart(2, '0')}` : `${m} min`;
       var at = finish.toLocaleTimeString(this._lang(), { hour: '2-digit', minute: '2-digit' });
-      timeLine = this._t('ends_at') + ' ' + at + ' · ' + this._t('remaining').replace('{t}', left);
+      timeLine = `${this._t('ends_at')} ${at} · ${this._t('remaining').replace('{t}', left)}`;
     }
 
-    var statusText = this._t('st_' + state);
-    if (statusText === 'st_' + state) statusText = this._fmt(ent.operation_state);
+    var statusText = this._t(`st_${state}`);
+    if (statusText === `st_${state}`) statusText = this._fmt(ent.operation_state);
 
     // Header chips: door + alerts.
     var chips = [];
     var door = this._val(ent.door);
     if (online && door && ['open', 'closed', 'locked'].indexOf(door) >= 0) {
       var dIcon = door === 'open' ? 'mdi:door-open' : (door === 'locked' ? 'mdi:door-closed-lock' : 'mdi:door-closed');
-      chips.push('<span class="chip' + (door === 'open' ? ' warn' : '') + '"><ha-icon icon="' + dIcon + '"></ha-icon>' + this._t('door_' + door) + '</span>');
+      chips.push(`<span class="chip${door === 'open' ? ' warn' : ''}"><ha-icon icon="${dIcon}"></ha-icon>${this._t(`door_${door}`)}</span>`);
     }
     if (c.show_alerts) {
       [['salt', 'mdi:shaker-outline'], ['rinse_aid', 'mdi:water-alert-outline']].forEach((a) => {
         var v = this._val(ent[a[0]]);
-        if (v === 'present' || v === 'on') chips.push('<span class="chip warn"><ha-icon icon="' + a[1] + '"></ha-icon>' + this._t(a[0]) + '</span>');
+        if (v === 'present' || v === 'on') chips.push(`<span class="chip warn"><ha-icon icon="${a[1]}"></ha-icon>${this._t(a[0])}</span>`);
       });
     }
-    if (!online) chips.push('<span class="chip"><ha-icon icon="mdi:cloud-off-outline"></ha-icon>' + this._t('offline') + '</span>');
+    if (!online) chips.push(`<span class="chip"><ha-icon icon="mdi:cloud-off-outline"></ha-icon>${this._t('offline')}</span>`);
 
     // Program picker.
     var programHtml = '';
@@ -429,11 +421,11 @@ class HomeConnectBaseCard extends HTMLElement {
       if (!running && this._st(ent.selected_program)) {
         var sel = this._st(ent.selected_program);
         var opts = (sel.attributes.options || []).map((o) =>
-          '<option value="' + hcEsc(o) + '"' + (o === sel.state ? ' selected' : '') + '>' + hcEsc(this._fmt(ent.selected_program, o)) + '</option>').join('');
-        var placeholder = this._avail(ent.selected_program) ? '' : '<option value="" selected disabled>' + this._t('no_program') + '</option>';
-        programHtml = '<label class="field"><span>' + this._t('program') + '</span><select data-select="' + ent.selected_program + '">' + placeholder + opts + '</select></label>';
+          `<option value="${hcEsc(o)}"${o === sel.state ? ' selected' : ''}>${hcEsc(this._fmt(ent.selected_program, o))}</option>`).join('');
+        var placeholder = this._avail(ent.selected_program) ? '' : `<option value="" selected disabled>${this._t('no_program')}</option>`;
+        programHtml = `<label class="field"><span>${this._t('program')}</span><select data-select="${ent.selected_program}">${placeholder}${opts}</select></label>`;
       } else if (progLabel && !running) {
-        programHtml = '<div class="field"><span>' + this._t('program') + '</span><div class="prog">' + hcEsc(progLabel) + '</div></div>';
+        programHtml = `<div class="field"><span>${this._t('program')}</span><div class="prog">${hcEsc(progLabel)}</div></div>`;
       }
     }
 
@@ -448,9 +440,9 @@ class HomeConnectBaseCard extends HTMLElement {
         var s = this._st(id), ok = this._avail(id);
         var o = ok
           ? (s.attributes.options || []).map((v) =>
-            '<option value="' + hcEsc(v) + '"' + (v === s.state ? ' selected' : '') + '>' + hcEsc(this._fmt(id, v)) + '</option>').join('')
+            `<option value="${hcEsc(v)}"${v === s.state ? ' selected' : ''}>${hcEsc(this._fmt(id, v))}</option>`).join('')
           : '<option selected>—</option>';
-        return '<label class="field small"><span>' + hcEsc(this._entityLabel(id, deviceName)) + '</span><select data-select="' + id + '"' + (ok ? '' : ' disabled') + '>' + o + '</select></label>';
+        return `<label class="field small"><span>${hcEsc(this._entityLabel(id, deviceName))}</span><select data-select="${id}"${ok ? '' : ' disabled'}>${o}</select></label>`;
       }).join('');
       var toggles = ent.option_switches.filter((id) => this._st(id)).map((id) => {
         var ok = this._avail(id), on = ok && this._val(id) === 'on';
@@ -463,12 +455,12 @@ class HomeConnectBaseCard extends HTMLElement {
       if (optIds.length && !anyAvail) {
         var canReload = this._avail(ent.selected_program) && (this._st(ent.selected_program).attributes.options || []).length > 1;
         reload = '<div class="reload"><span>' + this._t('options_not_loaded') + '</span>' +
-          (canReload ? '<button class="link" data-action="reload_options"' + (this._reloading ? ' disabled' : '') + '><ha-icon icon="mdi:refresh"></ha-icon>' + this._t('reload_options') + '</button>' : '') + '</div>';
+          (canReload ? `<button class="link" data-action="reload_options"${this._reloading ? ' disabled' : ''}><ha-icon icon="mdi:refresh"></ha-icon>${this._t('reload_options')}</button>` : '') + '</div>';
       }
       if (selects || toggles) {
         optionsHtml = '<div class="section"><div class="section-title">' + this._t('options') + '</div>' +
-          (selects ? '<div class="grid">' + selects + '</div>' : '') +
-          (toggles ? '<div class="toggles">' + toggles + '</div>' : '') + reload + '</div>';
+          (selects ? `<div class="grid">${selects}</div>` : '') +
+          (toggles ? `<div class="toggles">${toggles}</div>` : '') + reload + '</div>';
       }
     }
 
@@ -478,27 +470,27 @@ class HomeConnectBaseCard extends HTMLElement {
       var btns = [];
       var remoteOk = !ent.remote_start || this._val(ent.remote_start) === 'on';
       if (!running && ent.active_program && this._avail(ent.selected_program)) {
-        btns.push('<button class="btn primary" data-action="start"' + (remoteOk ? '' : ' disabled title="' + this._t('remote_start_off') + '"') + '><ha-icon icon="mdi:play"></ha-icon>' + this._t('start') + '</button>');
+        btns.push(`<button class="btn primary" data-action="start"${remoteOk ? '' : ` disabled title="${this._t('remote_start_off')}"`}><ha-icon icon="mdi:play"></ha-icon>${this._t('start')}</button>`);
       }
       if (state === 'run' && this._avail(ent.pause)) {
-        btns.push('<button class="btn" data-action="pause"><ha-icon icon="mdi:pause"></ha-icon>' + this._t('pause') + '</button>');
+        btns.push(`<button class="btn" data-action="pause"><ha-icon icon="mdi:pause"></ha-icon>${this._t('pause')}</button>`);
       }
       if (state === 'pause' && ent.resume && this._val(ent.resume) !== 'unavailable') {
-        btns.push('<button class="btn primary" data-action="resume"><ha-icon icon="mdi:play"></ha-icon>' + this._t('resume') + '</button>');
+        btns.push(`<button class="btn primary" data-action="resume"><ha-icon icon="mdi:play"></ha-icon>${this._t('resume')}</button>`);
       }
       if (running && ent.stop && this._val(ent.stop) !== 'unavailable') {
         var confirming = this._confirming === 'stop';
-        btns.push('<button class="btn danger' + (confirming ? ' armed' : '') + '" data-action="stop"><ha-icon icon="mdi:stop"></ha-icon>' + this._t(confirming ? 'confirm' : 'stop') + '</button>');
+        btns.push(`<button class="btn danger${confirming ? ' armed' : ''}" data-action="stop"><ha-icon icon="mdi:stop"></ha-icon>${this._t(confirming ? 'confirm' : 'stop')}</button>`);
       }
-      if (btns.length) controls = '<div class="controls">' + btns.join('') + '</div>';
-      if (!running && !remoteOk && btns.length) controls += '<div class="hint"><ha-icon icon="mdi:information-outline"></ha-icon>' + this._t('remote_start_off') + '</div>';
+      if (btns.length) controls = `<div class="controls">${btns.join('')}</div>`;
+      if (!running && !remoteOk && btns.length) controls += `<div class="hint"><ha-icon icon="mdi:information-outline"></ha-icon>${this._t('remote_start_off')}</div>`;
     }
 
     var powerBtn = ent.power && online
-      ? '<button class="power' + (powerOn ? ' on' : '') + '" data-action="power" title="' + this._t('power') + '" aria-label="' + this._t('power') + '"><ha-icon icon="mdi:power"></ha-icon></button>'
+      ? `<button class="power${powerOn ? ' on' : ''}" data-action="power" title="${this._t('power')}" aria-label="${this._t('power')}"><ha-icon icon="mdi:power"></ha-icon></button>`
       : '';
 
-    var subtitle = statusText + (running && progLabel ? ' · ' + hcEsc(progLabel) : '');
+    var subtitle = statusText + (running && progLabel ? ` · ${hcEsc(progLabel)}` : '');
 
     var progressHtml = '';
     if (running || state === 'finished') {
@@ -513,7 +505,7 @@ class HomeConnectBaseCard extends HTMLElement {
         '<div class="titles"><div class="name"><span>' + hcEsc(name) + '</span>' + HC_LOGO + '</div><div class="status">' + subtitle + '</div></div>' +
         powerBtn +
       '</div>' +
-      (chips.length ? '<div class="chips">' + chips.join('') + '</div>' : '') +
+      (chips.length ? `<div class="chips">${chips.join('')}</div>` : '') +
       progressHtml + programHtml + optionsHtml + controls +
     '</ha-card>';
   }
@@ -643,7 +635,7 @@ class HomeConnectBaseCard extends HTMLElement {
 
   _onChange(ev) {
     var el = ev.target;
-    if (!el || !el.dataset || !el.dataset.select) return;
+    if (!el?.dataset?.select) return;
     this._hass.callService('select', 'select_option', { entity_id: el.dataset.select, option: el.value });
     el.blur();
   }
@@ -667,9 +659,9 @@ class HomeConnectCardEditor extends HTMLElement {
   }
 
   set hass(hass) {
-    var prevLang = this._hass && this._hass.language;
+    var prevLang = this._hass?.language;
     this._hass = hass;
-    if (this._form && prevLang === (hass && hass.language)) {
+    if (this._form && prevLang === (hass?.language)) {
       this._form.hass = hass;
     } else {
       this._render();
@@ -677,7 +669,7 @@ class HomeConnectCardEditor extends HTMLElement {
   }
 
   _lang() {
-    var lang = this._hass && this._hass.language ? this._hass.language.split('-')[0] : 'en';
+    var lang = this._hass?.language ? this._hass.language.split('-')[0] : 'en';
     return HcI18n[lang] ? lang : 'en';
   }
 
@@ -726,11 +718,11 @@ class HomeConnectCardEditor extends HTMLElement {
     this._form.hass = this._hass;
     this._form.schema = this._schema();
     this._form.computeLabel = (s) => {
-      if (HC_ROLES[s.name]) return hcT(lang, 'en_' + s.name);
-      return hcT(lang, 'ed_' + s.name);
+      if (HC_ROLES[s.name]) return hcT(lang, `en_${s.name}`);
+      return hcT(lang, `ed_${s.name}`);
     };
     this._form.computeHelper = (s) => {
-      var key = 'ed_' + s.name + '_helper';
+      var key = `ed_${s.name}_helper`;
       var txt = hcT(lang, key);
       return txt === key ? undefined : txt;
     };
@@ -741,15 +733,15 @@ class HomeConnectCardEditor extends HTMLElement {
     ev.stopPropagation();
     var value = Object.assign({}, ev.detail.value);
     // Keep the YAML short: drop options left empty or at their default.
-    Object.keys(value).forEach(function (key) {
+    Object.keys(value).forEach((key) => {
       if (value[key] === '' || value[key] === null || value[key] === undefined) delete value[key];
     });
-    Object.keys(HC_EDITOR_DEFAULTS).forEach(function (key) {
+    Object.keys(HC_EDITOR_DEFAULTS).forEach((key) => {
       if (value[key] === HC_EDITOR_DEFAULTS[key]) delete value[key];
     });
     if (value.entities) {
       var e = Object.assign({}, value.entities);
-      Object.keys(e).forEach(function (k) { if (!e[k]) delete e[k]; });
+      Object.keys(e).forEach((k) => { if (!e[k]) delete e[k]; });
       if (Object.keys(e).length) value.entities = e; else delete value.entities;
     }
     if (this._config.type) value = Object.assign({ type: this._config.type }, value);
@@ -784,4 +776,4 @@ if (!customElements.get('home-connect-washer-card')) {
   });
 }
 
-console.info('%c HOME-CONNECT-CARD %c v' + HOME_CONNECT_CARD_VERSION + ' ', 'color:#fff;background:#1e88e5;font-weight:700', 'color:#1e88e5;background:#fff');
+console.info(`%c HOME-CONNECT-CARD %c v${HOME_CONNECT_CARD_VERSION} `, 'color:#fff;background:#1e88e5;font-weight:700', 'color:#1e88e5;background:#fff');
