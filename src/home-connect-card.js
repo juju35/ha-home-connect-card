@@ -521,48 +521,48 @@ class HomeConnectBaseCard extends HTMLElement {
   _styles(color) {
     return '<style>' +
       ':host { display: block; height: 100%; --hc-color: ' + (color || 'var(--disabled-text-color, #9e9e9e)') + '; }' +
-      'ha-card { height: 100%; box-sizing: border-box; padding: 16px; display: flex; flex-direction: column; gap: 14px; }' +
+      'ha-card { height: 100%; box-sizing: border-box; padding: 12px; display: flex; flex-direction: column; gap: 10px; }' +
       '.empty { display: flex; align-items: center; gap: 10px; color: var(--secondary-text-color); }' +
-      '.header { display: flex; align-items: center; gap: 12px; }' +
-      '.badge { width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0;' +
+      '.header { display: flex; align-items: center; gap: 10px; }' +
+      '.badge { width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0;' +
         ' background: color-mix(in srgb, var(--hc-color) 15%, transparent); color: var(--hc-color); }' +
       '.badge ha-icon { --mdc-icon-size: 24px; }' +
       '.badge.running ha-icon { animation: hc-pulse 2s ease-in-out infinite; }' +
       '@keyframes hc-pulse { 0%, 100% { transform: scale(1); opacity: 1; } 50% { transform: scale(0.88); opacity: 0.7; } }' +
       '.titles { flex: 1; min-width: 0; }' +
-      '.name { display: flex; align-items: center; gap: 6px; font-size: 18px; font-weight: 500; line-height: 1.25; color: var(--primary-text-color); }' +
+      '.name { display: flex; align-items: center; gap: 6px; font-size: 16px; font-weight: 500; line-height: 1.25; color: var(--primary-text-color); }' +
       '.name span { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }' +
       '.name .logo { width: 18px; height: 18px; flex-shrink: 0; }' +
-      '.status { font-size: 13px; color: var(--hc-color); margin-top: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }' +
+      '.status { font-size: 12px; color: var(--hc-color); margin-top: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }' +
       'button { font: inherit; cursor: pointer; border: none; }' +
       'button:disabled { cursor: default; opacity: 0.5; }' +
-      '.power { width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0;' +
+      '.power { width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0;' +
         ' background: var(--secondary-background-color, rgba(128,128,128,0.12)); color: var(--secondary-text-color); }' +
       '.power.on { background: color-mix(in srgb, var(--hc-color) 15%, transparent); color: var(--hc-color); }' +
       '.chips { display: flex; flex-wrap: wrap; gap: 6px; }' +
-      '.chip { display: inline-flex; align-items: center; gap: 4px; font-size: 12px; font-weight: 500; padding: 2px 10px 2px 6px; border-radius: 12px;' +
+      '.chip { display: inline-flex; align-items: center; gap: 4px; font-size: 11px; font-weight: 500; padding: 1px 8px 1px 5px; border-radius: 12px;' +
         ' background: var(--secondary-background-color, rgba(128,128,128,0.12)); color: var(--secondary-text-color); }' +
-      '.chip ha-icon { --mdc-icon-size: 14px; }' +
+      '.chip ha-icon { --mdc-icon-size: 13px; }' +
       '.chip.warn { background: color-mix(in srgb, var(--warning-color, #ffa600) 15%, transparent); color: var(--warning-color, #ffa600); }' +
-      '.progress { display: flex; flex-direction: column; gap: 6px; }' +
-      '.bar { height: 6px; border-radius: 3px; background: var(--secondary-background-color, rgba(128,128,128,0.15)); overflow: hidden; }' +
+      '.progress { display: flex; flex-direction: column; gap: 4px; }' +
+      '.bar { height: 4px; border-radius: 3px; background: var(--secondary-background-color, rgba(128,128,128,0.15)); overflow: hidden; }' +
       '.fill { height: 100%; border-radius: 3px; background: var(--hc-color); transition: width 0.6s ease; }' +
       '.progress-info { display: flex; justify-content: space-between; gap: 8px; font-size: 12px; color: var(--secondary-text-color); }' +
       '.pct { font-weight: 500; color: var(--primary-text-color); }' +
       '.field { display: flex; flex-direction: column; gap: 4px; min-width: 0; }' +
-      '.field > span { font-size: 12px; color: var(--secondary-text-color); }' +
-      '.prog { font-size: 14px; font-weight: 500; color: var(--primary-text-color); padding: 9px 12px; border-radius: 10px;' +
+      '.field > span { font-size: 11px; color: var(--secondary-text-color); }' +
+      '.prog { font-size: 13px; font-weight: 500; color: var(--primary-text-color); padding: 6px 10px; border-radius: 10px;' +
         ' background: var(--secondary-background-color, rgba(127,127,127,.08)); }' +
-      'select { font: inherit; font-size: 14px; color: var(--primary-text-color); padding: 9px 32px 9px 12px; border-radius: 10px; width: 100%;' +
+      'select { font: inherit; font-size: 13px; color: var(--primary-text-color); padding: 6px 30px 6px 10px; border-radius: 10px; width: 100%;' +
         ' border: 1px solid var(--divider-color, rgba(128,128,128,0.25)); appearance: none; -webkit-appearance: none; cursor: pointer;' +
         ' background: var(--secondary-background-color, rgba(128,128,128,0.1)) url("data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 24 24\'%3E%3Cpath fill=\'%23888\' d=\'M7 10l5 5 5-5z\'/%3E%3C/svg%3E") no-repeat right 8px center / 20px; }' +
       'select:disabled { opacity: 0.6; cursor: default; }' +
       '.field.small select { font-size: 13px; padding: 7px 28px 7px 10px; }' +
-      '.section { display: flex; flex-direction: column; gap: 8px; }' +
-      '.section-title { font-size: 13px; font-weight: 500; color: var(--secondary-text-color); text-transform: uppercase; letter-spacing: 0.04em; }' +
-      '.grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(110px, 1fr)); gap: 8px; }' +
+      '.section { display: flex; flex-direction: column; gap: 6px; }' +
+      '.section-title { font-size: 12px; font-weight: 500; color: var(--secondary-text-color); text-transform: uppercase; letter-spacing: 0.04em; }' +
+      '.grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(110px, 1fr)); gap: 6px; }' +
       '.toggles { display: flex; flex-wrap: wrap; gap: 6px; }' +
-      '.toggle { display: inline-flex; align-items: center; gap: 4px; font-size: 12px; font-weight: 500; padding: 4px 10px 4px 6px; border-radius: 12px;' +
+      '.toggle { display: inline-flex; align-items: center; gap: 4px; font-size: 11px; font-weight: 500; padding: 3px 8px 3px 5px; border-radius: 12px;' +
         ' background: var(--secondary-background-color, rgba(128,128,128,0.12)); color: var(--secondary-text-color); }' +
       '.toggle ha-icon { --mdc-icon-size: 16px; }' +
       '.toggle:disabled { opacity: 0.45; }' +
@@ -570,10 +570,10 @@ class HomeConnectBaseCard extends HTMLElement {
       '.link { display: inline-flex; align-items: center; gap: 4px; font-size: 12px; font-weight: 500; padding: 4px 8px; border-radius: 10px; background: none; color: var(--primary-color, #03a9f4); }' +
       '.link ha-icon { --mdc-icon-size: 16px; }' +
       '.toggle.on { background: color-mix(in srgb, var(--primary-color, #03a9f4) 15%, transparent); color: var(--primary-color, #03a9f4); }' +
-      '.controls { display: flex; gap: 8px; }' +
-      '.btn { flex: 1; display: inline-flex; align-items: center; justify-content: center; gap: 6px; font-size: 14px; font-weight: 500;' +
-        ' padding: 10px 12px; border-radius: 10px; background: var(--secondary-background-color, rgba(128,128,128,0.12)); color: var(--primary-text-color); }' +
-      '.btn ha-icon { --mdc-icon-size: 20px; }' +
+      '.controls { display: flex; gap: 6px; }' +
+      '.btn { flex: 1; display: inline-flex; align-items: center; justify-content: center; gap: 6px; font-size: 13px; font-weight: 500;' +
+        ' padding: 7px 10px; border-radius: 10px; background: var(--secondary-background-color, rgba(128,128,128,0.12)); color: var(--primary-text-color); }' +
+      '.btn ha-icon { --mdc-icon-size: 18px; }' +
       '.btn.primary { background: var(--primary-color, #03a9f4); color: var(--text-primary-color, #fff); }' +
       '.btn.danger { background: color-mix(in srgb, var(--error-color, #db4437) 15%, transparent); color: var(--error-color, #db4437); }' +
       '.btn.danger.armed { background: var(--error-color, #db4437); color: #fff; }' +

@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.4.0
+
+### Changes
+- More compact layout with the same information, like the other ha-* cards: 12 px card padding, 36 px header icon, 16 px name and 12 px subtitle, 11 px pills, tighter tiles and sections.
+- Appliance icon and power button 40 → 36 px, lower program selector, options and buttons, 4 px progress bar.
+
 ## 1.3.3
 
 ### Changes
