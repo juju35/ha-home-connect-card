@@ -5,6 +5,8 @@ import { readFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 
 const root = fileURLToPath(new URL("..", import.meta.url));
+// Fixed clock and time zone: "Ends at …" in the captures does not depend on when they are taken.
+const NOW = Date.parse("2026-10-24T08:44:00Z");
 const cardJs = readFileSync(`${root}dist/home-connect-card.js`, "utf8");
 
 const THEMES = {
@@ -67,8 +69,10 @@ const pageHtml = (theme, width) => `<!doctype html><html><head><meta charset="ut
 // extra: more stand-in elements, as script source.
 export async function render(shots, { icons = {}, hass = {}, extra = "" } = {}) {
   const browser = await chromium.launch(process.env.CHROMIUM_PATH ? { executablePath: process.env.CHROMIUM_PATH } : {});
-  const page = await browser.newPage({ deviceScaleFactor: 2, viewport: { width: 1000, height: 2000 } });
+  // A fresh page per shot: re-running the scripts in the same realm would redeclare their globals.
   for (const s of shots) {
+    const page = await browser.newPage({ deviceScaleFactor: 2, viewport: { width: 1000, height: 2000 }, timezoneId: "UTC" });
+    await page.clock.setFixedTime(NOW);
     await page.setContent(pageHtml(s.theme, s.width));
     await page.addScriptTag({ content: haElements(icons) + extra });
     await page.addScriptTag({ content: cardJs });
@@ -86,6 +90,7 @@ export async function render(shots, { icons = {}, hass = {}, extra = "" } = {}) 
     await page.waitForTimeout(400);
     await page.locator(s.type).screenshot({ path: `${root}screenshots/${s.file}.png`, animations: "disabled" });
     console.log(`screenshots/${s.file}.png`);
+    await page.close();
   }
   await browser.close();
 }
@@ -116,7 +121,7 @@ const add = (device, id, key, state, attributes = {}) => {
   entities[id] = { entity_id: id, device_id: device, translation_key: key };
   states[id] = { entity_id: id, state, attributes: { friendly_name: id, ...attributes } };
 };
-const inMinutes = (m) => new Date(Date.now() + m * 60000).toISOString();
+const inMinutes = (m) => new Date(NOW + m * 60000).toISOString();
 
 // Dishwasher, running Eco 50 °C.
 add("dw", "sensor.dishwasher_operation_state", "operation_state", "run", { options: ["inactive", "ready", "run", "pause", "finished", "error"] });

@@ -2,8 +2,9 @@ import assert from "node:assert/strict";
 import { test } from "node:test";
 import { loadCard } from "./load.mjs";
 
-const { HomeConnectWasherCard, HomeConnectDishwasherCard, hcFindDevice, hcEsc } = loadCard("home-connect-card.js", [
+const { HomeConnectWasherCard, HomeConnectDishwasherCard, HomeConnectCardEditor, hcFindDevice, hcEsc } = loadCard("home-connect-card.js", [
   "HomeConnectWasherCard",
+  "HomeConnectCardEditor",
   "HomeConnectDishwasherCard",
   "hcFindDevice",
   "hcEsc",
@@ -79,4 +80,38 @@ test("an unknown operation state is escaped in the status line", () => {
 test("hcEsc escapes HTML text and attributes", () => {
   assert.equal(hcEsc(`<a href="x">'&'</a>`), "&lt;a href=&quot;x&quot;&gt;&#39;&amp;&#39;&lt;/a&gt;");
   assert.equal(hcEsc(null), "");
+});
+
+test("entity ids from the config are escaped in data attributes", () => {
+  const hass = mockHass({ washerState: "ready" });
+  const bad = 'select.x"><img src=x>';
+  hass.states[bad] = st("a", { options: ["a"] });
+  const html = render(HomeConnectWasherCard, hass, { device_id: "d2", entities: { selected_program: bad } });
+  assert.doesNotMatch(html, /<img src=x>/);
+  assert.match(html, /data-select="select\.x&quot;&gt;&lt;img src=x&gt;"/);
+});
+
+function editor(kind, config, language = "en") {
+  const ed = new HomeConnectCardEditor();
+  ed.kind = kind;
+  ed.setConfig(config);
+  ed.hass = { language };
+  return ed;
+}
+
+test("editor labels follow the language option", () => {
+  assert.equal(editor("washer", {})._form.computeLabel({ name: "name" }), "Name");
+  assert.equal(editor("washer", { language: "fr" })._form.computeLabel({ name: "name" }), "Nom");
+  assert.equal(editor("washer", { language: "en" }, "fr")._form.computeLabel({ name: "name" }), "Name");
+});
+
+test("editor lists the connectivity, salt and rinse aid overrides where they apply", () => {
+  const roles = (kind) => editor(kind, {})._schema().find((s) => s.name === "entities").schema.map((s) => s.name);
+  assert.ok(roles("dishwasher").includes("connectivity"));
+  assert.ok(roles("dishwasher").includes("salt"));
+  assert.ok(roles("dishwasher").includes("rinse_aid"));
+  assert.ok(!roles("dishwasher").includes("pause"));
+  assert.ok(roles("washer").includes("connectivity"));
+  assert.ok(roles("washer").includes("pause"));
+  assert.ok(!roles("washer").includes("salt"));
 });

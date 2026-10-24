@@ -129,6 +129,8 @@ Keys accepted under `entities`:
 | `stop` | `button` | Stop |
 | `pause` / `resume` | `button` | Pause / Resume (washers) |
 | `remote_start` | `binary_sensor` | Enables the Start button |
+| `connectivity` | `binary_sensor` | Online / offline state |
+| `salt` / `rinse_aid` | `sensor` | Salt and rinse aid alerts (dishwashers) |
 
 Every other `switch` and `select` of the device is shown as a program option.
 
