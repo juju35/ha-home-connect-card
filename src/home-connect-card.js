@@ -186,9 +186,25 @@ var HC_ROLES = {
 var HC_OVERRIDABLE = ['operation_state', 'door', 'progress', 'finish_time', 'selected_program',
   'active_program', 'power', 'stop', 'pause', 'resume', 'remote_start'];
 
+// Registry entries grouped by device, built once per `hass.entities` object (it only changes with the registry).
+var hcRegistryIndex = new WeakMap();
+function hcRegistryByDevice(reg) {
+  var index = hcRegistryIndex.get(reg);
+  if (!index) {
+    index = new Map();
+    Object.values(reg).forEach((e) => {
+      if (!e.device_id || e.hidden) return;
+      if (!index.has(e.device_id)) index.set(e.device_id, []);
+      index.get(e.device_id).push(e);
+    });
+    hcRegistryIndex.set(reg, index);
+  }
+  return index;
+}
+
 function hcDeviceEntities(hass, deviceId) {
   if (!hass?.entities || !deviceId) return [];
-  return Object.values(hass.entities).filter((e) => e.device_id === deviceId && !e.hidden && hass.states[e.entity_id]);
+  return (hcRegistryByDevice(hass.entities).get(deviceId) || []).filter((e) => hass.states[e.entity_id]);
 }
 
 function hcFindRole(hass, list, role) {
@@ -211,9 +227,17 @@ function hcProgramKind(hass, deviceId) {
   return null;
 }
 
+// The device found for a kind is remembered per `hass.devices` object; a miss is searched again next time.
+var hcFoundDevices = new WeakMap();
 function hcFindDevice(hass, kind) {
   if (!hass?.devices) return undefined;
-  return Object.keys(hass.devices).find((id) => hcProgramKind(hass, id) === kind);
+  var found = hcFoundDevices.get(hass.devices);
+  if (!found) hcFoundDevices.set(hass.devices, (found = {}));
+  var id = found[kind];
+  if (id && hass.devices[id] && hcProgramKind(hass, id) === kind) return id;
+  id = Object.keys(hass.devices).find((d) => hcProgramKind(hass, d) === kind);
+  if (id) found[kind] = id;
+  return id;
 }
 
 // Fallback label for a Home Connect enum value when HA has no translation for it:
@@ -243,12 +267,12 @@ class HomeConnectBaseCard extends HTMLElement {
 
   static getConfigElement() {
     var el = document.createElement('home-connect-card-editor');
-    el.kind = HomeConnectBaseCard.kind;
+    el.kind = this.kind;
     return el;
   }
 
   static getStubConfig(hass) {
-    var id = hcFindDevice(hass, HomeConnectBaseCard.kind);
+    var id = hcFindDevice(hass, this.kind);
     return id ? { device_id: id } : {};
   }
 
@@ -272,12 +296,18 @@ class HomeConnectBaseCard extends HTMLElement {
   }
 
   connectedCallback() {
-    // Refresh the remaining time once a minute while the card is on screen.
-    this._timer = setInterval(() => { this._sig = null; this._update(); }, 30000);
+    // Refresh the remaining time every 30 s while a program with a finish time runs and the card is on screen.
+    clearInterval(this._timer);
+    this._timer = setInterval(() => {
+      if (!this._ticking) return;
+      this._sig = null;
+      this._update();
+    }, 30000);
   }
 
   disconnectedCallback() {
     clearInterval(this._timer);
+    clearTimeout(this._confirmTimer);
   }
 
   getCardSize() { return 4; }
@@ -367,6 +397,7 @@ class HomeConnectBaseCard extends HTMLElement {
     var deviceName = dev ? String(dev.name_by_user || dev.name || '').trim() : '';
     var name = c.name || deviceName || this._t(this.constructor.kind);
     var icon = c.icon || profile.icon;
+    this._ticking = false;
 
     if (!r.deviceId && !c.entities) {
       this.shadowRoot.innerHTML = `${this._styles()}<ha-card><div class="empty"><ha-icon icon="${icon}"></ha-icon>${this._t('no_device')}</div></ha-card>`;
@@ -396,6 +427,7 @@ class HomeConnectBaseCard extends HTMLElement {
       var at = finish.toLocaleTimeString(this._lang(), { hour: '2-digit', minute: '2-digit' });
       timeLine = `${this._t('ends_at')} ${at} · ${this._t('remaining').replace('{t}', left)}`;
     }
+    this._ticking = !!(running && finish);
 
     var statusText = this._t(`st_${state}`);
     if (statusText === `st_${state}`) statusText = this._fmt(ent.operation_state);
@@ -472,7 +504,9 @@ class HomeConnectBaseCard extends HTMLElement {
       if (!running && ent.active_program && this._avail(ent.selected_program)) {
         btns.push(`<button class="btn primary" data-action="start"${remoteOk ? '' : ` disabled title="${this._t('remote_start_off')}"`}><ha-icon icon="mdi:play"></ha-icon>${this._t('start')}</button>`);
       }
-      if (state === 'run' && this._avail(ent.pause)) {
+      // A button entity stays `unknown` until first pressed: only `unavailable` hides it.
+      var pauseVal = this._val(ent.pause);
+      if (state === 'run' && ent.pause && pauseVal !== undefined && pauseVal !== 'unavailable') {
         btns.push(`<button class="btn" data-action="pause"><ha-icon icon="mdi:pause"></ha-icon>${this._t('pause')}</button>`);
       }
       if (state === 'pause' && ent.resume && this._val(ent.resume) !== 'unavailable') {
@@ -490,7 +524,7 @@ class HomeConnectBaseCard extends HTMLElement {
       ? `<button class="power${powerOn ? ' on' : ''}" data-action="power" title="${this._t('power')}" aria-label="${this._t('power')}"><ha-icon icon="mdi:power"></ha-icon></button>`
       : '';
 
-    var subtitle = statusText + (running && progLabel ? ` · ${hcEsc(progLabel)}` : '');
+    var subtitle = hcEsc(statusText) + (running && progLabel ? ` · ${hcEsc(progLabel)}` : '');
 
     var progressHtml = '';
     if (running || state === 'finished') {
