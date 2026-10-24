@@ -61,6 +61,9 @@ var HcI18n = {
     en_pause: 'Mettre en pause',
     en_resume: 'Reprendre le programme',
     en_remote_start: 'Démarrage à distance',
+    en_connectivity: 'Connectivité',
+    en_salt: 'Sel presque vide',
+    en_rinse_aid: 'Liquide de rinçage presque vide',
   },
   en: {
     dishwasher: 'Dishwasher',
@@ -121,6 +124,9 @@ var HcI18n = {
     en_pause: 'Pause program',
     en_resume: 'Resume program',
     en_remote_start: 'Remote start',
+    en_connectivity: 'Connectivity',
+    en_salt: 'Salt nearly empty',
+    en_rinse_aid: 'Rinse aid nearly empty',
   },
 };
 
@@ -184,7 +190,7 @@ var HC_ROLES = {
 };
 
 var HC_OVERRIDABLE = ['operation_state', 'door', 'progress', 'finish_time', 'selected_program',
-  'active_program', 'power', 'stop', 'pause', 'resume', 'remote_start'];
+  'active_program', 'power', 'stop', 'pause', 'resume', 'remote_start', 'connectivity', 'salt', 'rinse_aid'];
 
 // Registry entries grouped by device, built once per `hass.entities` object (it only changes with the registry).
 var hcRegistryIndex = new WeakMap();
@@ -400,7 +406,7 @@ class HomeConnectBaseCard extends HTMLElement {
     this._ticking = false;
 
     if (!r.deviceId && !c.entities) {
-      this.shadowRoot.innerHTML = `${this._styles()}<ha-card><div class="empty"><ha-icon icon="${icon}"></ha-icon>${this._t('no_device')}</div></ha-card>`;
+      this.shadowRoot.innerHTML = `${this._styles()}<ha-card><div class="empty"><ha-icon icon="${hcEsc(icon)}"></ha-icon>${this._t('no_device')}</div></ha-card>`;
       return;
     }
 
@@ -455,7 +461,7 @@ class HomeConnectBaseCard extends HTMLElement {
         var opts = (sel.attributes.options || []).map((o) =>
           `<option value="${hcEsc(o)}"${o === sel.state ? ' selected' : ''}>${hcEsc(this._fmt(ent.selected_program, o))}</option>`).join('');
         var placeholder = this._avail(ent.selected_program) ? '' : `<option value="" selected disabled>${this._t('no_program')}</option>`;
-        programHtml = `<label class="field"><span>${this._t('program')}</span><select data-select="${ent.selected_program}">${placeholder}${opts}</select></label>`;
+        programHtml = `<label class="field"><span>${this._t('program')}</span><select data-select="${hcEsc(ent.selected_program)}">${placeholder}${opts}</select></label>`;
       } else if (progLabel && !running) {
         programHtml = `<div class="field"><span>${this._t('program')}</span><div class="prog">${hcEsc(progLabel)}</div></div>`;
       }
@@ -474,11 +480,11 @@ class HomeConnectBaseCard extends HTMLElement {
           ? (s.attributes.options || []).map((v) =>
             `<option value="${hcEsc(v)}"${v === s.state ? ' selected' : ''}>${hcEsc(this._fmt(id, v))}</option>`).join('')
           : '<option selected>—</option>';
-        return `<label class="field small"><span>${hcEsc(this._entityLabel(id, deviceName))}</span><select data-select="${id}"${ok ? '' : ' disabled'}>${o}</select></label>`;
+        return `<label class="field small"><span>${hcEsc(this._entityLabel(id, deviceName))}</span><select data-select="${hcEsc(id)}"${ok ? '' : ' disabled'}>${o}</select></label>`;
       }).join('');
       var toggles = ent.option_switches.filter((id) => this._st(id)).map((id) => {
         var ok = this._avail(id), on = ok && this._val(id) === 'on';
-        return '<button class="toggle' + (on ? ' on' : '') + '" data-toggle="' + id + '"' + (ok ? '' : ' disabled') + '>' +
+        return '<button class="toggle' + (on ? ' on' : '') + '" data-toggle="' + hcEsc(id) + '"' + (ok ? '' : ' disabled') + '>' +
           '<ha-icon icon="' + (on ? 'mdi:checkbox-marked-circle' : 'mdi:checkbox-blank-circle-outline') + '"></ha-icon>' + hcEsc(this._entityLabel(id, deviceName)) + '</button>';
       }).join('');
       // Home Connect only loads options when the selected program changes, so after
@@ -703,7 +709,7 @@ class HomeConnectCardEditor extends HTMLElement {
   }
 
   _lang() {
-    var lang = this._hass?.language ? this._hass.language.split('-')[0] : 'en';
+    var lang = ((this._config?.language) || (this._hass?.language) || 'en').split('-')[0];
     return HcI18n[lang] ? lang : 'en';
   }
 
@@ -712,8 +718,11 @@ class HomeConnectCardEditor extends HTMLElement {
     var kind = this.kind || (this._config.type === 'custom:home-connect-washer-card' ? 'washer' : 'dishwasher');
     var domains = { operation_state: 'sensor', door: 'sensor', progress: 'sensor', finish_time: 'sensor',
       selected_program: 'select', active_program: 'select', power: 'switch', stop: 'button',
-      pause: 'button', resume: 'button', remote_start: 'binary_sensor' };
-    var roles = HC_OVERRIDABLE.filter((r) => kind === 'washer' || (r !== 'pause' && r !== 'resume'));
+      pause: 'button', resume: 'button', remote_start: 'binary_sensor', connectivity: 'binary_sensor',
+      salt: 'sensor', rinse_aid: 'sensor' };
+    // Pause / resume only exist on washers, salt / rinse aid only on dishwashers.
+    var only = { pause: 'washer', resume: 'washer', salt: 'dishwasher', rinse_aid: 'dishwasher' };
+    var roles = HC_OVERRIDABLE.filter((r) => !only[r] || only[r] === kind);
     return [
       { name: 'device_id', selector: { device: { integration: 'home_connect' } } },
       {
@@ -779,7 +788,10 @@ class HomeConnectCardEditor extends HTMLElement {
       if (Object.keys(e).length) value.entities = e; else delete value.entities;
     }
     if (this._config.type) value = Object.assign({ type: this._config.type }, value);
+    var lang = this._lang();
     this._config = value;
+    // A new language option relabels the form.
+    if (lang !== this._lang()) this._render();
     this.dispatchEvent(new CustomEvent('config-changed', { detail: { config: value }, bubbles: true, composed: true }));
   }
 }
