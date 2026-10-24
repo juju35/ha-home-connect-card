@@ -1,5 +1,22 @@
 # Changelog
 
+## 1.5.0
+
+### Changes
+- The visual editor follows the card's `language` option.
+- `connectivity`, `salt` and `rinse_aid` entity overrides documented in the README and offered in the editor (salt and rinse aid on the dishwasher card only).
+
+### Fixes
+- A washer card added from the card picker gets a washer instead of the first dishwasher, and its editor keeps the `pause` / `resume` overrides.
+- The Pause button shows from the start: a button entity never pressed yet (`unknown`) no longer hides it; it still hides when `unavailable`.
+- The 30 s refresh only redraws the card while a program with a finish time runs, instead of rebuilding it every 30 s when idle.
+- Lighter updates: the appliance's entities are no longer looked up in the whole entity registry on every Home Assistant update.
+- The status text and the config values (icon, entity ids) are HTML-escaped.
+
+### Maintenance
+- CI hardening: actions pinned by commit SHA, read-only workflow token, monthly Dependabot updates, duplication findings annotated in pull requests.
+- Unit tests (`npm test`) run in CI; `package-lock.json` version synced. Nothing changes for users.
+
 ## 1.4.1
 
 ### Maintenance
