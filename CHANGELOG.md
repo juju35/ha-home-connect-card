@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.5.1
+
+### Maintenance
+- Deterministic screenshots (fixed clock and time zone), each rendered in a fresh page; duplication checks no longer scan the tests. Nothing changes for users.
+
 ## 1.5.0
 
 ### Changes
