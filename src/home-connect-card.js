@@ -55,6 +55,7 @@ var HcI18n = {
     ed_show_options: 'Options du programme',
     ed_show_alerts: 'Alertes',
     ed_show_power: 'Bouton marche / arrêt',
+    ed_show_logo: 'Logo Home Connect',
     ed_language: 'Langue',
     ed_language_helper: 'Laisser vide pour suivre la langue de Home Assistant',
     ed_entities: 'Entités (avancé)',
@@ -127,6 +128,7 @@ var HcI18n = {
     ed_show_controls: 'Control buttons',
     ed_show_options: 'Program options',
     ed_show_power: 'Power button',
+    ed_show_logo: 'Home Connect logo',
     ed_show_alerts: 'Alerts',
     ed_language: 'Language',
     ed_language_helper: 'Leave empty to follow the Home Assistant language',
@@ -306,6 +308,44 @@ var HC_LOGO = '<svg class="logo" viewBox="0 0 292 292" role="img" aria-label="Ho
   '<path fill="url(#hc-logo-g)" d="M146 .5A145.5 145.5 0 1 0 215 272L278 285Q288 287 286 277L270 220A145.5 145.5 0 0 0 146 .5Z"/>' +
   '<path fill="#fff" stroke="#fff" stroke-width="8" stroke-linejoin="round" d="M147.5 64L200 108.5V202H95V108.5Z"/></svg>';
 
+var HC_SITE = 'https://www.home-connect.com';
+
+// Appliance illustrations (front view). The state color lights the display; when running the
+// washer drum turns and the dishwasher projects its floor light, like the real appliances.
+var HC_ART = {
+  washer: '<svg viewBox="0 0 80 94" aria-hidden="true">' +
+    '<defs><linearGradient id="hc-wb" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffffff"/><stop offset="1" stop-color="#e2e6eb"/></linearGradient>' +
+    '<linearGradient id="hc-wr" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#dfe4ea"/><stop offset="1" stop-color="#97a2ae"/></linearGradient>' +
+    '<radialGradient id="hc-wg" cx=".38" cy=".3" r=".8"><stop offset="0" stop-color="#9edbff"/><stop offset=".55" stop-color="#3b8fe0"/><stop offset="1" stop-color="#1c4c97"/></radialGradient>' +
+    '<clipPath id="hc-wc"><circle cx="40" cy="55" r="17"/></clipPath></defs>' +
+    '<rect x="10" y="88" width="9" height="4" rx="1.5" fill="#8f9aa6"/><rect x="61" y="88" width="9" height="4" rx="1.5" fill="#8f9aa6"/>' +
+    '<rect x="4" y="2" width="72" height="87" rx="9" fill="url(#hc-wb)" stroke="#c3cad2" stroke-width="1.2"/>' +
+    '<path d="M4.6 21H75.4" stroke="#c3cad2" stroke-width="1.2"/>' +
+    '<rect x="10" y="8" width="17" height="8" rx="2" fill="#fff" stroke="#c3cad2"/><path d="M13 12h11" stroke="#c3cad2" stroke-linecap="round"/>' +
+    '<rect x="33" y="8.5" width="17" height="7" rx="2" fill="#1d2632"/><rect class="led" x="35.5" y="11" width="9" height="2" rx="1"/>' +
+    '<circle cx="64" cy="12" r="5.2" fill="#fff" stroke="#aeb7c2" stroke-width="1.2"/><path d="M64 12V8.6" stroke="#7d8894" stroke-width="1.4" stroke-linecap="round"/>' +
+    '<circle cx="40" cy="55" r="25" fill="url(#hc-wr)"/><circle cx="40" cy="55" r="21" fill="#eef2f6"/><circle cx="40" cy="55" r="17" fill="url(#hc-wg)"/>' +
+    '<g clip-path="url(#hc-wc)"><path class="wave" d="M14 58q6.5-4 13 0t13 0 13 0 13 0V80H14Z" fill="#7fd0ff" opacity=".55"/>' +
+      '<g class="drum"><circle cx="33" cy="61" r="5.5" fill="#ff8a65" opacity=".9"/><circle cx="46" cy="63" r="4.5" fill="#fff59d" opacity=".9"/>' +
+      '<circle cx="41" cy="47" r="3.5" fill="#ffffff" opacity=".55"/><circle cx="40" cy="55" r="12" fill="none" stroke="#fff" stroke-opacity=".25" stroke-dasharray="2 4"/></g></g>' +
+    '<path d="M28 44a16 16 0 0 1 12-6" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" opacity=".7"/>' +
+    '<rect x="62.5" y="50" width="3" height="10" rx="1.5" fill="#aeb7c2"/></svg>',
+  dishwasher: '<svg viewBox="0 0 80 94" aria-hidden="true">' +
+    '<defs><linearGradient id="hc-db" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#f7f8fa"/><stop offset=".6" stop-color="#e3e7ec"/><stop offset="1" stop-color="#cfd5dc"/></linearGradient>' +
+    '<linearGradient id="hc-dp" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#36404d"/><stop offset="1" stop-color="#1b222b"/></linearGradient>' +
+    '<linearGradient id="hc-dh" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f4f6f8"/><stop offset="1" stop-color="#9aa5b1"/></linearGradient>' +
+    '<radialGradient id="hc-df" cx=".5" cy=".5" r=".5"><stop offset="0" class="floor-c" stop-opacity=".55"/><stop offset="1" class="floor-c" stop-opacity="0"/></radialGradient></defs>' +
+    '<ellipse class="floor" cx="40" cy="90" rx="30" ry="4" fill="url(#hc-df)"/>' +
+    '<rect x="4" y="2" width="72" height="86" rx="7" fill="url(#hc-db)" stroke="#bac2cb" stroke-width="1.2"/>' +
+    '<path d="M11 2h58a7 7 0 0 1 7 7v9H4V9a7 7 0 0 1 7-7Z" fill="url(#hc-dp)"/>' +
+    '<rect x="10" y="7.5" width="16" height="6" rx="2" fill="#0d1218"/><rect class="led" x="12" y="9.5" width="8" height="2" rx="1"/>' +
+    '<circle cx="45" cy="10.5" r="1.6" fill="#7d8894"/><circle cx="52" cy="10.5" r="1.6" fill="#7d8894"/><circle cx="59" cy="10.5" r="1.6" fill="#7d8894"/><circle cx="67" cy="10.5" r="2.2" fill="none" stroke="#9aa5b1" stroke-width="1.2"/>' +
+    '<rect x="14" y="23" width="52" height="5" rx="2.5" fill="url(#hc-dh)" stroke="#9aa5b1" stroke-width=".8"/>' +
+    '<rect x="10" y="33" width="60" height="44" rx="4" fill="none" stroke="#fff" stroke-opacity=".75"/>' +
+    '<path d="M18 36l20 38M30 36l20 38" stroke="#fff" stroke-width="5" stroke-opacity=".22" stroke-linecap="round"/>' +
+    '<rect x="4.6" y="80" width="70.8" height="7.4" rx="0" fill="#c3cad2" opacity=".6"/></svg>',
+};
+
 // ── Base card ────────────────────────────────────────────────────────────────
 class HomeConnectBaseCard extends HTMLElement {
   static get kind() { return 'dishwasher'; }
@@ -326,7 +366,7 @@ class HomeConnectBaseCard extends HTMLElement {
   setConfig(config) {
     if (!config) throw new Error('Invalid configuration');
     this._config = Object.assign({
-      show_program: true, show_controls: true, show_options: true, show_alerts: true, show_power: true,
+      show_program: true, show_controls: true, show_options: true, show_alerts: true, show_power: true, show_logo: true,
     }, config);
     if (!this.shadowRoot) {
       this.attachShadow({ mode: 'open' });
@@ -593,23 +633,32 @@ class HomeConnectBaseCard extends HTMLElement {
       ? `<div class="error" role="alert" title="${hcEsc(this._error.detail)}"><ha-icon icon="mdi:alert-circle-outline"></ha-icon><span>${hcEsc(this._t(this._error.key))}</span></div>`
       : '';
 
-    var subtitle = hcEsc(statusText) + (running && progLabel ? ` · ${hcEsc(progLabel)}` : '');
-
-    var progressHtml = '';
+    // Hero: the appliance next to its state (and progress while a program runs).
+    var big = '';
     if (running || state === 'finished') {
       var pct = state === 'finished' ? 100 : (progress == null ? 0 : progress);
-      progressHtml = '<div class="progress"><div class="bar"><div class="fill" style="width:' + pct + '%"></div></div>' +
-        '<div class="progress-info"><span class="pct">' + Math.round(pct) + ' %</span><span>' + hcEsc(timeLine) + '</span></div></div>';
+      big = '<div class="big"><span class="pct">' + Math.round(pct) + '<small> %</small></span><span class="state">' + hcEsc(statusText) + '</span></div>' +
+        '<div class="bar"><div class="fill" style="width:' + pct + '%"></div></div>' +
+        (timeLine ? `<div class="time">${hcEsc(timeLine)}</div>` : '');
+    } else {
+      big = `<div class="big"><span class="state-big">${hcEsc(statusText)}</span></div>`;
     }
+    var art = c.icon
+      ? `<div class="badge"><ha-icon icon="${hcEsc(icon)}"></ha-icon></div>`
+      : (HC_ART[this.constructor.kind] || HC_ART.dishwasher);
+    var heroHtml = '<div class="hero"><div class="picture' + (state === 'run' ? ' running' : '') + '">' + art + '</div>' +
+      '<div class="info">' + big + (chips.length ? `<div class="chips">${chips.join('')}</div>` : '') + '</div></div>';
+
+    var logo = c.show_logo === false ? ''
+      : `<a class="logo-link" href="${HC_SITE}" target="_blank" rel="noopener noreferrer" title="Home Connect">${HC_LOGO}</a>`;
+    var sub = progLabel || this._t(this.constructor.kind);
 
     this.shadowRoot.innerHTML = this._styles(color) + '<ha-card>' +
-      '<div class="header">' +
-        '<div class="badge' + (state === 'run' ? ' running' : '') + '"><ha-icon icon="' + hcEsc(icon) + '"></ha-icon></div>' +
-        '<div class="titles"><div class="name"><span>' + hcEsc(name) + '</span>' + HC_LOGO + '</div><div class="status">' + subtitle + '</div></div>' +
+      '<div class="header">' + logo +
+        '<div class="titles"><div class="name">' + hcEsc(name) + '</div><div class="sub">' + hcEsc(sub) + '</div></div>' +
         powerBtn +
       '</div>' +
-      (chips.length ? `<div class="chips">${chips.join('')}</div>` : '') +
-      progressHtml + programHtml + optionsHtml + errorHtml + controls +
+      heroHtml + programHtml + optionsHtml + errorHtml + controls +
     '</ha-card>';
   }
 
@@ -619,16 +668,34 @@ class HomeConnectBaseCard extends HTMLElement {
       'ha-card { height: 100%; box-sizing: border-box; padding: 12px; display: flex; flex-direction: column; gap: 10px; }' +
       '.empty { display: flex; align-items: center; gap: 10px; color: var(--secondary-text-color); }' +
       '.header { display: flex; align-items: center; gap: 10px; }' +
-      '.badge { width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0;' +
-        ' background: color-mix(in srgb, var(--hc-color) 15%, transparent); color: var(--hc-color); }' +
-      '.badge ha-icon { --mdc-icon-size: 24px; }' +
-      '.badge.running ha-icon { animation: hc-pulse 2s ease-in-out infinite; }' +
-      '@keyframes hc-pulse { 0%, 100% { transform: scale(1); opacity: 1; } 50% { transform: scale(0.88); opacity: 0.7; } }' +
+      '.logo-link { display: flex; flex-shrink: 0; }' +
+      '.logo { width: 40px; height: 40px; }' +
       '.titles { flex: 1; min-width: 0; }' +
-      '.name { display: flex; align-items: center; gap: 6px; font-size: 16px; font-weight: 500; line-height: 1.25; color: var(--primary-text-color); }' +
-      '.name span { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }' +
-      '.name .logo { width: 18px; height: 18px; flex-shrink: 0; }' +
-      '.status { font-size: 12px; color: var(--hc-color); margin-top: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }' +
+      '.name { font-size: 16px; font-weight: 500; line-height: 1.25; color: var(--primary-text-color); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }' +
+      '.sub { font-size: 12px; color: var(--secondary-text-color); margin-top: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }' +
+      '.hero { display: flex; align-items: center; gap: 14px; }' +
+      '.picture { width: 72px; height: 84px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; }' +
+      '.picture svg { width: 100%; height: 100%; overflow: visible; filter: drop-shadow(0 3px 6px rgba(0,0,0,0.18)); }' +
+      '.picture .led { fill: var(--hc-color); }' +
+      '.picture .floor { opacity: 0; transition: opacity 0.6s; } .picture .floor-c { stop-color: var(--hc-color); }' +
+      '.picture.running .floor { opacity: 1; }' +
+      '.picture .drum, .picture .wave { transform-box: view-box; }' +
+      '.picture .drum { transform-origin: 40px 55px; }' +
+      '.picture.running .drum { animation: hc-spin 2.4s linear infinite; }' +
+      '.picture.running .wave { animation: hc-wave 1.6s ease-in-out infinite alternate; }' +
+      '@keyframes hc-spin { to { transform: rotate(360deg); } }' +
+      '@keyframes hc-wave { from { transform: translateX(-6px); } to { transform: translateX(6px); } }' +
+      '@media (prefers-reduced-motion: reduce) { .picture.running .drum, .picture.running .wave { animation: none; } }' +
+      '.badge { width: 56px; height: 56px; border-radius: 50%; display: flex; align-items: center; justify-content: center;' +
+        ' background: color-mix(in srgb, var(--hc-color) 15%, transparent); color: var(--hc-color); }' +
+      '.badge ha-icon { --mdc-icon-size: 32px; }' +
+      '.info { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 6px; }' +
+      '.big { display: flex; align-items: baseline; gap: 8px; min-width: 0; }' +
+      '.big .pct { font-size: 30px; font-weight: 400; line-height: 1.1; color: var(--primary-text-color); }' +
+      '.big .pct small { font-size: 15px; color: var(--secondary-text-color); }' +
+      '.big .state { font-size: 13px; font-weight: 500; color: var(--hc-color); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }' +
+      '.state-big { font-size: 22px; font-weight: 400; line-height: 1.2; color: var(--hc-color); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }' +
+      '.time { font-size: 12px; color: var(--secondary-text-color); }' +
       'button { font: inherit; cursor: pointer; border: none; }' +
       'button:disabled { cursor: default; opacity: 0.5; }' +
       '.power { width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0;' +
@@ -639,11 +706,8 @@ class HomeConnectBaseCard extends HTMLElement {
         ' background: var(--secondary-background-color, rgba(128,128,128,0.12)); color: var(--secondary-text-color); }' +
       '.chip ha-icon { --mdc-icon-size: 13px; }' +
       '.chip.warn { background: color-mix(in srgb, var(--warning-color, #ffa600) 15%, transparent); color: var(--warning-color, #ffa600); }' +
-      '.progress { display: flex; flex-direction: column; gap: 4px; }' +
       '.bar { height: 4px; border-radius: 3px; background: var(--secondary-background-color, rgba(128,128,128,0.15)); overflow: hidden; }' +
       '.fill { height: 100%; border-radius: 3px; background: var(--hc-color); transition: width 0.6s ease; }' +
-      '.progress-info { display: flex; justify-content: space-between; gap: 8px; font-size: 12px; color: var(--secondary-text-color); }' +
-      '.pct { font-weight: 500; color: var(--primary-text-color); }' +
       '.field { display: flex; flex-direction: column; gap: 4px; min-width: 0; }' +
       '.field > span { font-size: 11px; color: var(--secondary-text-color); }' +
       '.prog { font-size: 13px; font-weight: 500; color: var(--primary-text-color); padding: 6px 10px; border-radius: 10px;' +
@@ -830,7 +894,7 @@ class HomeConnectWasherCard extends HomeConnectBaseCard {
 }
 
 // ── home-connect-card-editor (visual editor, built on HA's ha-form) ──────────
-var HC_EDITOR_DEFAULTS = { show_program: true, show_controls: true, show_options: true, show_alerts: true, show_power: true };
+var HC_EDITOR_DEFAULTS = { show_program: true, show_controls: true, show_options: true, show_alerts: true, show_power: true, show_logo: true };
 
 class HomeConnectCardEditor extends HTMLElement {
   setConfig(config) {
@@ -878,6 +942,7 @@ class HomeConnectCardEditor extends HTMLElement {
           { name: 'show_options', selector: { boolean: {} } },
           { name: 'show_alerts', selector: { boolean: {} } },
           { name: 'show_power', selector: { boolean: {} } },
+          { name: 'show_logo', selector: { boolean: {} } },
         ],
       },
       {

@@ -3,6 +3,8 @@
 ## 1.6.0
 
 ### Changes
+- New header like the Roborock card: Home Connect logo on the left (links to home-connect.com, hide it with `show_logo: false`), program as subtitle.
+- Appliance illustration next to the state: the washer drum turns and the dishwasher lights the floor while a program runs; the display takes the state color. Progress now shows as a large percentage with the state and finish time. Setting `icon` puts the icon back instead of the illustration.
 - New `show_power` option (default `true`, also in the visual editor) to hide the power button, e.g. for a washing machine that can't be turned on / off remotely.
 
 ## 1.5.3

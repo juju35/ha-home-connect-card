@@ -76,6 +76,14 @@ test("show_power: false hides the power button", () => {
   assert.doesNotMatch(render(HomeConnectWasherCard, mockHass(), { show_power: false }), /data-action="power"/);
 });
 
+test("header shows the Home Connect logo unless show_logo is false, and the appliance illustration", () => {
+  const html = render(HomeConnectWasherCard, mockHass());
+  assert.match(html, /class="logo-link"/);
+  assert.match(html, /class="drum"/);
+  assert.doesNotMatch(render(HomeConnectWasherCard, mockHass(), { show_logo: false }), /class="logo-link"/);
+  assert.match(render(HomeConnectWasherCard, mockHass(), { icon: "mdi:washing-machine" }), /class="badge"/);
+});
+
 test("an unknown operation state is escaped in the status line", () => {
   const html = render(HomeConnectWasherCard, mockHass({ opState: '<img src=x onerror="alert(1)">' }));
   assert.doesNotMatch(html, /<img src=x/);

@@ -86,12 +86,12 @@ Use either `device_id` (what the visual editor writes) or `entity` (any entity o
 type: custom:home-connect-washer-card
 device_id: 5c3a4c7f80e0aa935477ebca6e7b915b
 name: Washing machine
-icon: mdi:washing-machine
 show_program: true
 show_options: true
 show_controls: true
 show_alerts: true
 show_power: true
+show_logo: true
 language: en
 entities:
   operation_state: sensor.washing_machine_operation_state
@@ -106,12 +106,13 @@ entities:
 | `device_id` | ❌* | Auto | Home Connect device (*or `entity`; the first matching appliance is used if both are missing) |
 | `entity` | ❌ | — | Any entity of the appliance, used to find the device |
 | `name` | ❌ | Device name | Card title |
-| `icon` | ❌ | `mdi:dishwasher` / `mdi:washing-machine` | Card icon |
+| `icon` | ❌ | Illustration | Replaces the appliance illustration with an icon |
 | `show_program` | ❌ | `true` | Show the program picker |
 | `show_options` | ❌ | `true` | Show program options (only before a program starts) |
 | `show_controls` | ❌ | `true` | Show Start / Pause / Resume / Stop buttons |
 | `show_alerts` | ❌ | `true` | Show salt and rinse aid alerts |
 | `show_power` | ❌ | `true` | Show the power button (turn off for appliances that can't be switched on / off remotely) |
+| `show_logo` | ❌ | `true` | Show the Home Connect logo in the header |
 | `language` | ❌ | Auto | Force language: `fr` or `en` (auto-detects from HA settings) |
 | `entities` | ❌ | Auto | Override detected entities (see below) |
 
