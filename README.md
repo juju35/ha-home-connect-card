@@ -91,6 +91,7 @@ show_program: true
 show_options: true
 show_controls: true
 show_alerts: true
+show_power: true
 language: en
 entities:
   operation_state: sensor.washing_machine_operation_state
@@ -110,6 +111,7 @@ entities:
 | `show_options` | ❌ | `true` | Show program options (only before a program starts) |
 | `show_controls` | ❌ | `true` | Show Start / Pause / Resume / Stop buttons |
 | `show_alerts` | ❌ | `true` | Show salt and rinse aid alerts |
+| `show_power` | ❌ | `true` | Show the power button (turn off for appliances that can't be switched on / off remotely) |
 | `language` | ❌ | Auto | Force language: `fr` or `en` (auto-detects from HA settings) |
 | `entities` | ❌ | Auto | Override detected entities (see below) |
 

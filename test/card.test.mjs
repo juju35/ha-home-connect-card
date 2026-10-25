@@ -71,6 +71,11 @@ test("Pause shows for a never-pressed (unknown) button, not for an unavailable o
   assert.doesNotMatch(render(HomeConnectWasherCard, mockHass({ pauseState: "unavailable" })), /data-action="pause"/);
 });
 
+test("show_power: false hides the power button", () => {
+  assert.match(render(HomeConnectWasherCard, mockHass()), /data-action="power"/);
+  assert.doesNotMatch(render(HomeConnectWasherCard, mockHass(), { show_power: false }), /data-action="power"/);
+});
+
 test("an unknown operation state is escaped in the status line", () => {
   const html = render(HomeConnectWasherCard, mockHass({ opState: '<img src=x onerror="alert(1)">' }));
   assert.doesNotMatch(html, /<img src=x/);

@@ -54,6 +54,7 @@ var HcI18n = {
     ed_show_controls: 'Boutons de commande',
     ed_show_options: 'Options du programme',
     ed_show_alerts: 'Alertes',
+    ed_show_power: 'Bouton marche / arrêt',
     ed_language: 'Langue',
     ed_language_helper: 'Laisser vide pour suivre la langue de Home Assistant',
     ed_entities: 'Entités (avancé)',
@@ -125,6 +126,7 @@ var HcI18n = {
     ed_show_program: 'Program picker',
     ed_show_controls: 'Control buttons',
     ed_show_options: 'Program options',
+    ed_show_power: 'Power button',
     ed_show_alerts: 'Alerts',
     ed_language: 'Language',
     ed_language_helper: 'Leave empty to follow the Home Assistant language',
@@ -324,7 +326,7 @@ class HomeConnectBaseCard extends HTMLElement {
   setConfig(config) {
     if (!config) throw new Error('Invalid configuration');
     this._config = Object.assign({
-      show_program: true, show_controls: true, show_options: true, show_alerts: true,
+      show_program: true, show_controls: true, show_options: true, show_alerts: true, show_power: true,
     }, config);
     if (!this.shadowRoot) {
       this.attachShadow({ mode: 'open' });
@@ -583,7 +585,7 @@ class HomeConnectBaseCard extends HTMLElement {
     // Once an appliance refused to turn off, the button only serves to turn it on.
     var noOff = powerOn && hcNoPowerOff.has(this._powerKey(r));
     var powerTitle = this._t(noOff ? 'power_off_unsupported' : 'power');
-    var powerBtn = ent.power && online
+    var powerBtn = c.show_power && ent.power && online
       ? `<button class="power${powerOn ? ' on' : ''}" data-action="power" title="${hcEsc(powerTitle)}" aria-label="${this._t('power')}"${noOff ? ' disabled' : ''}><ha-icon icon="mdi:power"></ha-icon></button>`
       : '';
 
@@ -828,7 +830,7 @@ class HomeConnectWasherCard extends HomeConnectBaseCard {
 }
 
 // ── home-connect-card-editor (visual editor, built on HA's ha-form) ──────────
-var HC_EDITOR_DEFAULTS = { show_program: true, show_controls: true, show_options: true, show_alerts: true };
+var HC_EDITOR_DEFAULTS = { show_program: true, show_controls: true, show_options: true, show_alerts: true, show_power: true };
 
 class HomeConnectCardEditor extends HTMLElement {
   setConfig(config) {
@@ -875,6 +877,7 @@ class HomeConnectCardEditor extends HTMLElement {
           { name: 'show_controls', selector: { boolean: {} } },
           { name: 'show_options', selector: { boolean: {} } },
           { name: 'show_alerts', selector: { boolean: {} } },
+          { name: 'show_power', selector: { boolean: {} } },
         ],
       },
       {

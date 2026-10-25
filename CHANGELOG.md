@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.6.0
+
+### Changes
+- New `show_power` option (default `true`, also in the visual editor) to hide the power button, e.g. for a washing machine that can't be turned on / off remotely.
+
 ## 1.5.3
 
 ### Fixes
