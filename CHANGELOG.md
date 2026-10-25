@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.6.4
+
+### Changes
+- Door open: the washer shows its porthole swung open on the empty drum, the dishwasher its lowered door on the loaded racks.
+
 ## 1.6.3
 
 ### Changes

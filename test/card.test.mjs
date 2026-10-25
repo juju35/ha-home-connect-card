@@ -119,6 +119,15 @@ test("the washer gets the washer illustration even in a dishwasher card", () => 
   assert.doesNotMatch(html, /class="steam"/);
 });
 
+test("door open: open-door illustration", () => {
+  const hass = mockHass({ washerState: "ready" });
+  hass.states["sensor.wm_door"] = st("open", { options: ["open", "closed", "locked"] });
+  hass.entities["sensor.wm_door"] = { entity_id: "sensor.wm_door", device_id: "d2", translation_key: "door" };
+  assert.match(render(HomeConnectWasherCard, hass), /url\(#hc-wro\)/);
+  hass.states["sensor.wm_door"] = st("closed", { options: ["open", "closed", "locked"] });
+  assert.doesNotMatch(render(HomeConnectWasherCard, hass), /hc-wro/);
+});
+
 test("an unknown operation state is escaped in the status line", () => {
   const html = render(HomeConnectWasherCard, mockHass({ opState: '<img src=x onerror="alert(1)">' }));
   assert.doesNotMatch(html, /<img src=x/);

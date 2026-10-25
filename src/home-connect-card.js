@@ -360,6 +360,45 @@ var HC_ART = {
     '<rect x="4.6" y="80" width="70.8" height="7.4" rx="0" fill="#c3cad2" opacity=".6"/></svg>',
 };
 
+// Door open: the washer's porthole swung aside on the empty drum, the dishwasher's door lowered on its racks.
+var HC_ART_OPEN = {
+  washer: '<svg viewBox="0 0 80 94" aria-hidden="true">' +
+    '<defs><linearGradient id="hc-wbo" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffffff"/><stop offset="1" stop-color="#e2e6eb"/></linearGradient>' +
+    '<radialGradient id="hc-wd" cx=".5" cy=".45" r=".6"><stop offset="0" stop-color="#cfd6de"/><stop offset=".7" stop-color="#8d98a5"/><stop offset="1" stop-color="#5d6874"/></radialGradient>' +
+    '<linearGradient id="hc-wro" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#97a2ae"/><stop offset="1" stop-color="#e3e8ee"/></linearGradient>' +
+    '<linearGradient id="hc-wgo" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#2f6fc0"/><stop offset="1" stop-color="#9edbff"/></linearGradient></defs>' +
+    '<rect x="10" y="88" width="9" height="4" rx="1.5" fill="#8f9aa6"/><rect x="61" y="88" width="9" height="4" rx="1.5" fill="#8f9aa6"/>' +
+    '<rect x="4" y="2" width="72" height="87" rx="9" fill="url(#hc-wbo)" stroke="#c3cad2" stroke-width="1.2"/>' +
+    '<path d="M4.6 21H75.4" stroke="#c3cad2" stroke-width="1.2"/>' +
+    '<rect x="10" y="8" width="17" height="8" rx="2" fill="#fff" stroke="#c3cad2"/><path d="M13 12h11" stroke="#c3cad2" stroke-linecap="round"/>' +
+    '<rect x="33" y="8.5" width="17" height="7" rx="2" fill="#1d2632"/><rect class="led" x="35.5" y="11" width="9" height="2" rx="1"/>' +
+    '<circle cx="64" cy="12" r="5.2" fill="#fff" stroke="#aeb7c2" stroke-width="1.2"/><path d="M64 12V8.6" stroke="#7d8894" stroke-width="1.4" stroke-linecap="round"/>' +
+    '<circle cx="40" cy="55" r="22" fill="#d5dbe2"/><circle cx="40" cy="55" r="19" fill="url(#hc-wd)"/>' +
+    '<g fill="#5d6874" opacity=".55"><circle cx="40" cy="44" r="1"/><circle cx="31" cy="50" r="1"/><circle cx="49" cy="50" r="1"/><circle cx="34" cy="61" r="1"/><circle cx="46" cy="61" r="1"/><circle cx="40" cy="66" r="1"/></g>' +
+    '<path d="M40 38l3 6h-6Z" fill="#aeb7c2"/>' +
+    '<ellipse cx="11" cy="55" rx="8" ry="24" fill="url(#hc-wro)" stroke="#8f9aa6" stroke-width=".8"/>' +
+    '<ellipse cx="11.5" cy="55" rx="5" ry="18" fill="url(#hc-wgo)" opacity=".85"/>' +
+    '<path d="M9.5 42q-1.5 6 0 12" stroke="#fff" stroke-width="1.6" fill="none" stroke-linecap="round" opacity=".7"/>' +
+    '<rect x="16.5" y="52" width="3" height="7" rx="1.5" fill="#aeb7c2"/></svg>',
+  dishwasher: '<svg viewBox="0 0 80 94" aria-hidden="true">' +
+    '<defs><linearGradient id="hc-dbo" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#f7f8fa"/><stop offset=".6" stop-color="#e3e7ec"/><stop offset="1" stop-color="#cfd5dc"/></linearGradient>' +
+    '<linearGradient id="hc-dpo" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#36404d"/><stop offset="1" stop-color="#1b222b"/></linearGradient>' +
+    '<linearGradient id="hc-dio" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#7d8894"/><stop offset="1" stop-color="#b6bfc9"/></linearGradient>' +
+    '<linearGradient id="hc-ddo" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#c9d0d8"/><stop offset="1" stop-color="#eef1f4"/></linearGradient></defs>' +
+    '<rect x="4" y="2" width="72" height="62" rx="7" fill="url(#hc-dbo)" stroke="#bac2cb" stroke-width="1.2"/>' +
+    '<path d="M11 2h58a7 7 0 0 1 7 7v9H4V9a7 7 0 0 1 7-7Z" fill="url(#hc-dpo)"/>' +
+    '<rect x="10" y="7.5" width="16" height="6" rx="2" fill="#0d1218"/><rect class="led" x="12" y="9.5" width="8" height="2" rx="1"/>' +
+    '<circle cx="45" cy="10.5" r="1.6" fill="#7d8894"/><circle cx="52" cy="10.5" r="1.6" fill="#7d8894"/><circle cx="59" cy="10.5" r="1.6" fill="#7d8894"/><circle cx="67" cy="10.5" r="2.2" fill="none" stroke="#9aa5b1" stroke-width="1.2"/>' +
+    '<rect x="9" y="20" width="62" height="44" fill="url(#hc-dio)"/>' +
+    '<path d="M11 36h58M11 58h58" stroke="#e3e7ec" stroke-width="1.4"/>' +
+    '<g fill="#ffffff" stroke="#b6bfc9" stroke-width=".6"><rect x="16" y="27" width="7" height="9" rx="2"/><rect x="27" y="27" width="7" height="9" rx="2"/><rect x="38" y="25" width="5" height="11" rx="2.5"/><rect x="47" y="27" width="7" height="9" rx="2"/><rect x="58" y="25" width="5" height="11" rx="2.5"/></g>' +
+    '<g fill="#ffffff" stroke="#b6bfc9" stroke-width=".6"><ellipse cx="17" cy="49" rx="3" ry="9.5"/><ellipse cx="24" cy="49" rx="3" ry="9.5"/><ellipse cx="31" cy="49" rx="3" ry="9.5"/><ellipse cx="38" cy="49" rx="3" ry="9.5"/>' +
+      '<ellipse cx="50" cy="51" rx="2.6" ry="7.5"/><ellipse cx="56" cy="51" rx="2.6" ry="7.5"/><ellipse cx="62" cy="51" rx="2.6" ry="7.5"/></g>' +
+    '<path d="M4 64h72l3.5 22H.5Z" fill="url(#hc-ddo)" stroke="#bac2cb" stroke-width="1.2" stroke-linejoin="round"/>' +
+    '<path d="M9 67h62l2.4 15H6.6Z" fill="#dfe4ea" stroke="#fff" stroke-opacity=".8"/>' +
+    '<rect x="14" y="86.5" width="52" height="4" rx="2" fill="#aab4bf"/></svg>',
+};
+
 // State badge over the illustration: paused, waiting for a delayed start, or done.
 var HC_STATE_BADGE = {
   pause: '<svg viewBox="0 0 24 24"><rect x="7" y="6" width="3.6" height="12" rx="1.2"/><rect x="13.4" y="6" width="3.6" height="12" rx="1.2"/></svg>',
@@ -686,7 +725,7 @@ class HomeConnectBaseCard extends HTMLElement {
     }
     var art = c.icon
       ? `<div class="badge"><ha-icon icon="${hcEsc(icon)}"></ha-icon></div>`
-      : (HC_ART[kind] || HC_ART.dishwasher);
+      : ((door === 'open' && HC_ART_OPEN[kind]) || HC_ART[kind] || HC_ART.dishwasher);
     var heroHtml = '<div class="hero">' + hcPicture(art, state, !c.icon) +
       '<div class="info">' + big + (chips.length ? `<div class="chips">${chips.join('')}</div>` : '') + '</div></div>';
 
