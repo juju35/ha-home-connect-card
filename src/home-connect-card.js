@@ -273,11 +273,13 @@ class HomeConnectBaseCard extends HTMLElement {
 
   static getConfigElement() {
     var el = document.createElement('home-connect-card-editor');
+    // biome-ignore lint/complexity/noThisInStatic: subclasses override static kind
     el.kind = this.kind;
     return el;
   }
 
   static getStubConfig(hass) {
+    // biome-ignore lint/complexity/noThisInStatic: subclasses override static kind
     var id = hcFindDevice(hass, this.kind);
     return id ? { device_id: id } : {};
   }
