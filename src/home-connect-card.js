@@ -325,7 +325,7 @@ var HC_ART = {
     '<defs><linearGradient id="hc-wb" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffffff"/><stop offset="1" stop-color="#e2e6eb"/></linearGradient>' +
     '<linearGradient id="hc-wr" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#dfe4ea"/><stop offset="1" stop-color="#97a2ae"/></linearGradient>' +
     '<radialGradient id="hc-wg" cx=".38" cy=".3" r=".8"><stop offset="0" stop-color="#9edbff"/><stop offset=".55" stop-color="#3b8fe0"/><stop offset="1" stop-color="#1c4c97"/></radialGradient>' +
-    '<clipPath id="hc-wc"><circle cx="40" cy="55" r="17"/></clipPath></defs>' +
+    '<clipPath id="hc-wc"><circle cx="40" cy="55" r="17"/></clipPath></defs><g class="shake">' +
     '<rect x="10" y="88" width="9" height="4" rx="1.5" fill="#8f9aa6"/><rect x="61" y="88" width="9" height="4" rx="1.5" fill="#8f9aa6"/>' +
     '<rect x="4" y="2" width="72" height="87" rx="9" fill="url(#hc-wb)" stroke="#c3cad2" stroke-width="1.2"/>' +
     '<path d="M4.6 21H75.4" stroke="#c3cad2" stroke-width="1.2"/>' +
@@ -335,15 +335,18 @@ var HC_ART = {
     '<circle cx="40" cy="55" r="25" fill="url(#hc-wr)"/><circle cx="40" cy="55" r="21" fill="#eef2f6"/><circle cx="40" cy="55" r="17" fill="url(#hc-wg)"/>' +
     '<g clip-path="url(#hc-wc)"><path class="wave" d="M14 58q6.5-4 13 0t13 0 13 0 13 0V80H14Z" fill="#7fd0ff" opacity=".55"/>' +
       '<g class="drum"><circle cx="33" cy="61" r="5.5" fill="#ff8a65" opacity=".9"/><circle cx="46" cy="63" r="4.5" fill="#fff59d" opacity=".9"/>' +
-      '<circle cx="41" cy="47" r="3.5" fill="#ffffff" opacity=".55"/><circle cx="40" cy="55" r="12" fill="none" stroke="#fff" stroke-opacity=".25" stroke-dasharray="2 4"/></g></g>' +
+      '<circle cx="41" cy="47" r="3.5" fill="#ffffff" opacity=".55"/><circle cx="31" cy="50" r="3" fill="#80cbc4" opacity=".9"/><circle cx="40" cy="55" r="12" fill="none" stroke="#fff" stroke-opacity=".25" stroke-dasharray="2 4"/></g></g>' +
+    '<g class="bubbles"><circle cx="34" cy="62" r="1.6"/><circle cx="44" cy="64" r="1.2"/><circle cx="39" cy="60" r="1"/></g>' +
     '<path d="M28 44a16 16 0 0 1 12-6" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" opacity=".7"/>' +
-    '<rect x="62.5" y="50" width="3" height="10" rx="1.5" fill="#aeb7c2"/></svg>',
+    '<rect x="62.5" y="50" width="3" height="10" rx="1.5" fill="#aeb7c2"/></g></svg>',
   dishwasher: '<svg viewBox="0 0 80 94" aria-hidden="true">' +
     '<defs><linearGradient id="hc-db" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#f7f8fa"/><stop offset=".6" stop-color="#e3e7ec"/><stop offset="1" stop-color="#cfd5dc"/></linearGradient>' +
     '<linearGradient id="hc-dp" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#36404d"/><stop offset="1" stop-color="#1b222b"/></linearGradient>' +
     '<linearGradient id="hc-dh" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f4f6f8"/><stop offset="1" stop-color="#9aa5b1"/></linearGradient>' +
     '<radialGradient id="hc-df" cx=".5" cy=".5" r=".5"><stop offset="0" class="floor-c" stop-opacity=".55"/><stop offset="1" class="floor-c" stop-opacity="0"/></radialGradient></defs>' +
     '<ellipse class="floor" cx="40" cy="90" rx="30" ry="4" fill="url(#hc-df)"/>' +
+    '<g class="steam" fill="none" stroke="#b0bec5" stroke-width="2.2" stroke-linecap="round">' +
+      '<path d="M26 0q-3-4 0-8t0-8"/><path d="M40 0q-3-4 0-8t0-8"/><path d="M54 0q-3-4 0-8t0-8"/></g>' +
     '<rect x="4" y="2" width="72" height="86" rx="7" fill="url(#hc-db)" stroke="#bac2cb" stroke-width="1.2"/>' +
     '<path d="M11 2h58a7 7 0 0 1 7 7v9H4V9a7 7 0 0 1 7-7Z" fill="url(#hc-dp)"/>' +
     '<rect x="10" y="7.5" width="16" height="6" rx="2" fill="#0d1218"/><rect class="led" x="12" y="9.5" width="8" height="2" rx="1"/>' +
@@ -351,6 +354,8 @@ var HC_ART = {
     '<rect x="14" y="23" width="52" height="5" rx="2.5" fill="url(#hc-dh)" stroke="#9aa5b1" stroke-width=".8"/>' +
     '<rect x="10" y="33" width="60" height="44" rx="4" fill="none" stroke="#fff" stroke-opacity=".75"/>' +
     '<path d="M18 36l20 38M30 36l20 38" stroke="#fff" stroke-width="5" stroke-opacity=".22" stroke-linecap="round"/>' +
+    '<g class="drops" fill="#64b5f6"><circle cx="24" cy="50" r="1.4"/><circle cx="40" cy="44" r="1.4"/><circle cx="56" cy="50" r="1.4"/>' +
+      '<circle cx="32" cy="62" r="1.2"/><circle cx="48" cy="62" r="1.2"/></g>' +
     '<rect x="4.6" y="80" width="70.8" height="7.4" rx="0" fill="#c3cad2" opacity=".6"/></svg>',
 };
 
@@ -700,11 +705,29 @@ class HomeConnectBaseCard extends HTMLElement {
       '.picture.running .floor { opacity: 1; }' +
       '.picture .drum, .picture .wave { transform-box: view-box; }' +
       '.picture .drum { transform-origin: 40px 55px; }' +
-      '.picture.running .drum { animation: hc-spin 2.4s linear infinite; }' +
-      '.picture.running .wave { animation: hc-wave 1.6s ease-in-out infinite alternate; }' +
+      '.picture .shake, .picture .steam path, .picture .drops, .picture .bubbles { transform-box: view-box; }' +
+      '.picture .shake { transform-origin: 40px 92px; }' +
+      '.picture .steam path, .picture .drops, .picture .bubbles { opacity: 0; }' +
+      '.picture .bubbles { fill: #fff; }' +
+      '.picture.running .drum { animation: hc-spin 1.2s linear infinite; }' +
+      '.picture.running .wave { animation: hc-wave 0.8s ease-in-out infinite alternate; }' +
+      '.picture.running .shake { animation: hc-shake 0.3s ease-in-out infinite; }' +
+      '.picture.running .bubbles { animation: hc-rise 1.6s ease-in infinite; }' +
+      '.picture.running .led { animation: hc-blink 1.6s ease-in-out infinite; }' +
+      '.picture.running .floor { animation: hc-glow 2.2s ease-in-out infinite alternate; }' +
+      '.picture.running .steam path { animation: hc-steam 2.4s ease-out infinite; }' +
+      '.picture.running .steam path:nth-child(2) { animation-delay: 0.8s; }' +
+      '.picture.running .steam path:nth-child(3) { animation-delay: 1.6s; }' +
+      '.picture.running .drops { animation: hc-spray 1.1s ease-in-out infinite; }' +
       '@keyframes hc-spin { to { transform: rotate(360deg); } }' +
       '@keyframes hc-wave { from { transform: translateX(-6px); } to { transform: translateX(6px); } }' +
-      '@media (prefers-reduced-motion: reduce) { .picture.running .drum, .picture.running .wave { animation: none; } }' +
+      '@keyframes hc-shake { 0%, 100% { transform: translateX(0) rotate(0); } 25% { transform: translateX(-0.6px) rotate(-0.5deg); } 75% { transform: translateX(0.6px) rotate(0.5deg); } }' +
+      '@keyframes hc-rise { 0% { opacity: 0; transform: translateY(4px); } 30% { opacity: 0.8; } 100% { opacity: 0; transform: translateY(-14px); } }' +
+      '@keyframes hc-blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.25; } }' +
+      '@keyframes hc-glow { from { opacity: 0.45; } to { opacity: 1; } }' +
+      '@keyframes hc-steam { 0% { opacity: 0; transform: translateY(2px); } 30% { opacity: 0.7; } 100% { opacity: 0; transform: translateY(-10px); } }' +
+      '@keyframes hc-spray { 0%, 100% { opacity: 0; transform: translateY(6px); } 40% { opacity: 0.85; } 70% { opacity: 0.5; transform: translateY(-4px); } }' +
+      '@media (prefers-reduced-motion: reduce) { .picture.running * { animation: none !important; } .picture.running .floor { opacity: 1; } }' +
       '.badge { width: 56px; height: 56px; border-radius: 50%; display: flex; align-items: center; justify-content: center;' +
         ' background: color-mix(in srgb, var(--hc-color) 15%, transparent); color: var(--hc-color); }' +
       '.badge ha-icon { --mdc-icon-size: 32px; }' +
