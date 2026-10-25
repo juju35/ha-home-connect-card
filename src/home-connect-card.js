@@ -359,6 +359,26 @@ var HC_ART = {
     '<rect x="4.6" y="80" width="70.8" height="7.4" rx="0" fill="#c3cad2" opacity=".6"/></svg>',
 };
 
+// State badge over the illustration: paused, waiting for a delayed start, or done.
+var HC_STATE_BADGE = {
+  pause: '<svg viewBox="0 0 24 24"><rect x="7" y="6" width="3.6" height="12" rx="1.2"/><rect x="13.4" y="6" width="3.6" height="12" rx="1.2"/></svg>',
+  delayedstart: '<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="7.5" fill="none" stroke="#fff" stroke-width="2"/>' +
+    '<path class="hand-h" d="M12 12V8" stroke="#fff" stroke-width="2" stroke-linecap="round"/>' +
+    '<path class="hand-m" d="M12 12h4" stroke="#fff" stroke-width="2" stroke-linecap="round"/></svg>',
+  finished: '<svg viewBox="0 0 24 24"><path class="check" d="M6.5 12.5l3.6 3.6 7.4-8" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+};
+// Sparkles around a finished appliance.
+var HC_SPARKLES = '<svg class="sparkles" viewBox="0 0 80 94" aria-hidden="true">' +
+  '<path d="M8 14l1.6 4 4 1.6-4 1.6L8 25.2l-1.6-4-4-1.6 4-1.6Z"/><path d="M72 30l1.2 3 3 1.2-3 1.2L72 38.4l-1.2-3-3-1.2 3-1.2Z"/>' +
+  '<path d="M68 2l1 2.4 2.4 1-2.4 1L68 8.8l-1-2.4-2.4-1 2.4-1Z"/></svg>';
+
+// The illustration with its state: animated while running, a badge when paused, delayed or done.
+var hcPicture = (art, state, illustrated) => {
+  var badge = illustrated && HC_STATE_BADGE[state]
+    ? `<span class="pbadge">${HC_STATE_BADGE[state]}</span>${state === 'finished' ? HC_SPARKLES : ''}` : '';
+  return `<div class="picture st-${hcEsc(state)}${state === 'run' ? ' running' : ''}">${art}${badge}</div>`;
+};
+
 // ── Base card ────────────────────────────────────────────────────────────────
 class HomeConnectBaseCard extends HTMLElement {
   static get kind() { return 'dishwasher'; }
@@ -664,7 +684,7 @@ class HomeConnectBaseCard extends HTMLElement {
     var art = c.icon
       ? `<div class="badge"><ha-icon icon="${hcEsc(icon)}"></ha-icon></div>`
       : (HC_ART[this.constructor.kind] || HC_ART.dishwasher);
-    var heroHtml = '<div class="hero"><div class="picture' + (state === 'run' ? ' running' : '') + '">' + art + '</div>' +
+    var heroHtml = '<div class="hero">' + hcPicture(art, state, !c.icon) +
       '<div class="info">' + big + (chips.length ? `<div class="chips">${chips.join('')}</div>` : '') + '</div></div>';
 
     var logo = c.show_logo === false ? ''
@@ -701,6 +721,24 @@ class HomeConnectBaseCard extends HTMLElement {
       '.picture { width: 72px; height: 84px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; }' +
       '.picture svg { width: 100%; height: 100%; overflow: visible; filter: drop-shadow(0 3px 6px rgba(0,0,0,0.18)); }' +
       '.picture .led { fill: var(--hc-color); }' +
+      '.picture { position: relative; }' +
+      '.pbadge { position: absolute; right: -4px; bottom: 2px; width: 30%; aspect-ratio: 1; min-width: 20px; border-radius: 50%; display: grid; place-items: center;' +
+        ' background: var(--hc-color); fill: #fff; box-shadow: 0 0 0 2px var(--card-background-color, #fff), 0 2px 6px rgba(0,0,0,0.25);' +
+        ' animation: hc-pop 0.35s cubic-bezier(.3,1.6,.6,1) both; }' +
+      '.pbadge svg { width: 72%; height: 72%; filter: none; overflow: visible; }' +
+      '.st-pause .pbadge { animation: hc-pop 0.35s cubic-bezier(.3,1.6,.6,1) both, hc-breathe 2s ease-in-out 0.4s infinite; }' +
+      '.pbadge .hand-h, .pbadge .hand-m { transform-box: view-box; transform-origin: 12px 12px; }' +
+      '.st-delayedstart .pbadge .hand-m { animation: hc-spin 3s linear infinite; }' +
+      '.st-delayedstart .pbadge .hand-h { animation: hc-spin 36s linear infinite; }' +
+      '.pbadge .check { stroke-dasharray: 20; stroke-dashoffset: 0; animation: hc-draw 0.5s ease-out 0.2s both; }' +
+      '.picture .sparkles { position: absolute; inset: 0; width: 100%; height: 100%; fill: var(--hc-color); pointer-events: none; filter: none; }' +
+      '.sparkles path { transform-box: fill-box; transform-origin: center; animation: hc-twinkle 1.8s ease-in-out infinite; }' +
+      '.sparkles path:nth-child(2) { animation-delay: 0.6s; } .sparkles path:nth-child(3) { animation-delay: 1.2s; }' +
+      '.st-pause svg:not(.sparkles):first-child, .st-delayedstart svg:first-child { opacity: 0.85; }' +
+      '@keyframes hc-pop { from { transform: scale(0); } to { transform: scale(1); } }' +
+      '@keyframes hc-breathe { 0%, 100% { transform: scale(1); } 50% { transform: scale(0.88); } }' +
+      '@keyframes hc-draw { from { stroke-dashoffset: 20; } to { stroke-dashoffset: 0; } }' +
+      '@keyframes hc-twinkle { 0%, 100% { opacity: 0; transform: scale(0.4) rotate(0); } 50% { opacity: 1; transform: scale(1) rotate(45deg); } }' +
       '.picture .floor { opacity: 0; transition: opacity 0.6s; } .picture .floor-c { stop-color: var(--hc-color); }' +
       '.picture.running .floor { opacity: 1; }' +
       '.picture .drum, .picture .wave { transform-box: view-box; }' +
@@ -727,7 +765,7 @@ class HomeConnectBaseCard extends HTMLElement {
       '@keyframes hc-glow { from { opacity: 0.45; } to { opacity: 1; } }' +
       '@keyframes hc-steam { 0% { opacity: 0; transform: translateY(2px); } 30% { opacity: 0.7; } 100% { opacity: 0; transform: translateY(-10px); } }' +
       '@keyframes hc-spray { 0%, 100% { opacity: 0; transform: translateY(6px); } 40% { opacity: 0.85; } 70% { opacity: 0.5; transform: translateY(-4px); } }' +
-      '@media (prefers-reduced-motion: reduce) { .picture.running * { animation: none !important; } .picture.running .floor { opacity: 1; } }' +
+      '@media (prefers-reduced-motion: reduce) { .picture.running *, .pbadge, .pbadge *, .sparkles path { animation: none !important; } .sparkles path { opacity: 1; } .picture.running .floor { opacity: 1; } }' +
       '.badge { width: 56px; height: 56px; border-radius: 50%; display: flex; align-items: center; justify-content: center;' +
         ' background: color-mix(in srgb, var(--hc-color) 15%, transparent); color: var(--hc-color); }' +
       '.badge ha-icon { --mdc-icon-size: 32px; }' +
@@ -1061,7 +1099,7 @@ var hcMini = (Base) => class extends Base {
         '<div class="titles"><div class="name">' + hcEsc(m.name) + '</div></div>' +
         `<span class="st"><span class="dot"></span>${hcEsc(m.statusText)}</span>` + this._zoomButton() +
       '</div>' +
-      '<div class="content"><div class="picture' + (m.state === 'run' ? ' running' : '') + '">' + m.art + '</div>' +
+      '<div class="content">' + hcPicture(m.art, m.state, !c.icon) +
         '<div class="info">' + bar + lines.join('') + '</div>' +
         (btns.length ? `<div class="mcontrols">${btns.join('')}</div>` : '') +
       '</div>' + errorHtml +

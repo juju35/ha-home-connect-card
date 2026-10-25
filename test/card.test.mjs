@@ -106,6 +106,13 @@ test("mini card: compact view, detail button toggles the full card", () => {
   assert.equal(Mini.getConfigElement().kind, "washer");
 });
 
+test("state badge on the illustration when paused, delayed or finished", () => {
+  assert.match(render(HomeConnectWasherCard, mockHass({ washerState: "pause" })), /class="picture st-pause"[\s\S]*class="pbadge"/);
+  assert.match(render(HomeConnectWasherCard, mockHass({ washerState: "finished" })), /class="sparkles"/);
+  assert.doesNotMatch(render(HomeConnectWasherCard, mockHass({ washerState: "run" })), /class="pbadge"/);
+  assert.doesNotMatch(render(HomeConnectWasherCard, mockHass({ washerState: "pause" }), { icon: "mdi:washing-machine" }), /class="pbadge"/);
+});
+
 test("an unknown operation state is escaped in the status line", () => {
   const html = render(HomeConnectWasherCard, mockHass({ opState: '<img src=x onerror="alert(1)">' }));
   assert.doesNotMatch(html, /<img src=x/);
