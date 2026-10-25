@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.5.2
+
+### Maintenance
+- Lint warnings on the editor and card-picker lookups silenced so an automatic Biome fix cannot give the washer card the dishwasher profile again; duplication checks run on Node 22. Nothing changes for users.
+
 ## 1.5.1
 
 ### Maintenance
