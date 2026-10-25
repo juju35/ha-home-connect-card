@@ -56,6 +56,10 @@ var HcI18n = {
     ed_show_alerts: 'Alertes',
     ed_show_power: 'Bouton marche / arrêt',
     ed_show_logo: 'Logo Home Connect',
+    ed_zoom: 'Bouton détail',
+    ed_zoom_helper: 'Bouton en haut à droite qui passe la mini-carte en carte complète et inversement',
+    zoom_in: 'Afficher la carte complète',
+    zoom_out: 'Revenir à la vue compacte',
     ed_language: 'Langue',
     ed_language_helper: 'Laisser vide pour suivre la langue de Home Assistant',
     ed_entities: 'Entités (avancé)',
@@ -129,6 +133,10 @@ var HcI18n = {
     ed_show_options: 'Program options',
     ed_show_power: 'Power button',
     ed_show_logo: 'Home Connect logo',
+    ed_zoom: 'Detail button',
+    ed_zoom_helper: 'Button at the top right that switches the mini card to the full card and back',
+    zoom_in: 'Show the full card',
+    zoom_out: 'Back to the compact view',
     ed_show_alerts: 'Alerts',
     ed_language: 'Language',
     ed_language_helper: 'Leave empty to follow the Home Assistant language',
@@ -474,7 +482,7 @@ class HomeConnectBaseCard extends HTMLElement {
       if (this._error.states == null) this._error.states = states;
       else if (this._error.states !== states) this._clearError();
     }
-    var sig = JSON.stringify([this._lang(), r.deviceId, this._confirming, this._reloading, this._starting,
+    var sig = JSON.stringify([this._lang(), r.deviceId, this._zoomed, this._confirming, this._reloading, this._starting,
       this._error ? [this._error.key, this._error.detail] : null, hcNoPowerOff.has(this._powerKey(r)), states]);
     if (sig === this._sig) return;
     // Don't rebuild while a dropdown is open in the card.
@@ -486,6 +494,11 @@ class HomeConnectBaseCard extends HTMLElement {
   }
 
   _powerKey(r) { return r.deviceId || r.ent.power; }
+
+  // Overridden by the mini cards.
+  _compact() { return false; }
+
+  _zoomButton() { return ''; }
 
   _render(r) {
     var c = this._config, ent = r.ent, hass = this._hass;
@@ -653,10 +666,16 @@ class HomeConnectBaseCard extends HTMLElement {
       : `<a class="logo-link" href="${HC_SITE}" target="_blank" rel="noopener noreferrer" title="Home Connect">${HC_LOGO}</a>`;
     var sub = progLabel || this._t(this.constructor.kind);
 
+    if (this._compact()) {
+      this.shadowRoot.innerHTML = this._miniHtml({ c, ent, name, color, state, statusText, running, online, powerOn, progress,
+        finish, progLabel, chips: chips.filter((x) => x.indexOf('chip warn') >= 0 || !online), art, logo, powerBtn });
+      return;
+    }
+
     this.shadowRoot.innerHTML = this._styles(color) + '<ha-card>' +
       '<div class="header">' + logo +
         '<div class="titles"><div class="name">' + hcEsc(name) + '</div><div class="sub">' + hcEsc(sub) + '</div></div>' +
-        powerBtn +
+        powerBtn + this._zoomButton() +
       '</div>' +
       heroHtml + programHtml + optionsHtml + errorHtml + controls +
     '</ha-card>';
@@ -740,6 +759,29 @@ class HomeConnectBaseCard extends HTMLElement {
       '.hint ha-icon { --mdc-icon-size: 16px; }' +
       '.error { display: flex; align-items: center; gap: 6px; font-size: 12px; color: var(--error-color, #db4437); }' +
       '.error ha-icon { --mdc-icon-size: 16px; flex-shrink: 0; }' +
+      '.zoom { all: unset; flex-shrink: 0; cursor: pointer; width: 24px; height: 24px; margin: -4px -4px -4px 0; border-radius: 50%;' +
+        ' display: grid; place-items: center; color: var(--secondary-text-color); }' +
+      '.zoom ha-icon { --mdc-icon-size: 16px; }' +
+      '.zoom:hover { background: color-mix(in srgb, var(--secondary-text-color) 16%, transparent); color: var(--primary-text-color); }' +
+      '.zoom:focus-visible { outline: 2px solid var(--primary-color, #03a9f4); outline-offset: 1px; }' +
+      'ha-card.mini .logo { width: 32px; height: 32px; }' +
+      '.st { display: inline-flex; align-items: center; gap: 4px; flex-shrink: 0; padding: 1px 8px; border-radius: 12px; font-size: 11px; font-weight: 500;' +
+        ' white-space: nowrap; background: color-mix(in srgb, var(--hc-color) 15%, transparent); color: var(--hc-color); }' +
+      '.dot { width: 6px; height: 6px; border-radius: 50%; background: var(--hc-color); }' +
+      '.content { display: flex; align-items: center; gap: 12px; }' +
+      'ha-card.mini .picture { width: 56px; height: 66px; }' +
+      '.mbar { display: flex; align-items: center; gap: 8px; font-size: 13px; }' +
+      '.mbar .bar { flex: 1; }' +
+      '.mbar .v { font-weight: 500; min-width: 40px; text-align: right; color: var(--primary-text-color); }' +
+      '.line { display: flex; align-items: center; gap: 6px; font-size: 12px; color: var(--secondary-text-color); min-width: 0; }' +
+      '.line ha-icon { --mdc-icon-size: 14px; flex-shrink: 0; }' +
+      '.line span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }' +
+      '.mcontrols { display: flex; gap: 6px; flex-shrink: 0; }' +
+      '.round { width: 40px; height: 40px; border-radius: 50%; display: grid; place-items: center;' +
+        ' background: var(--secondary-background-color, rgba(128,128,128,0.12)); color: var(--primary-text-color); }' +
+      '.round ha-icon { --mdc-icon-size: 20px; }' +
+      '.round.primary { background: var(--primary-color, #03a9f4); color: var(--text-primary-color, #fff); }' +
+      'ha-card.mini .power { width: 40px; height: 40px; }' +
     '</style>';
   }
 
@@ -752,6 +794,9 @@ class HomeConnectBaseCard extends HTMLElement {
       return;
     }
     switch (btn.dataset.action) {
+      case 'zoom':
+        this._toggleZoom(ev);
+        break;
       case 'power':
         this._power();
         break;
@@ -893,8 +938,120 @@ class HomeConnectWasherCard extends HomeConnectBaseCard {
   static get kind() { return 'washer'; }
 }
 
+// ── Mini cards ───────────────────────────────────────────────────────────────
+// A mini card is a full card drawn compact, like ha-roborock-card: its detail button (top right, `zoom: false`
+// removes it) switches it to the full card and back, and a click anywhere else on the page folds it again.
+var hcInDialog = (ev) => ev.composedPath().some((n) => ['ha-more-info-dialog', 'ha-dialog', 'dialog'].indexOf(n.localName) >= 0);
+
+var hcMini = (Base) => class extends Base {
+  static get mini() { return true; }
+
+  static getConfigElement() {
+    var el = Base.getConfigElement();
+    el.mini = true;
+    return el;
+  }
+
+  constructor() {
+    super();
+    this._onUnzoom = (ev) => {
+      if (this._zoomed && !ev.composedPath().includes(this) && !hcInDialog(ev)) this._setZoom(false);
+    };
+  }
+
+  connectedCallback() {
+    super.connectedCallback();
+    document.addEventListener('click', this._onUnzoom, true);
+  }
+
+  disconnectedCallback() {
+    super.disconnectedCallback();
+    document.removeEventListener('click', this._onUnzoom, true);
+  }
+
+  getCardSize() { return this._zoomed ? super.getCardSize() : 2; }
+
+  getGridOptions() { return this._zoomed ? super.getGridOptions() : { columns: 6, min_columns: 6 }; }
+
+  _compact() { return !this._zoomed; }
+
+  _zoomButton() {
+    if (this._config.zoom === false) return '';
+    var z = !!this._zoomed;
+    var label = hcEsc(this._t(z ? 'zoom_out' : 'zoom_in'));
+    return `<button class="zoom" data-action="zoom" title="${label}" aria-label="${label}"><ha-icon icon="${z ? 'mdi:arrow-collapse' : 'mdi:arrow-expand'}"></ha-icon></button>`;
+  }
+
+  _setZoom(on) {
+    this._zoomed = on;
+    this._update();
+  }
+
+  // From the keyboard (Enter / Space: no click count), the focus follows to the button that replaced this one.
+  _toggleZoom(ev) {
+    this._setZoom(!this._zoomed);
+    if (ev.detail === 0) this.shadowRoot.querySelector('.zoom')?.focus();
+  }
+
+  _miniHtml(m) {
+    var c = m.c, ent = m.ent, lines = [];
+    var bar = '';
+    if (m.running || m.state === 'finished') {
+      var pct = m.state === 'finished' ? 100 : (m.progress == null ? 0 : m.progress);
+      bar = '<div class="mbar"><div class="bar"><div class="fill" style="width:' + pct + '%"></div></div><span class="v">' + Math.round(pct) + ' %</span></div>';
+    }
+    if (m.progLabel && m.online && m.powerOn) lines.push(`<div class="line"><ha-icon icon="mdi:tune-variant"></ha-icon><span>${hcEsc(m.progLabel)}</span></div>`);
+    if (m.running && m.finish) {
+      var mins = Math.max(0, Math.round((m.finish.getTime() - Date.now()) / 60000));
+      var h = Math.floor(mins / 60), mm = mins % 60;
+      var left = h ? `${h} h ${String(mm).padStart(2, '0')}` : `${mm} min`;
+      var at = m.finish.toLocaleTimeString(this._lang(), { hour: '2-digit', minute: '2-digit' });
+      lines.push(`<div class="line"><ha-icon icon="mdi:clock-outline"></ha-icon><span>${this._t('ends_at')} ${at} · ${this._t('remaining').replace('{t}', left)}</span></div>`);
+    }
+    if (m.chips.length) lines.push(`<div class="chips">${m.chips.join('')}</div>`);
+
+    // Round buttons: start (or pause / resume) and power.
+    var btns = [];
+    if (c.show_controls && m.online && m.powerOn) {
+      var remoteOk = !ent.remote_start || this._val(ent.remote_start) === 'on';
+      if (!m.running && ent.active_program && this._avail(ent.selected_program)) {
+        var off = !remoteOk || this._starting || this._reloading;
+        var title = hcEsc(this._t(remoteOk ? 'start' : 'remote_start_off'));
+        btns.push(`<button class="round primary" data-action="start" title="${title}" aria-label="${hcEsc(this._t('start'))}"${off ? ' disabled' : ''}><ha-icon icon="mdi:play"></ha-icon></button>`);
+      }
+      var pauseVal = this._val(ent.pause);
+      if (m.state === 'run' && ent.pause && pauseVal !== undefined && pauseVal !== 'unavailable') {
+        btns.push(`<button class="round" data-action="pause" title="${hcEsc(this._t('pause'))}" aria-label="${hcEsc(this._t('pause'))}"><ha-icon icon="mdi:pause"></ha-icon></button>`);
+      }
+      if (m.state === 'pause' && ent.resume && this._val(ent.resume) !== 'unavailable') {
+        btns.push(`<button class="round primary" data-action="resume" title="${hcEsc(this._t('resume'))}" aria-label="${hcEsc(this._t('resume'))}"><ha-icon icon="mdi:play"></ha-icon></button>`);
+      }
+    }
+    if (m.powerBtn) btns.push(m.powerBtn);
+
+    var errorHtml = this._error
+      ? `<div class="error" role="alert" title="${hcEsc(this._error.detail)}"><ha-icon icon="mdi:alert-circle-outline"></ha-icon><span>${hcEsc(this._t(this._error.key))}</span></div>`
+      : '';
+
+    return this._styles(m.color) + '<ha-card class="mini">' +
+      '<div class="header">' + m.logo +
+        '<div class="titles"><div class="name">' + hcEsc(m.name) + '</div></div>' +
+        `<span class="st"><span class="dot"></span>${hcEsc(m.statusText)}</span>` + this._zoomButton() +
+      '</div>' +
+      '<div class="content"><div class="picture' + (m.state === 'run' ? ' running' : '') + '">' + m.art + '</div>' +
+        '<div class="info">' + bar + lines.join('') + '</div>' +
+        (btns.length ? `<div class="mcontrols">${btns.join('')}</div>` : '') +
+      '</div>' + errorHtml +
+    '</ha-card>';
+  }
+};
+
+class HomeConnectDishwasherMiniCard extends hcMini(HomeConnectDishwasherCard) {}
+
+class HomeConnectWasherMiniCard extends hcMini(HomeConnectWasherCard) {}
+
 // ── home-connect-card-editor (visual editor, built on HA's ha-form) ──────────
-var HC_EDITOR_DEFAULTS = { show_program: true, show_controls: true, show_options: true, show_alerts: true, show_power: true, show_logo: true };
+var HC_EDITOR_DEFAULTS = { show_program: true, show_controls: true, show_options: true, show_alerts: true, show_power: true, show_logo: true, zoom: true };
 
 class HomeConnectCardEditor extends HTMLElement {
   setConfig(config) {
@@ -919,7 +1076,7 @@ class HomeConnectCardEditor extends HTMLElement {
 
   _schema() {
     var t = (k) => hcT(this._lang(), k);
-    var kind = this.kind || (this._config.type === 'custom:home-connect-washer-card' ? 'washer' : 'dishwasher');
+    var kind = this.kind || (/washer-/.test(this._config.type || '') ? 'washer' : 'dishwasher');
     var domains = { operation_state: 'sensor', door: 'sensor', progress: 'sensor', finish_time: 'sensor',
       selected_program: 'select', active_program: 'select', power: 'switch', stop: 'button',
       pause: 'button', resume: 'button', remote_start: 'binary_sensor', remote_control: 'binary_sensor', connectivity: 'binary_sensor',
@@ -943,7 +1100,7 @@ class HomeConnectCardEditor extends HTMLElement {
           { name: 'show_alerts', selector: { boolean: {} } },
           { name: 'show_power', selector: { boolean: {} } },
           { name: 'show_logo', selector: { boolean: {} } },
-        ],
+        ].concat(this.mini || /-mini-card$/.test(this._config.type || '') ? [{ name: 'zoom', selector: { boolean: {} } }] : []),
       },
       {
         name: 'language',
@@ -1027,5 +1184,14 @@ if (!customElements.get('home-connect-washer-card')) {
     documentationURL: 'https://github.com/juju35/ha-home-connect-card',
   });
 }
+
+[
+  ['home-connect-dishwasher-mini-card', HomeConnectDishwasherMiniCard, 'Home Connect Dishwasher Mini Card', 'Compact dishwasher card that unfolds into the full card'],
+  ['home-connect-washer-mini-card', HomeConnectWasherMiniCard, 'Home Connect Washer Mini Card', 'Compact washing machine card that unfolds into the full card'],
+].forEach(([type, cls, name, description]) => {
+  if (customElements.get(type)) return;
+  customElements.define(type, cls);
+  window.customCards.push({ type, name, description, preview: true, documentationURL: 'https://github.com/juju35/ha-home-connect-card' });
+});
 
 console.info(`%c HOME-CONNECT-CARD %c v${HOME_CONNECT_CARD_VERSION} `, 'color:#fff;background:#1e88e5;font-weight:700', 'color:#1e88e5;background:#fff');

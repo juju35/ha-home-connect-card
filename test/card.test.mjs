@@ -2,7 +2,7 @@ import assert from "node:assert/strict";
 import { test } from "node:test";
 import { loadCard } from "./load.mjs";
 
-const { HomeConnectWasherCard, HomeConnectDishwasherCard, HomeConnectCardEditor, hcFindDevice, hcEsc } = loadCard("home-connect-card.js", [
+const { HomeConnectWasherCard, HomeConnectDishwasherCard, HomeConnectCardEditor, hcFindDevice, hcEsc, customElements } = loadCard("home-connect-card.js", [
   "HomeConnectWasherCard",
   "HomeConnectCardEditor",
   "HomeConnectDishwasherCard",
@@ -82,6 +82,28 @@ test("header shows the Home Connect logo unless show_logo is false, and the appl
   assert.match(html, /class="drum"/);
   assert.doesNotMatch(render(HomeConnectWasherCard, mockHass(), { show_logo: false }), /class="logo-link"/);
   assert.match(render(HomeConnectWasherCard, mockHass(), { icon: "mdi:washing-machine" }), /class="badge"/);
+});
+
+test("mini card: compact view, detail button toggles the full card", () => {
+  const Mini = customElements.get("home-connect-washer-mini-card");
+  const card = new Mini();
+  card.setConfig({});
+  card.hass = mockHass();
+  assert.match(card.shadowRoot.innerHTML, /ha-card class="mini"/);
+  assert.match(card.shadowRoot.innerHTML, /data-action="zoom"[^>]*><ha-icon icon="mdi:arrow-expand"/);
+  assert.doesNotMatch(card.shadowRoot.innerHTML, /data-select=/);
+  assert.deepEqual({ ...card.getGridOptions() }, { columns: 6, min_columns: 6 });
+  card._setZoom(true);
+  assert.doesNotMatch(card.shadowRoot.innerHTML, /ha-card class="mini"/);
+  assert.match(card.shadowRoot.innerHTML, /mdi:arrow-collapse/);
+  card._setZoom(false);
+  assert.match(card.shadowRoot.innerHTML, /ha-card class="mini"/);
+  const noZoom = new Mini();
+  noZoom.setConfig({ zoom: false });
+  noZoom.hass = mockHass();
+  assert.doesNotMatch(noZoom.shadowRoot.innerHTML, /data-action="zoom"/);
+  assert.equal(Mini.getConfigElement().mini, true);
+  assert.equal(Mini.getConfigElement().kind, "washer");
 });
 
 test("an unknown operation state is escaped in the status line", () => {
