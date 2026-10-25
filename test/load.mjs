@@ -25,8 +25,9 @@ export function loadCard(file, names) {
     localStorage: { getItem: () => null, setItem() {} },
     setInterval: () => 0,
     clearInterval() {},
-    setTimeout: () => 0,
-    clearTimeout() {},
+    // The current global timers, so node:test mock timers apply to the card too.
+    setTimeout: (...args) => globalThis.setTimeout(...args),
+    clearTimeout: (id) => globalThis.clearTimeout(id),
   };
   sandbox.window = sandbox;
   // The current global Date, so node:test mock timers apply to the card too.
