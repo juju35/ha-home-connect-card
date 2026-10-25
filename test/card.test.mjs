@@ -119,6 +119,26 @@ test("the washer gets the washer illustration even in a dishwasher card", () => 
   assert.doesNotMatch(html, /class="steam"/);
 });
 
+test("options in use are listed read-only while a program runs", () => {
+  const hass = mockHass({ washerState: "run" });
+  const add = (id, state, attributes = {}) => {
+    hass.states[id] = st(state, { friendly_name: `Washer ${id.split("_").pop()}`, ...attributes });
+    hass.entities[id] = { entity_id: id, device_id: "d2" };
+  };
+  add("select.wm_temperature", "laundry_care_washer_enum_type_temperature_g_c_40", { options: ["laundry_care_washer_enum_type_temperature_g_c_40"] });
+  add("switch.wm_speedperfect", "on");
+  add("switch.wm_prewash", "off");
+  const html = render(HomeConnectWasherCard, hass);
+  assert.match(html, /class="opt"[^>]*><span class="k">Temperature<\/span>40 °C/);
+  assert.match(html, /class="opt on">[\s\S]*?Speedperfect/);
+  assert.doesNotMatch(html, /Prewash/);
+  assert.doesNotMatch(html, /data-select=|data-toggle=/);
+  const mini = new (customElements.get("home-connect-washer-mini-card"))();
+  mini.setConfig({});
+  mini.hass = hass;
+  assert.match(mini.shadowRoot.innerHTML, /Cotton · 40 °C · Speedperfect/);
+});
+
 test("an unknown operation state is escaped in the status line", () => {
   const html = render(HomeConnectWasherCard, mockHass({ opState: '<img src=x onerror="alert(1)">' }));
   assert.doesNotMatch(html, /<img src=x/);

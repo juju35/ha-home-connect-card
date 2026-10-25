@@ -638,6 +638,24 @@ class HomeConnectBaseCard extends HTMLElement {
       }
     }
 
+    // While a program runs the options can't be changed: the ones in use are listed, read-only.
+    var activeOpts = [];
+    if (c.show_options && online && running) {
+      ent.option_selects.filter((id) => this._avail(id)).forEach((id) => {
+        activeOpts.push({ label: this._entityLabel(id, deviceName), value: this._fmt(id) });
+      });
+      ent.option_switches.filter((id) => this._val(id) === 'on').forEach((id) => {
+        activeOpts.push({ label: this._entityLabel(id, deviceName) });
+      });
+      if (activeOpts.length) {
+        optionsHtml = '<div class="section"><div class="section-title">' + this._t('options') + '</div><div class="toggles">' +
+          activeOpts.map((o) => o.value
+            ? `<span class="opt" title="${hcEsc(o.label)}"><span class="k">${hcEsc(o.label)}</span>${hcEsc(o.value)}</span>`
+            : `<span class="opt on"><ha-icon icon="mdi:check-circle"></ha-icon>${hcEsc(o.label)}</span>`).join('') +
+          '</div></div>';
+      }
+    }
+
     // Controls.
     var controls = '';
     if (c.show_controls && online && powerOn) {
@@ -696,7 +714,7 @@ class HomeConnectBaseCard extends HTMLElement {
 
     if (this._compact()) {
       this.shadowRoot.innerHTML = this._miniHtml({ c, ent, name, color, state, statusText, running, online, powerOn, progress,
-        finish, progLabel, chips: chips.filter((x) => x.indexOf('chip warn') >= 0 || !online), art, logo, powerBtn });
+        finish, progLabel, activeOpts, chips: chips.filter((x) => x.indexOf('chip warn') >= 0 || !online), art, logo, powerBtn });
       return;
     }
 
@@ -808,6 +826,11 @@ class HomeConnectBaseCard extends HTMLElement {
         ' background: var(--secondary-background-color, rgba(128,128,128,0.12)); color: var(--secondary-text-color); }' +
       '.toggle ha-icon { --mdc-icon-size: 16px; }' +
       '.toggle:disabled { opacity: 0.45; }' +
+      '.opt { display: inline-flex; align-items: center; gap: 4px; font-size: 11px; font-weight: 500; padding: 3px 8px; border-radius: 12px;' +
+        ' background: var(--secondary-background-color, rgba(128,128,128,0.12)); color: var(--primary-text-color); }' +
+      '.opt .k { color: var(--secondary-text-color); font-weight: 400; }' +
+      '.opt ha-icon { --mdc-icon-size: 14px; }' +
+      '.opt.on { padding-left: 5px; background: color-mix(in srgb, var(--primary-color, #03a9f4) 15%, transparent); color: var(--primary-color, #03a9f4); }' +
       '.reload { display: flex; align-items: center; justify-content: space-between; gap: 8px; flex-wrap: wrap; font-size: 12px; color: var(--secondary-text-color); }' +
       '.link { display: inline-flex; align-items: center; gap: 4px; font-size: 12px; font-weight: 500; padding: 4px 8px; border-radius: 10px; background: none; color: var(--primary-color, #03a9f4); }' +
       '.link ha-icon { --mdc-icon-size: 16px; }' +
@@ -1064,7 +1087,11 @@ var hcMini = (Base) => class extends Base {
       var pct = m.state === 'finished' ? 100 : (m.progress == null ? 0 : m.progress);
       bar = '<div class="mbar"><div class="bar"><div class="fill" style="width:' + pct + '%"></div></div><span class="v">' + Math.round(pct) + ' %</span></div>';
     }
-    if (m.progLabel && m.online && m.powerOn) lines.push(`<div class="line"><ha-icon icon="mdi:tune-variant"></ha-icon><span>${hcEsc(m.progLabel)}</span></div>`);
+    if (m.progLabel && m.online && m.powerOn) {
+      // Running: the options in use follow the program name.
+      var prog = [m.progLabel].concat(m.activeOpts.map((o) => o.value || o.label)).join(' · ');
+      lines.push(`<div class="line"><ha-icon icon="mdi:tune-variant"></ha-icon><span title="${hcEsc(prog)}">${hcEsc(prog)}</span></div>`);
+    }
     if (m.running && m.finish) {
       var mins = Math.max(0, Math.round((m.finish.getTime() - Date.now()) / 60000));
       var h = Math.floor(mins / 60), mm = mins % 60;

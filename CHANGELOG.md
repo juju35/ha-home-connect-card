@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.6.2
+
+### Changes
+- While a program runs, the options in use are listed read-only (temperature, spin speed… and the switched-on extras); the mini card adds them after the program name.
+
 ## 1.6.1
 
 ### Fixes
