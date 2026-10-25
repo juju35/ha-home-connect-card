@@ -275,7 +275,8 @@ function hcProgramKind(hass, deviceId) {
   var list = hcDeviceEntities(hass, deviceId);
   for (var i = 0; i < list.length; i++) {
     if (list[i].entity_id.indexOf('select.') !== 0) continue;
-    var opts = (hass.states[list[i].entity_id].attributes.options || []).join(' ');
+    var st = hass.states[list[i].entity_id];
+    var opts = ((st?.attributes.options) || []).join(' ');
     if (opts.indexOf('dishcare_dishwasher_program') >= 0) return 'dishwasher';
     if (opts.indexOf('laundry_care_washer_program') >= 0) return 'washer';
   }
@@ -527,10 +528,12 @@ class HomeConnectBaseCard extends HTMLElement {
 
   _render(r) {
     var c = this._config, ent = r.ent, hass = this._hass;
-    var profile = HC_PROFILES[this.constructor.kind];
+    // The appliance's own programs decide the look, whichever card type was picked for it.
+    var kind = (r.deviceId && hcProgramKind(hass, r.deviceId)) || this.constructor.kind;
+    var profile = HC_PROFILES[kind];
     var dev = r.deviceId && hass.devices ? hass.devices[r.deviceId] : null;
     var deviceName = dev ? String(dev.name_by_user || dev.name || '').trim() : '';
-    var name = c.name || deviceName || this._t(this.constructor.kind);
+    var name = c.name || deviceName || this._t(kind);
     var icon = c.icon || profile.icon;
     this._ticking = false;
 
@@ -683,13 +686,13 @@ class HomeConnectBaseCard extends HTMLElement {
     }
     var art = c.icon
       ? `<div class="badge"><ha-icon icon="${hcEsc(icon)}"></ha-icon></div>`
-      : (HC_ART[this.constructor.kind] || HC_ART.dishwasher);
+      : (HC_ART[kind] || HC_ART.dishwasher);
     var heroHtml = '<div class="hero">' + hcPicture(art, state, !c.icon) +
       '<div class="info">' + big + (chips.length ? `<div class="chips">${chips.join('')}</div>` : '') + '</div></div>';
 
     var logo = c.show_logo === false ? ''
       : `<a class="logo-link" href="${HC_SITE}" target="_blank" rel="noopener noreferrer" title="Home Connect">${HC_LOGO}</a>`;
-    var sub = progLabel || this._t(this.constructor.kind);
+    var sub = progLabel || this._t(kind);
 
     if (this._compact()) {
       this.shadowRoot.innerHTML = this._miniHtml({ c, ent, name, color, state, statusText, running, online, powerOn, progress,

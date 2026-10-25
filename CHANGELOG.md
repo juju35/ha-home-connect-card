@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.6.1
+
+### Fixes
+- The illustration, default name and subtitle follow the appliance's own programs: a washing machine shown with the dishwasher card type now gets the washer illustration and its animations.
+
 ## 1.6.0
 
 ### Changes

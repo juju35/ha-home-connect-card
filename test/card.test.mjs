@@ -113,6 +113,12 @@ test("state badge on the illustration when paused, delayed or finished", () => {
   assert.doesNotMatch(render(HomeConnectWasherCard, mockHass({ washerState: "pause" }), { icon: "mdi:washing-machine" }), /class="pbadge"/);
 });
 
+test("the washer gets the washer illustration even in a dishwasher card", () => {
+  const html = render(HomeConnectDishwasherCard, mockHass(), { device_id: "d2" });
+  assert.match(html, /class="drum"/);
+  assert.doesNotMatch(html, /class="steam"/);
+});
+
 test("an unknown operation state is escaped in the status line", () => {
   const html = render(HomeConnectWasherCard, mockHass({ opState: '<img src=x onerror="alert(1)">' }));
   assert.doesNotMatch(html, /<img src=x/);
