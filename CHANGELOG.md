@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.6.3
+
+### Fixes
+- Options in use show while a program runs even though Home Connect makes their entities unavailable once it starts: the card reads their last values before the start from the history (once per run).
+
 ## 1.6.2
 
 ### Changes

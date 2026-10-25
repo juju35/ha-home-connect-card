@@ -508,7 +508,8 @@ class HomeConnectBaseCard extends HTMLElement {
       if (this._error.states == null) this._error.states = states;
       else if (this._error.states !== states) this._clearError();
     }
-    var sig = JSON.stringify([this._lang(), r.deviceId, this._zoomed, this._confirming, this._reloading, this._starting,
+    this._loadOptionHistory(r);
+    var sig = JSON.stringify([this._lang(), r.deviceId, this._zoomed, this._optHist, this._confirming, this._reloading, this._starting,
       this._error ? [this._error.key, this._error.detail] : null, hcNoPowerOff.has(this._powerKey(r)), states]);
     if (sig === this._sig) return;
     // Don't rebuild while a dropdown is open in the card.
@@ -520,6 +521,48 @@ class HomeConnectBaseCard extends HTMLElement {
   }
 
   _powerKey(r) { return r.deviceId || r.ent.power; }
+
+  // Home Connect makes every option entity unavailable once a program starts. Their last values before the
+  // start (the settings the program runs with) come from the recorder, once per program run.
+  _loadOptionHistory(r) {
+    var hass = this._hass, ent = r.ent;
+    var op = this._val(ent.operation_state);
+    var ids = ent.option_selects.concat(ent.option_switches);
+    var prog = this._st(ent.active_program);
+    var running = op === 'run' || op === 'pause' || op === 'actionrequired';
+    if (!this._config.show_options || !running || !prog || !ids.length || !hass.callWS || ids.every((id) => this._avail(id))) {
+      if (!running) { this._optKey = null; this._optHist = null; }
+      return;
+    }
+    var start = new Date(prog.last_changed || prog.last_updated || Date.now());
+    var key = `${r.deviceId}|${prog.state}|${start.toISOString()}`;
+    if (this._optKey === key) return;
+    this._optKey = key;
+    this._optHist = null;
+    hass.callWS({
+      type: 'history/history_during_period',
+      start_time: new Date(start.getTime() - 12 * 3600000).toISOString(),
+      end_time: start.toISOString(),
+      entity_ids: ids,
+      minimal_response: true,
+      no_attributes: true,
+      significant_changes_only: false,
+    }).then((res) => {
+      if (this._optKey !== key) return;
+      var hist = {};
+      Object.keys(res || {}).forEach((id) => {
+        var known = (res[id] || []).map((h) => h.s ?? h.state).filter((v) => v && v !== 'unavailable' && v !== 'unknown');
+        if (known.length) hist[id] = known[known.length - 1];
+      });
+      this._optHist = hist;
+      this._update();
+    }).catch(() => {});
+  }
+
+  // An option's value: live when Home Assistant has it, else as it was when the program started.
+  _optVal(id) {
+    return this._avail(id) ? this._val(id) : this._optHist?.[id];
+  }
 
   // Overridden by the mini cards.
   _compact() { return false; }
@@ -641,10 +684,10 @@ class HomeConnectBaseCard extends HTMLElement {
     // While a program runs the options can't be changed: the ones in use are listed, read-only.
     var activeOpts = [];
     if (c.show_options && online && running) {
-      ent.option_selects.filter((id) => this._avail(id)).forEach((id) => {
-        activeOpts.push({ label: this._entityLabel(id, deviceName), value: this._fmt(id) });
+      ent.option_selects.filter((id) => this._optVal(id)).forEach((id) => {
+        activeOpts.push({ label: this._entityLabel(id, deviceName), value: this._fmt(id, this._optVal(id)) });
       });
-      ent.option_switches.filter((id) => this._val(id) === 'on').forEach((id) => {
+      ent.option_switches.filter((id) => this._optVal(id) === 'on').forEach((id) => {
         activeOpts.push({ label: this._entityLabel(id, deviceName) });
       });
       if (activeOpts.length) {

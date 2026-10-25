@@ -139,6 +139,39 @@ test("options in use are listed read-only while a program runs", () => {
   assert.match(mini.shadowRoot.innerHTML, /Cotton · 40 °C · Speedperfect/);
 });
 
+test("options unavailable while running are read from the history before the start", async () => {
+  const hass = mockHass({ washerState: "run" });
+  const add = (id, state, attributes = {}) => {
+    hass.states[id] = st(state, { friendly_name: `Washer ${id.split("_").pop()}`, ...attributes });
+    hass.entities[id] = { entity_id: id, device_id: "d2" };
+  };
+  add("select.wm_temperature", "unavailable");
+  add("switch.wm_speedperfect", "unavailable");
+  add("switch.wm_prewash", "unavailable");
+  hass.states["select.wm_active_program"].last_changed = "2026-10-25T19:06:41Z";
+  let call;
+  hass.callWS = (msg) => {
+    call = msg;
+    return Promise.resolve({
+      "select.wm_temperature": [{ s: "laundry_care_washer_enum_type_temperature_g_c_60" }, { s: "unavailable" }],
+      "switch.wm_speedperfect": [{ s: "off" }, { s: "on" }],
+      "switch.wm_prewash": [{ s: "off" }],
+    });
+  };
+  const card = new HomeConnectWasherCard();
+  card.setConfig({});
+  card.hass = hass;
+  assert.equal(call.type, "history/history_during_period");
+  assert.equal(call.end_time, "2026-10-25T19:06:41.000Z");
+  await new Promise((r) => setImmediate(r));
+  const html = card.shadowRoot.innerHTML;
+  assert.match(html, /<span class="k">Temperature<\/span>60 °C/);
+  assert.match(html, /class="opt on">[\s\S]*?Speedperfect/);
+  assert.doesNotMatch(html, /Prewash/);
+  card.hass = { ...hass };
+  assert.equal(call.end_time, "2026-10-25T19:06:41.000Z", "fetched once per run");
+});
+
 test("an unknown operation state is escaped in the status line", () => {
   const html = render(HomeConnectWasherCard, mockHass({ opState: '<img src=x onerror="alert(1)">' }));
   assert.doesNotMatch(html, /<img src=x/);
