@@ -129,6 +129,7 @@ Keys accepted under `entities`:
 | `stop` | `button` | Stop |
 | `pause` / `resume` | `button` | Pause / Resume (washers) |
 | `remote_start` | `binary_sensor` | Enables the Start button |
+| `remote_control` | `binary_sensor` | Detects a program being set on the appliance itself |
 | `connectivity` | `binary_sensor` | Online / offline state |
 | `salt` / `rinse_aid` | `sensor` | Salt and rinse aid alerts (dishwashers) |
 
@@ -148,9 +149,11 @@ Dark screenshots are in French.
 
 The card reads the entity registry to list the entities of the chosen device, then matches each role by its translation key, then by its entity ID (English and French slugs), then by its attributes. Program and option labels use Home Assistant's own translations.
 
-Home Connect only sends program options when the selected program changes, so after a Home Assistant restart they all stay unavailable. The card then shows them greyed out with a **Load options** button, which switches to another program and back to load them.
+Home Connect only sends program options when the selected program changes, so after a Home Assistant restart they all stay unavailable. The card then shows them greyed out with a **Load options** button, which switches to another program and back to load them. While someone turns the dial on the appliance (*Remote control* off), Home Assistant can't read the options: the card says so and disables the button until remote control is back. It never reloads them by itself, since that changes the program on the appliance. If loading fails, the original program is restored.
 
-**Start** selects the chosen program on the *Active program* entity, which is how the Home Connect integration starts a program. **Stop** asks for a second tap within 3 seconds.
+**Start** selects the chosen program on the *Active program* entity, which is how the Home Connect integration starts a program. Appliances sometimes reject a start for a moment (`BadRequest`, `WrongOperationState`): the card then retries once after 3 seconds, and if it fails again shows a short message in the card instead of Home Assistant's raw error (the technical detail is in its tooltip). **Stop** asks for a second tap within 3 seconds.
+
+Some appliances can't be turned off remotely: after a first refusal, the card says so and keeps the power button disabled while the appliance is on (until the page is reloaded); turning it on still works.
 
 ## Development
 

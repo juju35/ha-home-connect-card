@@ -32,6 +32,14 @@ var HcI18n = {
     options: 'Options',
     options_not_loaded: 'Options non chargées pour ce programme',
     reload_options: 'Charger les options',
+    options_local: 'Réglage en cours sur l\'appareil : options indisponibles',
+    starting: 'Démarrage…',
+    start_rejected: 'L\'appareil a refusé le démarrage. Vérifiez la porte et le démarrage à distance, puis réessayez.',
+    start_failed: 'Le programme n\'a pas pu démarrer.',
+    reload_failed: 'Les options n\'ont pas pu être chargées. Réessayez dans un instant.',
+    restore_failed: 'Le programme d\'origine n\'a pas pu être rétabli : vérifiez-le sur l\'appareil.',
+    power_off_unsupported: 'Cet appareil ne peut pas être éteint à distance.',
+    power_failed: 'L\'appareil n\'a pas répondu à la commande marche / arrêt.',
     salt: 'Sel presque vide',
     rinse_aid: 'Liquide de rinçage presque vide',
     remote_start_off: 'Démarrage à distance désactivé',
@@ -61,6 +69,7 @@ var HcI18n = {
     en_pause: 'Mettre en pause',
     en_resume: 'Reprendre le programme',
     en_remote_start: 'Démarrage à distance',
+    en_remote_control: 'Contrôle à distance',
     en_connectivity: 'Connectivité',
     en_salt: 'Sel presque vide',
     en_rinse_aid: 'Liquide de rinçage presque vide',
@@ -95,6 +104,14 @@ var HcI18n = {
     options: 'Options',
     options_not_loaded: 'Options not loaded for this program',
     reload_options: 'Load options',
+    options_local: 'Being set on the appliance: options unavailable',
+    starting: 'Starting…',
+    start_rejected: 'The appliance refused to start. Check the door and remote start, then try again.',
+    start_failed: 'The program couldn\'t start.',
+    reload_failed: 'The options couldn\'t be loaded. Try again in a moment.',
+    restore_failed: 'The original program couldn\'t be restored: check it on the appliance.',
+    power_off_unsupported: 'This appliance can\'t be turned off remotely.',
+    power_failed: 'The appliance didn\'t respond to the power command.',
     salt: 'Salt nearly empty',
     rinse_aid: 'Rinse aid nearly empty',
     remote_start_off: 'Remote start disabled',
@@ -124,6 +141,7 @@ var HcI18n = {
     en_pause: 'Pause program',
     en_resume: 'Resume program',
     en_remote_start: 'Remote start',
+    en_remote_control: 'Remote control',
     en_connectivity: 'Connectivity',
     en_salt: 'Salt nearly empty',
     en_rinse_aid: 'Rinse aid nearly empty',
@@ -137,6 +155,24 @@ function hcT(lang, key) {
 
 function hcEsc(s) {
   return String(s == null ? '' : s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+}
+
+// Service call errors from Home Assistant: a websocket error object ({ code, message }) or an Error.
+function hcErrText(err) {
+  if (!err) return '';
+  return String(err.message || err.error?.message || err.code || err);
+}
+
+// Rejections an appliance often sends for a moment (busy, just woken up): worth one retry.
+var HC_RETRYABLE = /BadRequest|WrongOperationState|\b40[09]\b/;
+var HC_RETRY_DELAY = 3000;
+var HC_ERROR_TIMEOUT = 10000;
+var HC_NO_POWER_OFF = /does not support turning off|standby/i;
+// Appliances that refused to be turned off, remembered for this page only.
+var hcNoPowerOff = new Set();
+
+function hcDelay(ms) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
 // ── Appliance profiles ───────────────────────────────────────────────────────
@@ -183,6 +219,7 @@ var HC_ROLES = {
   pause: { domain: 'button', keys: ['pause_program'], id: /(pause_program|mettre_en_pause.*)$/ },
   resume: { domain: 'button', keys: ['resume_program'], id: /(resume_program|reprendre_le_programme)$/ },
   remote_start: { domain: 'binary_sensor', keys: ['remote_start', 'remote_start_allowed'], id: /(remote_start|demarrage_a_distance)$/ },
+  remote_control: { domain: 'binary_sensor', keys: ['remote_control'], id: /(_remote_control|_controle_a_distance)$/ },
   connectivity: { domain: 'binary_sensor', keys: ['connectivity'], id: /(connectivity|connectivite)$/,
     test: (s) => s.attributes.device_class === 'connectivity' },
   salt: { domain: 'sensor', keys: ['salt_nearly_empty'], id: /(salt_nearly_empty|sel_presque_vide)$/ },
@@ -190,7 +227,7 @@ var HC_ROLES = {
 };
 
 var HC_OVERRIDABLE = ['operation_state', 'door', 'progress', 'finish_time', 'selected_program',
-  'active_program', 'power', 'stop', 'pause', 'resume', 'remote_start', 'connectivity', 'salt', 'rinse_aid'];
+  'active_program', 'power', 'stop', 'pause', 'resume', 'remote_start', 'remote_control', 'connectivity', 'salt', 'rinse_aid'];
 
 // Registry entries grouped by device, built once per `hass.entities` object (it only changes with the registry).
 var hcRegistryIndex = new WeakMap();
@@ -316,6 +353,7 @@ class HomeConnectBaseCard extends HTMLElement {
   disconnectedCallback() {
     clearInterval(this._timer);
     clearTimeout(this._confirmTimer);
+    clearTimeout(this._errorTimer);
   }
 
   getCardSize() { return 4; }
@@ -382,13 +420,20 @@ class HomeConnectBaseCard extends HTMLElement {
     if (!this._config || !this._hass || !this.shadowRoot) return;
     var r = this._resolve();
     var ids = [r.ent.operation_state, r.ent.door, r.ent.progress, r.ent.finish_time, r.ent.selected_program,
-      r.ent.active_program, r.ent.power, r.ent.remote_start, r.ent.connectivity, r.ent.salt, r.ent.rinse_aid,
+      r.ent.active_program, r.ent.power, r.ent.remote_start, r.ent.remote_control, r.ent.connectivity, r.ent.salt, r.ent.rinse_aid,
       r.ent.stop, r.ent.pause, r.ent.resume].concat(r.ent.option_switches, r.ent.option_selects);
     var hass = this._hass;
-    var sig = JSON.stringify([this._lang(), r.deviceId, this._confirming, this._reloading, ids.map((id) => {
+    var states = JSON.stringify(ids.map((id) => {
       var s = id && hass.states[id];
       return s ? [id, s.state, s.attributes.options] : null;
-    })]);
+    }));
+    // An error message goes away as soon as the appliance's state changes.
+    if (this._error) {
+      if (this._error.states == null) this._error.states = states;
+      else if (this._error.states !== states) this._clearError();
+    }
+    var sig = JSON.stringify([this._lang(), r.deviceId, this._confirming, this._reloading, this._starting,
+      this._error ? [this._error.key, this._error.detail] : null, hcNoPowerOff.has(this._powerKey(r)), states]);
     if (sig === this._sig) return;
     // Don't rebuild while a dropdown is open in the card.
     var active = this.shadowRoot.activeElement;
@@ -397,6 +442,8 @@ class HomeConnectBaseCard extends HTMLElement {
     this._r = r;
     this._render(r);
   }
+
+  _powerKey(r) { return r.deviceId || r.ent.power; }
 
   _render(r) {
     var c = this._config, ent = r.ent, hass = this._hass;
@@ -494,8 +541,12 @@ class HomeConnectBaseCard extends HTMLElement {
       var reload = '';
       if (optIds.length && !anyAvail) {
         var canReload = this._avail(ent.selected_program) && (this._st(ent.selected_program).attributes.options || []).length > 1;
-        reload = '<div class="reload"><span>' + this._t('options_not_loaded') + '</span>' +
-          (canReload ? `<button class="link" data-action="reload_options"${this._reloading ? ' disabled' : ''}><ha-icon icon="mdi:refresh"></ha-icon>${this._t('reload_options')}</button>` : '') + '</div>';
+        // While someone turns the dial on the appliance, Home Assistant can't read the options and
+        // switching programs from here is refused: the button waits for remote control to come back.
+        var local = this._localControl(ent);
+        var reloadOff = this._reloading || this._starting || local;
+        reload = '<div class="reload"><span>' + this._t(local ? 'options_local' : 'options_not_loaded') + '</span>' +
+          (canReload ? `<button class="link" data-action="reload_options"${reloadOff ? ' disabled' : ''}${local ? ` title="${hcEsc(this._t('options_local'))}"` : ''}><ha-icon icon="mdi:refresh"></ha-icon>${this._t('reload_options')}</button>` : '') + '</div>';
       }
       if (selects || toggles) {
         optionsHtml = '<div class="section"><div class="section-title">' + this._t('options') + '</div>' +
@@ -510,7 +561,8 @@ class HomeConnectBaseCard extends HTMLElement {
       var btns = [];
       var remoteOk = !ent.remote_start || this._val(ent.remote_start) === 'on';
       if (!running && ent.active_program && this._avail(ent.selected_program)) {
-        btns.push(`<button class="btn primary" data-action="start"${remoteOk ? '' : ` disabled title="${this._t('remote_start_off')}"`}><ha-icon icon="mdi:play"></ha-icon>${this._t('start')}</button>`);
+        var startAttr = remoteOk ? (this._starting || this._reloading ? ' disabled' : '') : ` disabled title="${this._t('remote_start_off')}"`;
+        btns.push(`<button class="btn primary" data-action="start"${startAttr}><ha-icon icon="mdi:play"></ha-icon>${this._t(this._starting ? 'starting' : 'start')}</button>`);
       }
       // A button entity stays `unknown` until first pressed: only `unavailable` hides it.
       var pauseVal = this._val(ent.pause);
@@ -528,8 +580,15 @@ class HomeConnectBaseCard extends HTMLElement {
       if (!running && !remoteOk && btns.length) controls += `<div class="hint"><ha-icon icon="mdi:information-outline"></ha-icon>${this._t('remote_start_off')}</div>`;
     }
 
+    // Once an appliance refused to turn off, the button only serves to turn it on.
+    var noOff = powerOn && hcNoPowerOff.has(this._powerKey(r));
+    var powerTitle = this._t(noOff ? 'power_off_unsupported' : 'power');
     var powerBtn = ent.power && online
-      ? `<button class="power${powerOn ? ' on' : ''}" data-action="power" title="${this._t('power')}" aria-label="${this._t('power')}"><ha-icon icon="mdi:power"></ha-icon></button>`
+      ? `<button class="power${powerOn ? ' on' : ''}" data-action="power" title="${hcEsc(powerTitle)}" aria-label="${this._t('power')}"${noOff ? ' disabled' : ''}><ha-icon icon="mdi:power"></ha-icon></button>`
+      : '';
+
+    var errorHtml = this._error
+      ? `<div class="error" role="alert" title="${hcEsc(this._error.detail)}"><ha-icon icon="mdi:alert-circle-outline"></ha-icon><span>${hcEsc(this._t(this._error.key))}</span></div>`
       : '';
 
     var subtitle = hcEsc(statusText) + (running && progLabel ? ` · ${hcEsc(progLabel)}` : '');
@@ -548,7 +607,7 @@ class HomeConnectBaseCard extends HTMLElement {
         powerBtn +
       '</div>' +
       (chips.length ? `<div class="chips">${chips.join('')}</div>` : '') +
-      progressHtml + programHtml + optionsHtml + controls +
+      progressHtml + programHtml + optionsHtml + errorHtml + controls +
     '</ha-card>';
   }
 
@@ -613,6 +672,8 @@ class HomeConnectBaseCard extends HTMLElement {
       '.btn.danger.armed { background: var(--error-color, #db4437); color: #fff; }' +
       '.hint { display: flex; align-items: center; gap: 6px; font-size: 12px; color: var(--secondary-text-color); margin-top: -6px; }' +
       '.hint ha-icon { --mdc-icon-size: 16px; }' +
+      '.error { display: flex; align-items: center; gap: 6px; font-size: 12px; color: var(--error-color, #db4437); }' +
+      '.error ha-icon { --mdc-icon-size: 16px; flex-shrink: 0; }' +
     '</style>';
   }
 
@@ -626,11 +687,10 @@ class HomeConnectBaseCard extends HTMLElement {
     }
     switch (btn.dataset.action) {
       case 'power':
-        hass.callService('switch', 'toggle', { entity_id: ent.power });
+        this._power();
         break;
       case 'start':
-        // Selecting an option on the "active program" select starts it.
-        hass.callService('select', 'select_option', { entity_id: ent.active_program, option: this._val(ent.selected_program) });
+        this._start();
         break;
       case 'reload_options':
         this._reloadOptions();
@@ -656,23 +716,99 @@ class HomeConnectBaseCard extends HTMLElement {
     }
   }
 
+  _localControl(ent) { return !!ent.remote_control && this._val(ent.remote_control) === 'off'; }
+
+  _showError(key, err) {
+    clearTimeout(this._errorTimer);
+    this._error = { key: key, detail: hcErrText(err), states: null };
+    this._errorTimer = setTimeout(() => { this._clearError(); this._update(); }, HC_ERROR_TIMEOUT);
+  }
+
+  _clearError() {
+    clearTimeout(this._errorTimer);
+    this._error = null;
+  }
+
+  // Service call without Home Assistant's raw toast: the card shows its own message.
+  _call(domain, service, data) {
+    return this._hass.callService(domain, service, data, undefined, false);
+  }
+
+  // Retries once after a short delay when the appliance rejects the command for a moment
+  // (or on any error with `always`).
+  async _callRetry(domain, service, data, always) {
+    try {
+      return await this._call(domain, service, data);
+    } catch (err) {
+      if (!always && !HC_RETRYABLE.test(hcErrText(err))) throw err;
+      await hcDelay(HC_RETRY_DELAY);
+      return this._call(domain, service, data);
+    }
+  }
+
+  // Selecting an option on the "active program" select starts it.
+  async _start() {
+    var ent = this._r.ent;
+    if (this._starting || this._reloading) return;
+    var data = { entity_id: ent.active_program, option: this._val(ent.selected_program) };
+    this._starting = true;
+    this._clearError();
+    this._update();
+    try {
+      await this._callRetry('select', 'select_option', data);
+    } catch (err) {
+      this._showError(HC_RETRYABLE.test(hcErrText(err)) ? 'start_rejected' : 'start_failed', err);
+    } finally {
+      this._starting = false;
+      this._update();
+    }
+  }
+
+  async _power() {
+    var r = this._r, key = this._powerKey(r);
+    var on = this._val(r.ent.power) === 'on';
+    if (on && hcNoPowerOff.has(key)) return;
+    try {
+      await this._call('switch', 'toggle', { entity_id: r.ent.power });
+    } catch (err) {
+      var noOff = on && HC_NO_POWER_OFF.test(hcErrText(err));
+      if (noOff) hcNoPowerOff.add(key);
+      this._showError(noOff ? 'power_off_unsupported' : 'power_failed', err);
+      this._update();
+    }
+  }
+
   // Switch to another program and back: that's what makes Home Connect send the options.
   async _reloadOptions() {
-    var id = this._r.ent.selected_program, s = this._st(id);
-    if (!s || this._reloading) return;
+    var ent = this._r.ent, id = ent.selected_program, s = this._st(id);
+    if (!s || this._reloading || this._starting || this._localControl(ent)) return;
     var current = s.state;
     var other = (s.attributes.options || []).find((o) => o !== current);
     if (!other) return;
     this._reloading = true;
+    this._clearError();
     this._update();
     try {
-      await this._hass.callService('select', 'select_option', { entity_id: id, option: other });
-      await this._hass.callService('select', 'select_option', { entity_id: id, option: current });
-    } finally {
-      this._reloading = false;
-      this._sig = null;
-      this._update();
+      await this._callRetry('select', 'select_option', { entity_id: id, option: other });
+    } catch (err) {
+      // Nothing changed on the appliance.
+      this._showError('reload_failed', err);
+      this._endReload();
+      return;
     }
+    try {
+      // The appliance must get its program back, so any error is retried once.
+      await this._callRetry('select', 'select_option', { entity_id: id, option: current }, true);
+    } catch (err) {
+      this._showError('restore_failed', err);
+    }
+    this._endReload();
+  }
+
+  _endReload() {
+    this._reloading = false;
+    this._sig = null;
+    this._update();
   }
 
   _onChange(ev) {
@@ -720,7 +856,7 @@ class HomeConnectCardEditor extends HTMLElement {
     var kind = this.kind || (this._config.type === 'custom:home-connect-washer-card' ? 'washer' : 'dishwasher');
     var domains = { operation_state: 'sensor', door: 'sensor', progress: 'sensor', finish_time: 'sensor',
       selected_program: 'select', active_program: 'select', power: 'switch', stop: 'button',
-      pause: 'button', resume: 'button', remote_start: 'binary_sensor', connectivity: 'binary_sensor',
+      pause: 'button', resume: 'button', remote_start: 'binary_sensor', remote_control: 'binary_sensor', connectivity: 'binary_sensor',
       salt: 'sensor', rinse_aid: 'sensor' };
     // Pause / resume only exist on washers, salt / rinse aid only on dishwashers.
     var only = { pause: 'washer', resume: 'washer', salt: 'dishwasher', rinse_aid: 'dishwasher' };
