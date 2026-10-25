@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.6.3
+
+### Changes
+- Reverted the read-only options shown while a program runs (1.6.2): Home Connect doesn't expose them once a program has started.
+
 ## 1.6.2
 
 ### Changes
