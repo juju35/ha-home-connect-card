@@ -227,13 +227,22 @@ washerRunning["sensor.washer_program_finish_time"].state = inMinutes(72);
 const finished = structuredClone(states);
 finished["sensor.dishwasher_operation_state"].state = "finished";
 
+// Each appliance idle with its door open: the dishwasher's door lowered on its racks, the washer's porthole swung aside.
+const dishwasherOpen = structuredClone(states);
+dishwasherOpen["sensor.dishwasher_operation_state"].state = "ready";
+dishwasherOpen["sensor.dishwasher_door"].state = "open";
+const washerOpen = structuredClone(states);
+washerOpen["sensor.washer_door"].state = "open";
+
 await render(
   [
     { file: "dishwasher", type: "home-connect-dishwasher-card", theme: "light", width: 460, config: {} },
     { file: "dishwasher-dark", type: "home-connect-dishwasher-card", theme: "dark", width: 460, config: {} },
     { file: "dishwasher-options", type: "home-connect-dishwasher-card", theme: "light", width: 460, config: {}, hass: { states: ready } },
+    { file: "dishwasher-open", type: "home-connect-dishwasher-card", theme: "light", width: 460, config: {}, hass: { states: dishwasherOpen } },
     { file: "washer", type: "home-connect-washer-card", theme: "light", width: 460, config: {} },
     { file: "washer-dark", type: "home-connect-washer-card", theme: "dark", width: 460, config: {} },
+    { file: "washer-open", type: "home-connect-washer-card", theme: "light", width: 460, config: {}, hass: { states: washerOpen } },
     { file: "dishwasher-mini", type: "home-connect-dishwasher-mini-card", theme: "light", width: 380, config: {} },
     { file: "dishwasher-mini-dark", type: "home-connect-dishwasher-mini-card", theme: "dark", width: 380, config: {} },
     { file: "washer-mini", type: "home-connect-washer-mini-card", theme: "light", width: 380, config: {} },

@@ -171,6 +171,12 @@ When a cycle finishes the motion stops, a tick is drawn into the badge and spark
 | ![dishwasher mini card](screenshots/dishwasher-mini.png) | ![washer mini card](screenshots/washer-mini.png) |
 | ![dishwasher mini card dark](screenshots/dishwasher-mini-dark.png) | |
 
+Door open — the dishwasher's door lowered on its racks, the washing machine's porthole swung aside:
+
+| Dishwasher | Washing machine |
+|---|---|
+| ![dishwasher door open](screenshots/dishwasher-open.png) | ![washer door open](screenshots/washer-open.png) |
+
 Dark screenshots are in French.
 
 ## How it works
