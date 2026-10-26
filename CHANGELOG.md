@@ -1,5 +1,11 @@
 # Changelog
 
+## Unreleased
+
+### Changes
+- The Options section title has a leading 16px icon, like the other cards' section titles.
+- Start / Resume buttons (and the mini card's round play button) are tinted with the primary color instead of filled; Stop keeps its error tint, and its confirm step is a stronger tint with a ring instead of a solid red fill.
+
 ## 1.6.4
 
 ### Changes

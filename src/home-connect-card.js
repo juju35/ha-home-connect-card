@@ -671,7 +671,7 @@ class HomeConnectBaseCard extends HTMLElement {
           (canReload ? `<button class="link" data-action="reload_options"${reloadOff ? ' disabled' : ''}${local ? ` title="${hcEsc(this._t('options_local'))}"` : ''}><ha-icon icon="mdi:refresh"></ha-icon>${this._t('reload_options')}</button>` : '') + '</div>';
       }
       if (selects || toggles) {
-        optionsHtml = '<div class="section"><div class="section-title">' + this._t('options') + '</div>' +
+        optionsHtml = '<div class="section"><div class="section-title"><ha-icon icon="mdi:tune-variant"></ha-icon>' + this._t('options') + '</div>' +
           (selects ? `<div class="grid">${selects}</div>` : '') +
           (toggles ? `<div class="toggles">${toggles}</div>` : '') + reload + '</div>';
       }
@@ -840,7 +840,9 @@ class HomeConnectBaseCard extends HTMLElement {
       'select:disabled { opacity: 0.6; cursor: default; }' +
       '.field.small select { font-size: 13px; padding: 7px 28px 7px 10px; }' +
       '.section { display: flex; flex-direction: column; gap: 6px; }' +
-      '.section-title { font-size: 12px; font-weight: 500; color: var(--secondary-text-color); text-transform: uppercase; letter-spacing: 0.04em; }' +
+      '.section-title { display: flex; align-items: center; gap: 6px; font-size: 12px; font-weight: 500; text-transform: uppercase;' +
+        ' letter-spacing: .04em; color: var(--secondary-text-color); }' +
+      '.section-title ha-icon { --mdc-icon-size: 16px; }' +
       '.grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(110px, 1fr)); gap: 6px; }' +
       '.toggles { display: flex; flex-wrap: wrap; gap: 6px; }' +
       '.toggle { display: inline-flex; align-items: center; gap: 4px; font-size: 11px; font-weight: 500; padding: 3px 8px 3px 5px; border-radius: 12px;' +
@@ -855,9 +857,12 @@ class HomeConnectBaseCard extends HTMLElement {
       '.btn { flex: 1; display: inline-flex; align-items: center; justify-content: center; gap: 6px; font-size: 13px; font-weight: 500;' +
         ' padding: 7px 10px; border-radius: 10px; background: var(--secondary-background-color, rgba(128,128,128,0.12)); color: var(--primary-text-color); }' +
       '.btn ha-icon { --mdc-icon-size: 18px; }' +
-      '.btn.primary { background: var(--primary-color, #03a9f4); color: var(--text-primary-color, #fff); }' +
-      '.btn.danger { background: color-mix(in srgb, var(--error-color, #db4437) 15%, transparent); color: var(--error-color, #db4437); }' +
-      '.btn.danger.armed { background: var(--error-color, #db4437); color: #fff; }' +
+      '.btn.primary, .round.primary { background: color-mix(in srgb, var(--primary-color, #03a9f4) 16%, transparent); color: var(--primary-color, #03a9f4); }' +
+      '.btn.primary:hover:not(:disabled), .round.primary:hover:not(:disabled) { background: color-mix(in srgb, var(--primary-color, #03a9f4) 24%, transparent); }' +
+      '.btn.danger { background: color-mix(in srgb, var(--error-color, #db4437) 16%, transparent); color: var(--error-color, #db4437); }' +
+      '.btn.danger:hover { background: color-mix(in srgb, var(--error-color, #db4437) 24%, transparent); }' +
+      // Armed (second click confirms): stronger tint and an inner ring, still no solid fill.
+      '.btn.danger.armed { background: color-mix(in srgb, var(--error-color, #db4437) 24%, transparent); box-shadow: inset 0 0 0 1px var(--error-color, #db4437); }' +
       '.hint { display: flex; align-items: center; gap: 6px; font-size: 12px; color: var(--secondary-text-color); margin-top: -6px; }' +
       '.hint ha-icon { --mdc-icon-size: 16px; }' +
       '.error { display: flex; align-items: center; gap: 6px; font-size: 12px; color: var(--error-color, #db4437); }' +
@@ -883,7 +888,6 @@ class HomeConnectBaseCard extends HTMLElement {
       '.round { width: 40px; height: 40px; border-radius: 50%; display: grid; place-items: center;' +
         ' background: var(--secondary-background-color, rgba(128,128,128,0.12)); color: var(--primary-text-color); }' +
       '.round ha-icon { --mdc-icon-size: 20px; }' +
-      '.round.primary { background: var(--primary-color, #03a9f4); color: var(--text-primary-color, #fff); }' +
       'ha-card.mini .power { width: 40px; height: 40px; }' +
     '</style>';
   }
