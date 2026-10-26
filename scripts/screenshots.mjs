@@ -205,6 +205,8 @@ add("wm", "switch.washer_prewash", "prewash", "off", { friendly_name: "Washer Pr
 add("wm", "switch.washer_speed_perfect", "speed_perfect", "on", { friendly_name: "Washer SpeedPerfect" });
 add("wm", "binary_sensor.washer_connectivity", "connectivity", "on", { device_class: "connectivity" });
 add("wm", "button.washer_start_program", "start_program", "unknown");
+add("wm", "sensor.washer_program_progress", "program_progress", "unavailable", { unit_of_measurement: "%" });
+add("wm", "sensor.washer_program_finish_time", "program_finish_time", "unavailable", { device_class: "timestamp" });
 
 const devices = { dw: { id: "dw", name: "Dishwasher" }, wm: { id: "wm", name: "Washer" } };
 const hass = { states, entities, devices };
@@ -214,6 +216,16 @@ const ready = structuredClone(states);
 ready["sensor.dishwasher_operation_state"].state = "ready";
 ready["select.dishwasher_active_program"].state = "unavailable";
 ready["sensor.dishwasher_program_progress"].state = "unavailable";
+
+// Washing machine mid-cycle: the drum turns, water waves behind the porthole and suds rise.
+const washerRunning = structuredClone(states);
+washerRunning["sensor.washer_operation_state"].state = "run";
+washerRunning["sensor.washer_program_progress"].state = "45";
+washerRunning["sensor.washer_program_finish_time"].state = inMinutes(72);
+
+// Dishwasher at the end of its cycle: the tick is drawn in and sparkles twinkle around it.
+const finished = structuredClone(states);
+finished["sensor.dishwasher_operation_state"].state = "finished";
 
 await render(
   [
@@ -236,8 +248,19 @@ await render(
   { icons, hass }
 );
 
-// The dishwasher mid-cycle (its default mock state is "run"), recorded as a looping GIF.
+// One looping GIF per distinct animated state. The dishwasher mid-cycle (its default mock state is
+// "run") sprays water, raises steam and glows its floor light; the washer running turns the drum and
+// waves the water; the finished dishwasher draws its tick and twinkles sparkles. Each reuses openCard
+// through animate(), so no mount is duplicated.
 await animate(
   { file: "dishwasher-running", type: "home-connect-dishwasher-card", theme: "light", width: 460, config: {} },
+  { icons, hass }
+);
+await animate(
+  { file: "washer-running", type: "home-connect-washer-card", theme: "light", width: 460, config: {}, hass: { states: washerRunning } },
+  { icons, hass }
+);
+await animate(
+  { file: "dishwasher-finished", type: "home-connect-dishwasher-card", theme: "light", width: 460, config: {}, hass: { states: finished } },
   { icons, hass }
 );
