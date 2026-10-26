@@ -5,6 +5,7 @@
 ### Changes
 - The Options section title has a leading 16px icon, like the other cards' section titles.
 - Start / Resume buttons (and the mini card's round play button) are tinted with the primary color instead of filled; Stop keeps its error tint, and its confirm step is a stronger tint with a ring instead of a solid red fill.
+- Header geometry: the body starts 8 px under the header (was 10 px); logo 12 px from the card's top and left edges, power / detail button at the right edge as before.
 
 ## 1.6.4
 
