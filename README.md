@@ -163,6 +163,14 @@ When a cycle finishes the motion stops, a tick is drawn into the badge and spark
 
 ![dishwasher finished](screenshots/dishwasher-finished.gif)
 
+Paused mid-cycle, the program badge breathes in and out so the pause reads at a glance:
+
+![dishwasher paused](screenshots/dishwasher-paused.gif)
+
+Waiting on a delayed start, the badge becomes a little clock whose hands turn until the program begins:
+
+![dishwasher delayed start](screenshots/dishwasher-delayed.gif)
+
 | Dishwasher | Washing machine |
 |---|---|
 | ![dishwasher](screenshots/dishwasher.png) | ![washer](screenshots/washer.png) |

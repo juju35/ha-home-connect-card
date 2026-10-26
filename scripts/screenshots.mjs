@@ -227,6 +227,15 @@ washerRunning["sensor.washer_program_finish_time"].state = inMinutes(72);
 const finished = structuredClone(states);
 finished["sensor.dishwasher_operation_state"].state = "finished";
 
+// Dishwasher paused mid-cycle: the program badge pulses gently while it waits.
+const dishwasherPaused = structuredClone(states);
+dishwasherPaused["sensor.dishwasher_operation_state"].state = "pause";
+
+// Dishwasher waiting on a delayed start: the badge's clock hands turn, no progress yet.
+const dishwasherDelayed = structuredClone(states);
+dishwasherDelayed["sensor.dishwasher_operation_state"].state = "delayedstart";
+dishwasherDelayed["sensor.dishwasher_program_progress"].state = "unavailable";
+
 // Each appliance idle with its door open: the dishwasher's door lowered on its racks, the washer's porthole swung aside.
 const dishwasherOpen = structuredClone(states);
 dishwasherOpen["sensor.dishwasher_operation_state"].state = "ready";
@@ -259,8 +268,10 @@ await render(
 
 // One looping GIF per distinct animated state. The dishwasher mid-cycle (its default mock state is
 // "run") sprays water, raises steam and glows its floor light; the washer running turns the drum and
-// waves the water; the finished dishwasher draws its tick and twinkles sparkles. Each reuses openCard
-// through animate(), so no mount is duplicated.
+// waves the water; the finished dishwasher draws its tick and twinkles sparkles; the paused badge
+// breathes; the delayed-start badge turns its clock hands. The badge animations are identical across
+// appliances, so the dishwasher stands in for both. Each reuses openCard through animate(), so no
+// mount is duplicated.
 await animate(
   { file: "dishwasher-running", type: "home-connect-dishwasher-card", theme: "light", width: 460, config: {} },
   { icons, hass }
@@ -271,5 +282,13 @@ await animate(
 );
 await animate(
   { file: "dishwasher-finished", type: "home-connect-dishwasher-card", theme: "light", width: 460, config: {}, hass: { states: finished } },
+  { icons, hass }
+);
+await animate(
+  { file: "dishwasher-paused", type: "home-connect-dishwasher-card", theme: "light", width: 460, config: {}, hass: { states: dishwasherPaused } },
+  { icons, hass }
+);
+await animate(
+  { file: "dishwasher-delayed", type: "home-connect-dishwasher-card", theme: "light", width: 460, config: {}, hass: { states: dishwasherDelayed } },
   { icons, hass }
 );
