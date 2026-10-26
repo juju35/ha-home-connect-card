@@ -72,6 +72,8 @@ export async function render(shots, { icons = {}, hass = {}, extra = "" } = {}) 
   // A fresh page per shot: re-running the scripts in the same realm would redeclare their globals.
   for (const s of shots) {
     const page = await browser.newPage({ deviceScaleFactor: 2, viewport: { width: 1000, height: 2000 }, timezoneId: "UTC" });
+    page.on("pageerror", (err) => console.error(`${s.file}: ${err.message}`));
+    page.on("console", (msg) => msg.type() === "error" && console.error(`${s.file}: ${msg.text()}`));
     await page.clock.setFixedTime(NOW);
     await page.setContent(pageHtml(s.theme, s.width));
     await page.addScriptTag({ content: haElements(icons) + extra });
@@ -88,7 +90,13 @@ export async function render(shots, { icons = {}, hass = {}, extra = "" } = {}) 
     );
     if (s.after) await s.after(page);
     await page.waitForTimeout(400);
-    await page.locator(s.type).screenshot({ path: `${root}screenshots/${s.file}.png`, animations: "disabled" });
+    // The card plus the 16px page padding around it, on the theme background.
+    const box = await page.locator("#root").boundingBox();
+    await page.screenshot({
+      path: `${root}screenshots/${s.file}.png`,
+      clip: { x: 0, y: 0, width: s.width + 32, height: Math.ceil(box.height) + 32 },
+      animations: "disabled",
+    });
     console.log(`screenshots/${s.file}.png`);
     await page.close();
   }
@@ -170,16 +178,16 @@ ready["sensor.dishwasher_program_progress"].state = "unavailable";
 
 await render(
   [
-    { file: "dishwasher", type: "home-connect-dishwasher-card", theme: "light", width: 400, config: {} },
-    { file: "dishwasher-dark", type: "home-connect-dishwasher-card", theme: "dark", width: 400, config: { language: "fr" } },
-    { file: "dishwasher-options", type: "home-connect-dishwasher-card", theme: "light", width: 400, config: {}, hass: { states: ready } },
-    { file: "washer", type: "home-connect-washer-card", theme: "light", width: 400, config: {} },
-    { file: "washer-dark", type: "home-connect-washer-card", theme: "dark", width: 400, config: { language: "fr" } },
-    { file: "dishwasher-mini", type: "home-connect-dishwasher-mini-card", theme: "light", width: 400, config: {} },
-    { file: "dishwasher-mini-dark", type: "home-connect-dishwasher-mini-card", theme: "dark", width: 400, config: { language: "fr" } },
-    { file: "washer-mini", type: "home-connect-washer-mini-card", theme: "light", width: 400, config: {} },
+    { file: "dishwasher", type: "home-connect-dishwasher-card", theme: "light", width: 460, config: {} },
+    { file: "dishwasher-dark", type: "home-connect-dishwasher-card", theme: "dark", width: 460, config: {} },
+    { file: "dishwasher-options", type: "home-connect-dishwasher-card", theme: "light", width: 460, config: {}, hass: { states: ready } },
+    { file: "washer", type: "home-connect-washer-card", theme: "light", width: 460, config: {} },
+    { file: "washer-dark", type: "home-connect-washer-card", theme: "dark", width: 460, config: {} },
+    { file: "dishwasher-mini", type: "home-connect-dishwasher-mini-card", theme: "light", width: 380, config: {} },
+    { file: "dishwasher-mini-dark", type: "home-connect-dishwasher-mini-card", theme: "dark", width: 380, config: {} },
+    { file: "washer-mini", type: "home-connect-washer-mini-card", theme: "light", width: 380, config: {} },
     {
-      file: "washer-mini-zoom", type: "home-connect-washer-mini-card", theme: "light", width: 400, config: {},
+      file: "washer-mini-zoom", type: "home-connect-washer-mini-card", theme: "light", width: 460, config: {},
       after: async (page) => {
         await page.locator("home-connect-washer-mini-card .zoom").click();
         await page.mouse.move(0, 0);
