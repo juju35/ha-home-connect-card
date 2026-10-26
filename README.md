@@ -149,6 +149,10 @@ Every other `switch` and `select` of the device is shown as a program option.
 
 ## Screenshots
 
+While a program runs, the card animates: the progress ring fills, the drum spins, water sprays and steam rises as the cycle advances. It settles back to a still card when the program finishes (and honours `prefers-reduced-motion`).
+
+![dishwasher running](screenshots/dishwasher-running.gif)
+
 | Dishwasher | Washing machine |
 |---|---|
 | ![dishwasher](screenshots/dishwasher.png) | ![washer](screenshots/washer.png) |
@@ -175,7 +179,7 @@ Some appliances can't be turned off remotely: after a first refusal, the card sa
 npm install
 npm run build        # stamps the version of package.json into dist/home-connect-card.js
 npm run check        # builds and checks the card (run in CI)
-npm run screenshots  # renders the cards with mock Home Connect devices into screenshots/
+npm run screenshots  # renders the cards (and dishwasher-running.gif, needs ffmpeg) with mock devices into screenshots/
 ```
 
 `dist/` is not committed: `npm run build` creates it locally, CI builds it on every push, and the release workflow attaches the built file to the release, which is where HACS downloads it from.
