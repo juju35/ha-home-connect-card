@@ -1106,7 +1106,7 @@ var hcMini = (Base) => class extends Base {
     var bar = '';
     if (m.running || m.state === 'finished') {
       var pct = m.state === 'finished' ? 100 : (m.progress == null ? 0 : m.progress);
-      bar = '<div class="mbar"><div class="bar"><div class="fill" style="width:' + pct + '%"></div></div><span class="v">' + Math.round(pct) + ' %</span></div>';
+      bar = `<div class="mbar"><div class="bar"><div class="fill" style="width:${pct}%"></div></div><span class="v">${Math.round(pct)} %</span></div>`;
     }
     if (m.progLabel && m.online && m.powerOn) lines.push(`<div class="line"><ha-icon icon="mdi:tune-variant"></ha-icon><span>${hcEsc(m.progLabel)}</span></div>`);
     if (m.running && m.finish) {
