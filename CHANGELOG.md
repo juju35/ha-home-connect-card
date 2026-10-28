@@ -1,5 +1,19 @@
 # Changelog
 
+## 1.9.0 - 2026-10-28
+### Changes
+- Option toggles / selects, Pause, Resume, Stop and the program select now retry and show their errors in the card (like Start) instead of Home Assistant's toast.
+- The finish time follows the Home Assistant locale's 12 h / 24 h preference.
+- Faster updates: entity role matching and appliance detection are cached instead of being recomputed on every state change in Home Assistant.
+
+### Fixes
+- The visual editor's Appliance field shows its label and helper instead of the raw `ed_device_id` key.
+- A focused drop-down no longer freezes the card's updates until a click elsewhere: Escape or leaving the card releases it.
+
+### Maintenance
+- README: new GIFs of the running, paused, delayed-start and finished animations for both appliances; all screenshots regenerated.
+- CI: fork-safe screenshots workflow, release gated on the tests, Dependabot also watches npm.
+
 ## 1.8.0 - 2026-10-26
 ### Changes
 - The mini card's progress bar is now built with a template literal instead of string concatenation, matching the rest of the file. No change to the rendered output or behavior.
