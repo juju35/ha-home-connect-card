@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.10.0 - 2026-10-28
+### Changes
+- German translation (cards and visual editor), contributed by domwu0001.
+
 ## 1.9.0 - 2026-10-28
 ### Changes
 - Option toggles / selects, Pause, Resume, Stop and the program select now retry and show their errors in the card (like Start) instead of Home Assistant's toast.
