@@ -44,8 +44,8 @@ Click the button below to add the repository directly:
 
 Or manually:
 
-1. Open HACS → **Frontend** → **⋮** → **Custom repositories**
-2. Add `https://github.com/juju35/ha-home-connect-card` — Category: **Dashboard** (Lovelace)
+1. Open HACS → **⋮** → **Custom repositories**
+2. Add `https://github.com/juju35/ha-home-connect-card` — Type: **Dashboard**
 3. Search for **Home Connect Card** and install it
 4. Clear your browser cache and refresh
 
@@ -161,15 +161,21 @@ A washing machine mid-cycle turns its drum, sloshes the water behind the porthol
 
 When a cycle finishes the motion stops, a tick is drawn into the badge and sparkles twinkle around the appliance:
 
-![dishwasher finished](screenshots/dishwasher-finished.gif)
+| Dishwasher | Washing machine |
+|---|---|
+| ![dishwasher finished](screenshots/dishwasher-finished.gif) | ![washer finished](screenshots/washer-finished.gif) |
 
-Paused mid-cycle, the program badge breathes in and out so the pause reads at a glance:
+Paused mid-cycle, the program badge breathes in and out so the pause reads at a glance (the washer offers Resume):
 
-![dishwasher paused](screenshots/dishwasher-paused.gif)
+| Dishwasher | Washing machine |
+|---|---|
+| ![dishwasher paused](screenshots/dishwasher-paused.gif) | ![washer paused](screenshots/washer-paused.gif) |
 
 Waiting on a delayed start, the badge becomes a little clock whose hands turn until the program begins:
 
-![dishwasher delayed start](screenshots/dishwasher-delayed.gif)
+| Dishwasher | Washing machine |
+|---|---|
+| ![dishwasher delayed start](screenshots/dishwasher-delayed.gif) | ![washer delayed start](screenshots/washer-delayed.gif) |
 
 | Dishwasher | Washing machine |
 |---|---|
@@ -184,8 +190,6 @@ Door open — the dishwasher's door lowered on its racks, the washing machine's 
 | Dishwasher | Washing machine |
 |---|---|
 | ![dishwasher door open](screenshots/dishwasher-open.png) | ![washer door open](screenshots/washer-open.png) |
-
-Dark screenshots are in French.
 
 ## How it works
 

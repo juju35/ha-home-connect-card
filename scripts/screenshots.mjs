@@ -196,6 +196,8 @@ add("wm", "sensor.washer_operation_state", "operation_state", "ready", { options
 add("wm", "sensor.washer_door", "door", "closed", { options: ["open", "closed", "locked"] });
 add("wm", "select.washer_selected_program", "selected_program", "laundry_care_washer_program_cotton",
   { options: ["laundry_care_washer_program_cotton", "laundry_care_washer_program_mix", "laundry_care_washer_program_wool"] });
+add("wm", "select.washer_active_program", "active_program", "unavailable",
+  { options: ["laundry_care_washer_program_cotton", "laundry_care_washer_program_mix", "laundry_care_washer_program_wool"] });
 add("wm", "select.washer_temperature", "temperature", "laundry_care_washer_enum_type_temperature_g_c_40",
   { friendly_name: "Washer Temperature", options: ["laundry_care_washer_enum_type_temperature_g_c_30", "laundry_care_washer_enum_type_temperature_g_c_40", "laundry_care_washer_enum_type_temperature_g_c_60"] });
 add("wm", "select.washer_spin_speed", "spin_speed", "laundry_care_washer_enum_type_spin_speed_r_p_m_1200",
@@ -205,6 +207,9 @@ add("wm", "switch.washer_prewash", "prewash", "off", { friendly_name: "Washer Pr
 add("wm", "switch.washer_speed_perfect", "speed_perfect", "on", { friendly_name: "Washer SpeedPerfect" });
 add("wm", "binary_sensor.washer_connectivity", "connectivity", "on", { device_class: "connectivity" });
 add("wm", "button.washer_start_program", "start_program", "unknown");
+add("wm", "button.washer_pause_program", "pause_program", "unknown");
+add("wm", "button.washer_resume_program", "resume_program", "unknown");
+add("wm", "button.washer_stop_program", "stop_program", "unknown");
 add("wm", "sensor.washer_program_progress", "program_progress", "unavailable", { unit_of_measurement: "%" });
 add("wm", "sensor.washer_program_finish_time", "program_finish_time", "unavailable", { device_class: "timestamp" });
 
@@ -222,6 +227,19 @@ const washerRunning = structuredClone(states);
 washerRunning["sensor.washer_operation_state"].state = "run";
 washerRunning["sensor.washer_program_progress"].state = "45";
 washerRunning["sensor.washer_program_finish_time"].state = inMinutes(72);
+washerRunning["select.washer_active_program"].state = "laundry_care_washer_program_cotton";
+
+// Washer paused mid-cycle: the badge breathes and Resume replaces Pause.
+const washerPaused = structuredClone(washerRunning);
+washerPaused["sensor.washer_operation_state"].state = "pause";
+
+// Washer waiting on a delayed start: the badge's clock hands turn, no progress yet.
+const washerDelayed = structuredClone(states);
+washerDelayed["sensor.washer_operation_state"].state = "delayedstart";
+
+// Washer at the end of its cycle: the tick is drawn in and sparkles twinkle around it.
+const washerFinished = structuredClone(states);
+washerFinished["sensor.washer_operation_state"].state = "finished";
 
 // Dishwasher at the end of its cycle: the tick is drawn in and sparkles twinkle around it.
 const finished = structuredClone(states);
@@ -266,12 +284,12 @@ await render(
   { icons, hass }
 );
 
-// One looping GIF per distinct animated state. The dishwasher mid-cycle (its default mock state is
-// "run") sprays water, raises steam and glows its floor light; the washer running turns the drum and
-// waves the water; the finished dishwasher draws its tick and twinkles sparkles; the paused badge
-// breathes; the delayed-start badge turns its clock hands. The badge animations are identical across
-// appliances, so the dishwasher stands in for both. Each reuses openCard through animate(), so no
-// mount is duplicated.
+// One looping GIF per distinct animated state and per appliance — the two illustrations differ,
+// so the paused / delayed / finished badges are recorded on both. The dishwasher mid-cycle (its
+// default mock state is "run") sprays water, raises steam and glows its floor light; the washer
+// running turns the drum and waves the water; a finished appliance draws its tick and twinkles
+// sparkles; the paused badge breathes; the delayed-start badge turns its clock hands. Each
+// reuses openCard through animate(), so no mount is duplicated.
 await animate(
   { file: "dishwasher-running", type: "home-connect-dishwasher-card", theme: "light", width: 460, config: {} },
   { icons, hass }
@@ -285,10 +303,22 @@ await animate(
   { icons, hass }
 );
 await animate(
+  { file: "washer-finished", type: "home-connect-washer-card", theme: "light", width: 460, config: {}, hass: { states: washerFinished } },
+  { icons, hass }
+);
+await animate(
   { file: "dishwasher-paused", type: "home-connect-dishwasher-card", theme: "light", width: 460, config: {}, hass: { states: dishwasherPaused } },
   { icons, hass }
 );
 await animate(
+  { file: "washer-paused", type: "home-connect-washer-card", theme: "light", width: 460, config: {}, hass: { states: washerPaused } },
+  { icons, hass }
+);
+await animate(
   { file: "dishwasher-delayed", type: "home-connect-dishwasher-card", theme: "light", width: 460, config: {}, hass: { states: dishwasherDelayed } },
+  { icons, hass }
+);
+await animate(
+  { file: "washer-delayed", type: "home-connect-washer-card", theme: "light", width: 460, config: {}, hass: { states: washerDelayed } },
   { icons, hass }
 );
