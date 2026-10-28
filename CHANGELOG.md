@@ -4,33 +4,33 @@
 ### Changes
 - The mini card's progress bar is now built with a template literal instead of string concatenation, matching the rest of the file. No change to the rendered output or behavior.
 
-## 1.7.0
+## 1.7.0 - 2026-10-26
 ### Changes
 - The Options section title has a leading 16px icon, like the other cards' section titles.
 - Start / Resume buttons (and the mini card's round play button) are tinted with the primary color instead of filled; Stop keeps its error tint, and its confirm step is a stronger tint with a ring instead of a solid red fill.
 - Header geometry: the body starts 8 px under the header (was 10 px); logo 12 px from the card's top and left edges, power / detail button at the right edge as before.
 
-## 1.6.4
+## 1.6.4 - 2026-10-25
 
 ### Changes
 - Door open: the washer shows its porthole swung open on the empty drum, the dishwasher its lowered door on the loaded racks.
 
-## 1.6.3
+## 1.6.3 - 2026-10-25
 
 ### Changes
 - Reverted the read-only options shown while a program runs (1.6.2): Home Connect doesn't expose them once a program has started.
 
-## 1.6.2
+## 1.6.2 - 2026-10-25
 
 ### Changes
 - While a program runs, the options in use are listed read-only (temperature, spin speed… and the switched-on extras); the mini card adds them after the program name.
 
-## 1.6.1
+## 1.6.1 - 2026-10-25
 
 ### Fixes
 - The illustration, default name and subtitle follow the appliance's own programs: a washing machine shown with the dishwasher card type now gets the washer illustration and its animations.
 
-## 1.6.0
+## 1.6.0 - 2026-10-25
 
 ### Changes
 - New mini cards `home-connect-dishwasher-mini-card` and `home-connect-washer-mini-card`, like the Roborock mini card: appliance, state, program, progress, alerts and round buttons; the detail button (`zoom`, on by default) unfolds the full card and a click elsewhere folds it back.
@@ -38,7 +38,7 @@
 - Appliance illustration next to the state: while a program runs, the washer shakes, its drum tumbles the laundry and bubbles rise, and the dishwasher steams, sprays and lights the floor; the display blinks. A badge marks a paused appliance (pause, breathing), a delayed start (turning clock) and a finished program (check mark drawn in, with sparkles); no animation with reduced motion; the display takes the state color. Progress now shows as a large percentage with the state and finish time. Setting `icon` puts the icon back instead of the illustration.
 - New `show_power` option (default `true`, also in the visual editor) to hide the power button, e.g. for a washing machine that can't be turned on / off remotely.
 
-## 1.5.3
+## 1.5.3 - 2026-10-25
 
 ### Fixes
 - **Start** no longer fails on a momentary refusal from the appliance (`BadRequest`, `WrongOperationState`): the card retries once after 3 seconds, with a disabled "Starting…" button meanwhile. If it still fails, a short translated message shows in the card (technical detail in its tooltip) instead of Home Assistant's raw error; it goes away on the next state change or after 10 seconds.
@@ -48,17 +48,17 @@
 ### Changes
 - New `remote_control` entity override (auto-detected, documented in the README and offered in the editor).
 
-## 1.5.2
+## 1.5.2 - 2026-10-25
 
 ### Maintenance
 - Lint warnings on the editor and card-picker lookups silenced so an automatic Biome fix cannot give the washer card the dishwasher profile again; duplication checks run on Node 22. Nothing changes for users.
 
-## 1.5.1
+## 1.5.1 - 2026-10-24
 
 ### Maintenance
 - Deterministic screenshots (fixed clock and time zone), each rendered in a fresh page; duplication checks no longer scan the tests. Nothing changes for users.
 
-## 1.5.0
+## 1.5.0 - 2026-10-24
 
 ### Changes
 - The visual editor follows the card's `language` option.
@@ -75,33 +75,33 @@
 - CI hardening: actions pinned by commit SHA, read-only workflow token, monthly Dependabot updates, duplication findings annotated in pull requests.
 - Unit tests (`npm test`) run in CI; `package-lock.json` version synced. Nothing changes for users.
 
-## 1.4.1
+## 1.4.1 - 2026-10-22
 
 ### Maintenance
 - Tooling only, no functional change: Biome linting, pre-commit and a Lint CI (duplication checks). Card source modernized (optional chaining, template literals), identical behavior.
 
-## 1.4.0
+## 1.4.0 - 2026-10-22
 
 ### Changes
 - More compact layout with the same information, like the other ha-* cards: 12 px card padding, 36 px header icon, 16 px name and 12 px subtitle, 11 px pills, tighter tiles and sections.
 - Appliance icon and power button 40 → 36 px, lower program selector, options and buttons, 4 px progress bar.
 
-## 1.3.3
+## 1.3.3 - 2026-10-21
 
 ### Changes
 - HACS now asks for Home Assistant 2024.8 or later, the version that brought the sections view the card supports; the README says so under **Prerequisites**.
 
-## 1.3.2
+## 1.3.2 - 2026-10-21
 
 ### Maintenance
 - Merged branches are deleted automatically (new `cleanup-branches` workflow). Nothing changes for users.
 
-## 1.3.1
+## 1.3.1 - 2026-10-21
 
 ### Development
 - The built card is no longer committed in `dist/`: CI builds it on every push, and the release workflow builds it and attaches it to the release, which is where HACS downloads it from. Nothing changes for users.
 
-## 1.3.0
+## 1.3.0 - 2026-10-21
 
 ### Changes
 - State colors come from the Home Assistant theme (`--info-color` running, `--warning-color` paused or action required, `--success-color` finished, `--error-color` error) with the Home Assistant defaults as fallbacks; the Stop button and the open-door chip follow them too.
@@ -113,12 +113,12 @@
 - `npm run screenshots` renders the README screenshots with mock Home Connect devices.
 - Releases are published when `version` in `package.json` has no tag yet.
 
-## 1.2.0
+## 1.2.0 - 2026-10-20
 
 ### What's new
 - Home Connect logo next to the appliance name.
 
-## 1.1.0
+## 1.1.0 - 2026-10-19
 
 ### Fixes
 - Program options (intensive zone, brilliance dry, speed perfect, hygiene plus…) no longer disappear when Home Connect hasn't loaded them: they stay visible, greyed out, until they're available.
@@ -127,7 +127,7 @@
 - **Load options** button when no option is loaded yet, for example after a Home Assistant restart. It switches to another program and back, which makes Home Connect send the options.
 - New README screenshot of the dishwasher with its program options.
 
-## 1.0.0
+## 1.0.0 - 2026-10-18
 
 First public release.
 
