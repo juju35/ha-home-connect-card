@@ -178,3 +178,21 @@ test("editor lists the connectivity, salt and rinse aid overrides where they app
   assert.ok(roles("washer").includes("pause"));
   assert.ok(!roles("washer").includes("salt"));
 });
+
+test("I18N parity: every language has exactly the English keys and placeholders", () => {
+  const { HcI18n } = loadCard("home-connect-card.js", ["HcI18n"]);
+  const ref = Object.keys(HcI18n.en).sort();
+  for (const lang of ["fr", "de", "es"]) {
+    assert.deepEqual(Object.keys(HcI18n[lang]).sort(), ref, `${lang} keys`);
+    for (const k of ref) {
+      const ph = (s) => (String(s).match(/\{\w+\}/g) || []).sort();
+      assert.deepEqual(ph(HcI18n[lang][k]), ph(HcI18n.en[k]), `${lang}.${k} placeholders`);
+    }
+  }
+});
+
+test("editor offers Deutsch and Español and follows them", () => {
+  assert.equal(editor("washer", { language: "de" })._form.computeLabel({ name: "name" }), "Name");
+  assert.equal(editor("washer", { language: "es" })._form.computeLabel({ name: "name" }), "Nombre");
+  assert.equal(editor("washer", {}, "es-ES")._form.computeLabel({ name: "name" }), "Nombre");
+});
