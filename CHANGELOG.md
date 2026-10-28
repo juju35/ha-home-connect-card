@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.11.0 - 2026-10-28
+### Changes
+- Spanish translation (cards and visual editor); the editor's language picker offers Español.
+
 ## 1.10.0 - 2026-10-28
 ### Changes
 - German translation (cards and visual editor), contributed by domwu0001.
