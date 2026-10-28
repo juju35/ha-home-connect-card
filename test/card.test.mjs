@@ -162,6 +162,12 @@ test("editor labels follow the language option", () => {
   assert.equal(editor("washer", { language: "en" }, "fr")._form.computeLabel({ name: "name" }), "Name");
 });
 
+test("editor labels the device field instead of leaking the raw key", () => {
+  assert.equal(editor("washer", {})._form.computeLabel({ name: "device_id" }), "Appliance");
+  assert.equal(editor("washer", { language: "fr" })._form.computeLabel({ name: "device_id" }), "Appareil");
+  assert.equal(editor("washer", {})._form.computeHelper({ name: "device_id" }), "Device from the Home Connect integration");
+});
+
 test("editor lists the connectivity, salt and rinse aid overrides where they apply", () => {
   const roles = (kind) => editor(kind, {})._schema().find((s) => s.name === "entities").schema.map((s) => s.name);
   assert.ok(roles("dishwasher").includes("connectivity"));
