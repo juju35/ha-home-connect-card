@@ -40,6 +40,8 @@ var HcI18n = {
     restore_failed: 'Le programme d\'origine n\'a pas pu être rétabli : vérifiez-le sur l\'appareil.',
     power_off_unsupported: 'Cet appareil ne peut pas être éteint à distance.',
     power_failed: 'L\'appareil n\'a pas répondu à la commande marche / arrêt.',
+    command_failed: 'L\'appareil a refusé la commande. Réessayez dans un instant.',
+    option_failed: 'L\'option n\'a pas pu être modifiée. Réessayez dans un instant.',
     salt: 'Sel presque vide',
     rinse_aid: 'Liquide de rinçage presque vide',
     remote_start_off: 'Démarrage à distance désactivé',
@@ -118,6 +120,8 @@ var HcI18n = {
     restore_failed: 'The original program couldn\'t be restored: check it on the appliance.',
     power_off_unsupported: 'This appliance can\'t be turned off remotely.',
     power_failed: 'The appliance didn\'t respond to the power command.',
+    command_failed: 'The appliance refused the command. Try again in a moment.',
+    option_failed: 'The option couldn\'t be changed. Try again in a moment.',
     salt: 'Salt nearly empty',
     rinse_aid: 'Rinse aid nearly empty',
     remote_start_off: 'Remote start disabled',
@@ -262,6 +266,31 @@ function hcDeviceEntities(hass, deviceId) {
   return (hcRegistryByDevice(hass.entities).get(deviceId) || []).filter((e) => hass.states[e.entity_id]);
 }
 
+// Role matching for a device, cached per `hass.entities` object like the registry index above:
+// the result only depends on the registry and on which entities have a state yet (hence the
+// count guard), not on the states themselves, so it isn't redone on every state change.
+var hcRoleIndex = new WeakMap();
+var HC_NO_ROLES = { count: 0, roles: {}, switches: [], selects: [] };
+function hcDeviceRoles(hass, deviceId) {
+  if (!hass?.entities || !deviceId) return HC_NO_ROLES;
+  var byDevice = hcRoleIndex.get(hass.entities);
+  if (!byDevice) hcRoleIndex.set(hass.entities, (byDevice = new Map()));
+  var list = hcDeviceEntities(hass, deviceId);
+  var cached = byDevice.get(deviceId);
+  if (cached && cached.count === list.length) return cached;
+  var roles = {};
+  Object.keys(HC_ROLES).forEach((role) => { roles[role] = hcFindRole(hass, list, role); });
+  var ids = list.map((e) => e.entity_id);
+  cached = {
+    count: list.length,
+    roles: roles,
+    switches: ids.filter((id) => id.indexOf('switch.') === 0),
+    selects: ids.filter((id) => id.indexOf('select.') === 0),
+  };
+  byDevice.set(deviceId, cached);
+  return cached;
+}
+
 function hcFindRole(hass, list, role) {
   var m = HC_ROLES[role];
   var inDomain = list.filter((e) => e.entity_id.split('.')[0] === m.domain);
@@ -283,16 +312,21 @@ function hcProgramKind(hass, deviceId) {
   return null;
 }
 
-// The device found for a kind is remembered per `hass.devices` object; a miss is searched again next time.
+// The device found for a kind — or the miss — is remembered per `hass.devices` object, so a card
+// without an appliance doesn't rescan every device on each state change. A miss is still retried
+// every 30 s: the select options a kind is detected from may simply not be loaded yet.
 var hcFoundDevices = new WeakMap();
+var HC_MISS_RETRY = 30000;
 function hcFindDevice(hass, kind) {
   if (!hass?.devices) return undefined;
   var found = hcFoundDevices.get(hass.devices);
   if (!found) hcFoundDevices.set(hass.devices, (found = {}));
   var id = found[kind];
   if (id && hass.devices[id] && hcProgramKind(hass, id) === kind) return id;
+  if (id === null && Date.now() < found[`retry_${kind}`]) return undefined;
   id = Object.keys(hass.devices).find((d) => hcProgramKind(hass, d) === kind);
-  if (id) found[kind] = id;
+  found[kind] = id || null;
+  if (!id) found[`retry_${kind}`] = Date.now() + HC_MISS_RETRY;
   return id;
 }
 
@@ -445,6 +479,16 @@ class HomeConnectBaseCard extends HTMLElement {
       this.attachShadow({ mode: 'open' });
       this.shadowRoot.addEventListener('click', (ev) => this._onClick(ev));
       this.shadowRoot.addEventListener('change', (ev) => this._onChange(ev));
+      // A focused <select> blocks re-renders (see _update): Escape or leaving the card releases it.
+      var unfreeze = () => {
+        var a = this.shadowRoot.activeElement;
+        if (a && a.tagName === 'SELECT') {
+          a.blur();
+          this._update();
+        }
+      };
+      this.shadowRoot.addEventListener('keydown', (ev) => { if (ev.key === 'Escape') unfreeze(); });
+      this.addEventListener('mouseleave', unfreeze);
     }
     this._sig = null;
     this._update();
@@ -491,18 +535,17 @@ class HomeConnectBaseCard extends HTMLElement {
   }
 
   _resolve() {
-    var hass = this._hass, c = this._config;
     var deviceId = this._deviceId();
-    var list = hcDeviceEntities(hass, deviceId);
-    var over = c.entities || {};
+    var found = hcDeviceRoles(this._hass, deviceId);
+    var over = this._config.entities || {};
     var ent = {};
     Object.keys(HC_ROLES).forEach((role) => {
-      ent[role] = over[role] || hcFindRole(hass, list, role);
+      ent[role] = over[role] || found.roles[role];
     });
     var used = Object.values(ent);
     // Everything else the integration exposes as a switch or select is a program option.
-    ent.option_switches = list.map((e) => e.entity_id).filter((id) => id.indexOf('switch.') === 0 && used.indexOf(id) < 0);
-    ent.option_selects = list.map((e) => e.entity_id).filter((id) => id.indexOf('select.') === 0 && used.indexOf(id) < 0);
+    ent.option_switches = found.switches.filter((id) => used.indexOf(id) < 0);
+    ent.option_selects = found.selects.filter((id) => used.indexOf(id) < 0);
     return { deviceId: deviceId, ent: ent };
   }
 
@@ -565,6 +608,44 @@ class HomeConnectBaseCard extends HTMLElement {
 
   _zoomButton() { return ''; }
 
+  // "Ends at 10:32 · 48 min left", shared between the full and mini layouts. The 12 h / 24 h
+  // preference follows the Home Assistant locale; the card language only picks the words.
+  _timeLine(finish) {
+    var mins = Math.max(0, Math.round((finish.getTime() - Date.now()) / 60000));
+    var h = Math.floor(mins / 60), m = mins % 60;
+    var left = h ? `${h} h ${String(m).padStart(2, '0')}` : `${m} min`;
+    var opts = { hour: '2-digit', minute: '2-digit' };
+    var tf = this._hass.locale?.time_format;
+    if (tf === '12' || tf === '24') opts.hour12 = tf === '12';
+    var at = finish.toLocaleTimeString(this._lang(), opts);
+    return `${this._t('ends_at')} ${at} · ${this._t('remaining').replace('{t}', left)}`;
+  }
+
+  // Start / Pause / Resume, drawn as labelled bars (full card) or round icons (mini card).
+  _actionButtons(ent, state, running, round) {
+    var btn = (action, icon, labelKey, primary, disabled, title) => {
+      var label = this._t(labelKey);
+      return round
+        ? `<button class="round${primary ? ' primary' : ''}" data-action="${action}" title="${hcEsc(title || label)}" aria-label="${hcEsc(label)}"${disabled ? ' disabled' : ''}><ha-icon icon="${icon}"></ha-icon></button>`
+        : `<button class="btn${primary ? ' primary' : ''}" data-action="${action}"${disabled ? ' disabled' : ''}${title ? ` title="${hcEsc(title)}"` : ''}><ha-icon icon="${icon}"></ha-icon>${hcEsc(label)}</button>`;
+    };
+    var btns = [];
+    var remoteOk = !ent.remote_start || this._val(ent.remote_start) === 'on';
+    if (!running && ent.active_program && this._avail(ent.selected_program)) {
+      btns.push(btn('start', 'mdi:play', this._starting ? 'starting' : 'start', true,
+        !remoteOk || this._starting || this._reloading, remoteOk ? '' : this._t('remote_start_off')));
+    }
+    // A button entity stays `unknown` until first pressed: only `unavailable` hides it.
+    var pauseVal = this._val(ent.pause);
+    if (state === 'run' && ent.pause && pauseVal !== undefined && pauseVal !== 'unavailable') {
+      btns.push(btn('pause', 'mdi:pause', 'pause', false, false, ''));
+    }
+    if (state === 'pause' && ent.resume && this._val(ent.resume) !== 'unavailable') {
+      btns.push(btn('resume', 'mdi:play', 'resume', true, false, ''));
+    }
+    return { btns: btns, remoteOk: remoteOk };
+  }
+
   _render(r) {
     var c = this._config, ent = r.ent, hass = this._hass;
     // The appliance's own programs decide the look, whichever card type was picked for it.
@@ -596,14 +677,7 @@ class HomeConnectBaseCard extends HTMLElement {
     var progress = this._avail(ent.progress) ? Math.max(0, Math.min(100, Number(this._val(ent.progress)))) : null;
     var finish = this._avail(ent.finish_time) ? new Date(this._val(ent.finish_time)) : null;
     if (finish && Number.isNaN(finish.getTime())) finish = null;
-    var timeLine = '';
-    if (running && finish) {
-      var mins = Math.max(0, Math.round((finish.getTime() - Date.now()) / 60000));
-      var h = Math.floor(mins / 60), m = mins % 60;
-      var left = h ? `${h} h ${String(m).padStart(2, '0')}` : `${m} min`;
-      var at = finish.toLocaleTimeString(this._lang(), { hour: '2-digit', minute: '2-digit' });
-      timeLine = `${this._t('ends_at')} ${at} · ${this._t('remaining').replace('{t}', left)}`;
-    }
+    var timeLine = running && finish ? this._timeLine(finish) : '';
     this._ticking = !!(running && finish);
 
     var statusText = this._t(`st_${state}`);
@@ -680,26 +754,14 @@ class HomeConnectBaseCard extends HTMLElement {
     // Controls.
     var controls = '';
     if (c.show_controls && online && powerOn) {
-      var btns = [];
-      var remoteOk = !ent.remote_start || this._val(ent.remote_start) === 'on';
-      if (!running && ent.active_program && this._avail(ent.selected_program)) {
-        var startAttr = remoteOk ? (this._starting || this._reloading ? ' disabled' : '') : ` disabled title="${this._t('remote_start_off')}"`;
-        btns.push(`<button class="btn primary" data-action="start"${startAttr}><ha-icon icon="mdi:play"></ha-icon>${this._t(this._starting ? 'starting' : 'start')}</button>`);
-      }
-      // A button entity stays `unknown` until first pressed: only `unavailable` hides it.
-      var pauseVal = this._val(ent.pause);
-      if (state === 'run' && ent.pause && pauseVal !== undefined && pauseVal !== 'unavailable') {
-        btns.push(`<button class="btn" data-action="pause"><ha-icon icon="mdi:pause"></ha-icon>${this._t('pause')}</button>`);
-      }
-      if (state === 'pause' && ent.resume && this._val(ent.resume) !== 'unavailable') {
-        btns.push(`<button class="btn primary" data-action="resume"><ha-icon icon="mdi:play"></ha-icon>${this._t('resume')}</button>`);
-      }
+      var ab = this._actionButtons(ent, state, running, false);
+      var btns = ab.btns;
       if (running && ent.stop && this._val(ent.stop) !== 'unavailable') {
         var confirming = this._confirming === 'stop';
         btns.push(`<button class="btn danger${confirming ? ' armed' : ''}" data-action="stop"><ha-icon icon="mdi:stop"></ha-icon>${this._t(confirming ? 'confirm' : 'stop')}</button>`);
       }
       if (btns.length) controls = `<div class="controls">${btns.join('')}</div>`;
-      if (!running && !remoteOk && btns.length) controls += `<div class="hint"><ha-icon icon="mdi:information-outline"></ha-icon>${this._t('remote_start_off')}</div>`;
+      if (!running && !ab.remoteOk && btns.length) controls += `<div class="hint"><ha-icon icon="mdi:information-outline"></ha-icon>${this._t('remote_start_off')}</div>`;
     }
 
     // Once an appliance refused to turn off, the button only serves to turn it on.
@@ -896,9 +958,9 @@ class HomeConnectBaseCard extends HTMLElement {
   _onClick(ev) {
     var btn = ev.composedPath().find((n) => n.dataset && (n.dataset.action || n.dataset.toggle));
     if (!btn || btn.disabled) return;
-    var ent = this._r.ent, hass = this._hass;
+    var ent = this._r.ent;
     if (btn.dataset.toggle) {
-      hass.callService('switch', 'toggle', { entity_id: btn.dataset.toggle });
+      this._option('switch', 'toggle', { entity_id: btn.dataset.toggle });
       return;
     }
     switch (btn.dataset.action) {
@@ -915,10 +977,10 @@ class HomeConnectBaseCard extends HTMLElement {
         this._reloadOptions();
         break;
       case 'pause':
-        hass.callService('button', 'press', { entity_id: ent.pause });
+        this._press(ent.pause);
         break;
       case 'resume':
-        hass.callService('button', 'press', { entity_id: ent.resume });
+        this._press(ent.resume);
         break;
       case 'stop':
         if (this._confirming !== 'stop') {
@@ -928,7 +990,7 @@ class HomeConnectBaseCard extends HTMLElement {
         } else {
           this._confirming = null;
           clearTimeout(this._confirmTimer);
-          hass.callService('button', 'press', { entity_id: ent.stop });
+          this._press(ent.stop);
         }
         this._update();
         break;
@@ -962,6 +1024,26 @@ class HomeConnectBaseCard extends HTMLElement {
       if (!always && !HC_RETRYABLE.test(hcErrText(err))) throw err;
       await hcDelay(HC_RETRY_DELAY);
       return this._call(domain, service, data);
+    }
+  }
+
+  // Pause / resume / stop and the option controls go through the same retry and in-card message
+  // as Start: appliances reject them just as readily for a moment (WrongOperationState).
+  async _press(id) {
+    try {
+      await this._callRetry('button', 'press', { entity_id: id });
+    } catch (err) {
+      this._showError('command_failed', err);
+      this._update();
+    }
+  }
+
+  async _option(domain, service, data) {
+    try {
+      await this._callRetry(domain, service, data);
+    } catch (err) {
+      this._showError('option_failed', err);
+      this._update();
     }
   }
 
@@ -1033,7 +1115,7 @@ class HomeConnectBaseCard extends HTMLElement {
   _onChange(ev) {
     var el = ev.target;
     if (!el?.dataset?.select) return;
-    this._hass.callService('select', 'select_option', { entity_id: el.dataset.select, option: el.value });
+    this._option('select', 'select_option', { entity_id: el.dataset.select, option: el.value });
     el.blur();
   }
 }
@@ -1110,31 +1192,12 @@ var hcMini = (Base) => class extends Base {
     }
     if (m.progLabel && m.online && m.powerOn) lines.push(`<div class="line"><ha-icon icon="mdi:tune-variant"></ha-icon><span>${hcEsc(m.progLabel)}</span></div>`);
     if (m.running && m.finish) {
-      var mins = Math.max(0, Math.round((m.finish.getTime() - Date.now()) / 60000));
-      var h = Math.floor(mins / 60), mm = mins % 60;
-      var left = h ? `${h} h ${String(mm).padStart(2, '0')}` : `${mm} min`;
-      var at = m.finish.toLocaleTimeString(this._lang(), { hour: '2-digit', minute: '2-digit' });
-      lines.push(`<div class="line"><ha-icon icon="mdi:clock-outline"></ha-icon><span>${this._t('ends_at')} ${at} · ${this._t('remaining').replace('{t}', left)}</span></div>`);
+      lines.push(`<div class="line"><ha-icon icon="mdi:clock-outline"></ha-icon><span>${hcEsc(this._timeLine(m.finish))}</span></div>`);
     }
     if (m.chips.length) lines.push(`<div class="chips">${m.chips.join('')}</div>`);
 
     // Round buttons: start (or pause / resume) and power.
-    var btns = [];
-    if (c.show_controls && m.online && m.powerOn) {
-      var remoteOk = !ent.remote_start || this._val(ent.remote_start) === 'on';
-      if (!m.running && ent.active_program && this._avail(ent.selected_program)) {
-        var off = !remoteOk || this._starting || this._reloading;
-        var title = hcEsc(this._t(remoteOk ? 'start' : 'remote_start_off'));
-        btns.push(`<button class="round primary" data-action="start" title="${title}" aria-label="${hcEsc(this._t('start'))}"${off ? ' disabled' : ''}><ha-icon icon="mdi:play"></ha-icon></button>`);
-      }
-      var pauseVal = this._val(ent.pause);
-      if (m.state === 'run' && ent.pause && pauseVal !== undefined && pauseVal !== 'unavailable') {
-        btns.push(`<button class="round" data-action="pause" title="${hcEsc(this._t('pause'))}" aria-label="${hcEsc(this._t('pause'))}"><ha-icon icon="mdi:pause"></ha-icon></button>`);
-      }
-      if (m.state === 'pause' && ent.resume && this._val(ent.resume) !== 'unavailable') {
-        btns.push(`<button class="round primary" data-action="resume" title="${hcEsc(this._t('resume'))}" aria-label="${hcEsc(this._t('resume'))}"><ha-icon icon="mdi:play"></ha-icon></button>`);
-      }
-    }
+    var btns = c.show_controls && m.online && m.powerOn ? this._actionButtons(ent, m.state, m.running, true).btns : [];
     if (m.powerBtn) btns.push(m.powerBtn);
 
     var errorHtml = this._error
