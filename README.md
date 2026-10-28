@@ -25,7 +25,7 @@ Pick the appliance, the card finds all its entities by itself.
 - Program options before starting: temperature, spin speed, Vario Perfect for washers; intensive zone, brilliance dry, speed perfect, hygiene plus for dishwashers… whatever your appliance exposes. Options the selected program doesn't support are greyed out
 - Door state, salt and rinse aid alerts
 - Visual editor in the dashboard UI (no YAML needed)
-- English, French and German, follows the Home Assistant language
+- English, French, German and Spanish, follows the Home Assistant language
 - Light and dark theme compatible
 - Single file, no dependencies, HACS-ready
 
@@ -122,7 +122,7 @@ entities:
 | `show_power` | ❌ | `true` | Show the power button (turn off for appliances that can't be switched on / off remotely) |
 | `show_logo` | ❌ | `true` | Show the Home Connect logo in the header |
 | `zoom` | ❌ | `true` | Mini cards only: detail button at the top right that unfolds the full card (a click elsewhere folds it back) |
-| `language` | ❌ | Auto | Force language: `fr`, `en` or `de` (auto-detects from HA settings) |
+| `language` | ❌ | Auto | Force language: `fr`, `en`, `de` or `es` (auto-detects from HA settings) |
 | `entities` | ❌ | Auto | Override detected entities (see below) |
 
 ### Entity overrides
@@ -227,6 +227,7 @@ The card auto-detects the language from your Home Assistant settings. Currently 
 | English | `en` |
 | Français | `fr` |
 | Deutsch | `de` |
+| Español | `es` |
 
 Contributions for additional languages are welcome!
 
