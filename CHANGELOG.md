@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.11.2 - 2026-10-29
+### Fixes
+- Leaving the view right after tapping Stop no longer leaves the button armed: back on the view it shows Stop again, so a single tap can't stop the program. An error message no longer stays on screen either.
+- On touch screens, closing a drop-down without picking anything no longer freezes the progress, state and finish time until the next tap elsewhere.
+
 ## 1.11.1 - 2026-10-29
 ### Fixes
 - An option switch whose entity id ends in `_etat` is no longer mistaken for the power switch (it stays in the options).
