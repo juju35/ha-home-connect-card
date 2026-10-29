@@ -196,3 +196,36 @@ test("editor offers Deutsch and Español and follows them", () => {
   assert.equal(editor("washer", { language: "es" })._form.computeLabel({ name: "name" }), "Nombre");
   assert.equal(editor("washer", {}, "es-ES")._form.computeLabel({ name: "name" }), "Nombre");
 });
+
+test("an option switch ending in _etat is never taken for the power switch", () => {
+  const hass = mockHass();
+  delete hass.states["switch.wm_power"];
+  delete hass.entities["switch.wm_power"];
+  hass.states["switch.wm_securite_enfants_etat"] = st("off");
+  hass.entities["switch.wm_securite_enfants_etat"] = { entity_id: "switch.wm_securite_enfants_etat", device_id: "d2" };
+  const card = new HomeConnectWasherCard();
+  card.setConfig({ device_id: "d2" });
+  card.hass = hass;
+  assert.equal(card._resolve().ent.power, undefined);
+  assert.doesNotMatch(card.shadowRoot.innerHTML, /data-action="power"/);
+});
+
+test("editor without a kind tells the dishwasher type from the washer type", () => {
+  const kindOf = (type) => editor(undefined, { type })._schema().find((s) => s.name === "entities").schema.map((s) => s.name);
+  assert.ok(kindOf("custom:home-connect-dishwasher-card").includes("salt"));
+  assert.ok(kindOf("custom:home-connect-washer-card").includes("pause"));
+  assert.ok(kindOf("custom:home-connect-washer-mini-card").includes("pause"));
+});
+
+test("renaming the device or switching 12/24 h redraws the card at once", () => {
+  const hass = mockHass();
+  const card = new HomeConnectWasherCard();
+  card.setConfig({ device_id: "d2" });
+  card.hass = hass;
+  assert.match(card.shadowRoot.innerHTML, /Washer/);
+  card.hass = { ...hass, devices: { ...hass.devices, d2: { name: "Washer", name_by_user: "Laundry" } } };
+  assert.match(card.shadowRoot.innerHTML, /Laundry/);
+  const before = card._sig;
+  card.hass = { ...card._hass, locale: { time_format: "12" } };
+  assert.notEqual(card._sig, before);
+});
