@@ -1,5 +1,14 @@
 # Changelog
 
+## 1.11.1 - 2026-10-29
+### Fixes
+- An option switch whose entity id ends in `_etat` is no longer mistaken for the power switch (it stays in the options).
+- Renaming the appliance or switching Home Assistant between 12 h and 24 h now updates the card right away.
+- Translations: the Spanish power button reads "Encendido/apagado", the German delayed-start badge is shorter ("Verzögerter Start") so the mini card keeps room for the appliance name, and the German editor uses Home Assistant's "Konnektivität".
+
+### Maintenance
+- CI: screenshots checkout no longer falls back to a ref fork PRs cannot resolve; the Chromium download is time-boxed and retried, and the browser deps step fails explicitly after three failed attempts.
+
 ## 1.11.0 - 2026-10-28
 ### Changes
 - Spanish translation (cards and visual editor); the editor's language picker offers Español.
