@@ -162,6 +162,166 @@ var HcI18n = {
     en_salt: 'Salt nearly empty',
     en_rinse_aid: 'Rinse aid nearly empty',
   },
+  de: {
+    dishwasher: 'Geschirrspüler',
+    washer: 'Waschmaschine',
+    st_inactive: 'Inaktiv',
+    st_ready: 'Bereit',
+    st_delayedstart: 'Verzögerter Start',
+    st_run: 'Läuft',
+    st_pause: 'Pausiert',
+    st_actionrequired: 'Aktion erforderlich',
+    st_finished: 'Fertig',
+    st_error: 'Fehler',
+    st_aborting: 'Wird abgebrochen',
+    st_off: 'Aus',
+    st_unavailable: 'Nicht verfügbar',
+    door_open: 'Tür offen',
+    door_closed: 'Tür geschlossen',
+    door_locked: 'Tür verriegelt',
+    program: 'Programm',
+    no_program: 'Kein Programm',
+    ends_at: 'Endet um',
+    remaining: 'Noch {t}',
+    start: 'Starten',
+    stop: 'Stoppen',
+    confirm: 'Bestätigen?',
+    pause: 'Pausieren',
+    resume: 'Fortsetzen',
+    power: 'Ein/Aus',
+    options: 'Optionen',
+    options_not_loaded: 'Für dieses Programm wurden keine Optionen geladen',
+    reload_options: 'Optionen laden',
+    options_local: 'Wird am Gerät eingestellt: Optionen nicht verfügbar',
+    starting: 'Wird gestartet…',
+    start_rejected: 'Das Gerät hat den Start abgelehnt. Überprüfe die Tür und den Fernstart und versuche es erneut.',
+    start_failed: 'Das Programm konnte nicht gestartet werden.',
+    reload_failed: 'Die Optionen konnten nicht geladen werden. Versuche es in Kürze erneut.',
+    restore_failed: 'Das ursprüngliche Programm konnte nicht wiederhergestellt werden. Überprüfe es direkt am Gerät.',
+    power_off_unsupported: 'Dieses Gerät kann nicht aus der Ferne ausgeschaltet werden.',
+    power_failed: 'Das Gerät hat nicht auf den Ein-/Aus-Befehl reagiert.',
+    command_failed: 'Das Gerät hat den Befehl abgelehnt. Versuche es in Kürze erneut.',
+    option_failed: 'Die Option konnte nicht geändert werden. Versuche es in Kürze erneut.',
+    salt: 'Salz fast leer',
+    rinse_aid: 'Klarspüler fast leer',
+    remote_start_off: 'Fernstart deaktiviert',
+    offline: 'Gerät offline',
+    no_device: 'Kein Home-Connect-Gerät gefunden',
+    ed_device_id: 'Gerät',
+    ed_device_id_helper: 'Gerät aus der Home-Connect-Integration',
+    ed_name: 'Name',
+    ed_name_helper: 'Leer lassen, um den Gerätenamen zu verwenden',
+    ed_icon: 'Symbol',
+    ed_show_program: 'Programmauswahl',
+    ed_show_controls: 'Steuerungsschaltflächen',
+    ed_show_options: 'Programmoptionen',
+    ed_show_power: 'Ein-/Aus-Schaltfläche',
+    ed_show_logo: 'Home-Connect-Logo',
+    ed_zoom: 'Detailansicht-Schaltfläche',
+    ed_zoom_helper: 'Schaltfläche oben rechts zum Wechseln zwischen kompakter und vollständiger Kartenansicht',
+    zoom_in: 'Vollständige Karte anzeigen',
+    zoom_out: 'Zur kompakten Ansicht zurückkehren',
+    ed_show_alerts: 'Warnmeldungen',
+    ed_language: 'Sprache',
+    ed_language_helper: 'Leer lassen, um die in Home Assistant eingestellte Sprache zu verwenden',
+    ed_entities: 'Entitäten (erweitert)',
+    ed_entities_helper: 'Automatisch anhand des Geräts erkannt; nur festlegen, wenn du eine Entität überschreiben möchtest',
+    en_operation_state: 'Betriebsstatus',
+    en_door: 'Tür',
+    en_progress: 'Fortschritt',
+    en_finish_time: 'Endzeit',
+    en_selected_program: 'Ausgewähltes Programm',
+    en_active_program: 'Aktives Programm',
+    en_power: 'Ein/Aus',
+    en_stop: 'Programm stoppen',
+    en_pause: 'Programm pausieren',
+    en_resume: 'Programm fortsetzen',
+    en_remote_start: 'Fernstart',
+    en_remote_control: 'Fernsteuerung',
+    en_connectivity: 'Konnektivität',
+    en_salt: 'Salz fast leer',
+    en_rinse_aid: 'Klarspüler fast leer',
+  },
+  es: {
+    dishwasher: 'Lavavajillas',
+    washer: 'Lavadora',
+    st_inactive: 'Inactivo',
+    st_ready: 'Listo',
+    st_delayedstart: 'Inicio diferido',
+    st_run: 'En marcha',
+    st_pause: 'En pausa',
+    st_actionrequired: 'Acción necesaria',
+    st_finished: 'Terminado',
+    st_error: 'Error',
+    st_aborting: 'Cancelando',
+    st_off: 'Apagado',
+    st_unavailable: 'No disponible',
+    door_open: 'Puerta abierta',
+    door_closed: 'Puerta cerrada',
+    door_locked: 'Puerta bloqueada',
+    program: 'Programa',
+    no_program: 'Sin programa',
+    ends_at: 'Termina a las',
+    remaining: 'Quedan {t}',
+    start: 'Iniciar',
+    stop: 'Detener',
+    confirm: '¿Confirmar?',
+    pause: 'Pausar',
+    resume: 'Reanudar',
+    power: 'Encendido/apagado',
+    options: 'Opciones',
+    options_not_loaded: 'Opciones no cargadas para este programa',
+    reload_options: 'Cargar opciones',
+    options_local: 'Se está configurando en el aparato: opciones no disponibles',
+    starting: 'Iniciando…',
+    start_rejected: 'El aparato ha rechazado el inicio. Comprueba la puerta y el inicio remoto, y vuelve a intentarlo.',
+    start_failed: 'No se ha podido iniciar el programa.',
+    reload_failed: 'No se han podido cargar las opciones. Vuelve a intentarlo en un momento.',
+    restore_failed: 'No se ha podido restaurar el programa original: compruébalo en el aparato.',
+    power_off_unsupported: 'Este aparato no se puede apagar a distancia.',
+    power_failed: 'El aparato no ha respondido a la orden de encendido/apagado.',
+    command_failed: 'El aparato ha rechazado la orden. Vuelve a intentarlo en un momento.',
+    option_failed: 'No se ha podido cambiar la opción. Vuelve a intentarlo en un momento.',
+    salt: 'Sal casi agotada',
+    rinse_aid: 'Abrillantador casi agotado',
+    remote_start_off: 'Inicio remoto desactivado',
+    offline: 'Aparato sin conexión',
+    no_device: 'No se ha encontrado ningún aparato Home Connect',
+    ed_device_id: 'Aparato',
+    ed_device_id_helper: 'Dispositivo de la integración Home Connect',
+    ed_name: 'Nombre',
+    ed_name_helper: 'Déjalo vacío para usar el nombre del dispositivo',
+    ed_icon: 'Icono',
+    ed_show_program: 'Selector de programa',
+    ed_show_controls: 'Botones de control',
+    ed_show_options: 'Opciones del programa',
+    ed_show_power: 'Botón de encendido',
+    ed_show_logo: 'Logotipo de Home Connect',
+    ed_zoom: 'Botón de detalle',
+    ed_zoom_helper: 'Botón arriba a la derecha que cambia la mini tarjeta a la tarjeta completa y viceversa',
+    zoom_in: 'Mostrar la tarjeta completa',
+    zoom_out: 'Volver a la vista compacta',
+    ed_show_alerts: 'Alertas',
+    ed_language: 'Idioma',
+    ed_language_helper: 'Déjalo vacío para seguir el idioma de Home Assistant',
+    ed_entities: 'Entidades (avanzado)',
+    ed_entities_helper: 'Se detectan automáticamente a partir del dispositivo; indica una solo para sustituirla',
+    en_operation_state: 'Estado de funcionamiento',
+    en_door: 'Puerta',
+    en_progress: 'Progreso',
+    en_finish_time: 'Hora de finalización',
+    en_selected_program: 'Programa seleccionado',
+    en_active_program: 'Programa activo',
+    en_power: 'Encendido/apagado',
+    en_stop: 'Detener programa',
+    en_pause: 'Pausar programa',
+    en_resume: 'Reanudar programa',
+    en_remote_start: 'Inicio remoto',
+    en_remote_control: 'Control remoto',
+    en_connectivity: 'Conectividad',
+    en_salt: 'Sal casi agotada',
+    en_rinse_aid: 'Abrillantador casi agotado',
+  }
 };
 
 function hcT(lang, key) {
@@ -230,7 +390,7 @@ var HC_ROLES = {
     test: (s) => s.attributes.device_class === 'timestamp' },
   selected_program: { domain: 'select', keys: ['selected_program'], id: /(selected_program|programme_selectionne)$/ },
   active_program: { domain: 'select', keys: ['active_program'], id: /(active_program|programme_actif)$/ },
-  power: { domain: 'switch', keys: ['power'], id: /(_power|_alimentation|_etat)$/ },
+  power: { domain: 'switch', keys: ['power'], id: /(_power|_alimentation)$/ },
   stop: { domain: 'button', keys: ['stop_program'], id: /(stop_program|arreter_le_programme)$/ },
   pause: { domain: 'button', keys: ['pause_program'], id: /(pause_program|mettre_en_pause.*)$/ },
   resume: { domain: 'button', keys: ['resume_program'], id: /(resume_program|reprendre_le_programme)$/ },
@@ -489,6 +649,8 @@ class HomeConnectBaseCard extends HTMLElement {
       };
       this.shadowRoot.addEventListener('keydown', (ev) => { if (ev.key === 'Escape') unfreeze(); });
       this.addEventListener('mouseleave', unfreeze);
+      // Touch: a drop-down closed without a change only loses focus. Re-check once focus has moved.
+      this.shadowRoot.addEventListener('focusout', () => setTimeout(() => this._update()));
     }
     this._sig = null;
     this._update();
@@ -507,12 +669,18 @@ class HomeConnectBaseCard extends HTMLElement {
       this._sig = null;
       this._update();
     }, 30000);
+    // Back on screen: redraw now (state reset on disconnect) instead of waiting for the next hass update.
+    this._update();
   }
 
   disconnectedCallback() {
     clearInterval(this._timer);
     clearTimeout(this._confirmTimer);
     clearTimeout(this._errorTimer);
+    // The cancelled timers would have reset these: an armed Stop or an old error must not survive leaving the view.
+    this._confirming = null;
+    this._error = null;
+    this._sig = null;
   }
 
   getCardSize() { return 4; }
@@ -590,7 +758,10 @@ class HomeConnectBaseCard extends HTMLElement {
       if (this._error.states == null) this._error.states = states;
       else if (this._error.states !== states) this._clearError();
     }
-    var sig = JSON.stringify([this._lang(), r.deviceId, this._zoomed, this._confirming, this._reloading, this._starting,
+    // The device name and the 12/24 h preference are drawn too: a rename or a locale change redraws at once.
+    var dev = r.deviceId && hass.devices ? hass.devices[r.deviceId] : null;
+    var sig = JSON.stringify([this._lang(), r.deviceId, dev ? [dev.name_by_user, dev.name] : null,
+      hass.locale?.time_format, this._zoomed, this._confirming, this._reloading, this._starting,
       this._error ? [this._error.key, this._error.detail] : null, hcNoPowerOff.has(this._powerKey(r)), states]);
     if (sig === this._sig) return;
     // Don't rebuild while a dropdown is open in the card.
@@ -1247,7 +1418,7 @@ class HomeConnectCardEditor extends HTMLElement {
 
   _schema() {
     var t = (k) => hcT(this._lang(), k);
-    var kind = this.kind || (/washer-/.test(this._config.type || '') ? 'washer' : 'dishwasher');
+    var kind = this.kind || (/-washer-/.test(this._config.type || '') ? 'washer' : 'dishwasher');
     var domains = { operation_state: 'sensor', door: 'sensor', progress: 'sensor', finish_time: 'sensor',
       selected_program: 'select', active_program: 'select', power: 'switch', stop: 'button',
       pause: 'button', resume: 'button', remote_start: 'binary_sensor', remote_control: 'binary_sensor', connectivity: 'binary_sensor',
@@ -1275,7 +1446,7 @@ class HomeConnectCardEditor extends HTMLElement {
       },
       {
         name: 'language',
-        selector: { select: { mode: 'dropdown', options: [{ value: 'fr', label: 'Français' }, { value: 'en', label: 'English' }] } },
+        selector: { select: { mode: 'dropdown', options: [{ value: 'fr', label: 'Français' }, { value: 'en', label: 'English' }, { value: 'de', label: 'Deutsch' }, { value: 'es', label: 'Español' }] } },
       },
       {
         type: 'expandable', name: 'entities', title: t('ed_entities'), flatten: false,

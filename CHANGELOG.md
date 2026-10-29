@@ -1,5 +1,42 @@
 # Changelog
 
+## 1.11.2 - 2026-10-29
+### Fixes
+- Leaving the view right after tapping Stop no longer leaves the button armed: back on the view it shows Stop again, so a single tap can't stop the program. An error message no longer stays on screen either.
+- On touch screens, closing a drop-down without picking anything no longer freezes the progress, state and finish time until the next tap elsewhere.
+
+## 1.11.1 - 2026-10-29
+### Fixes
+- An option switch whose entity id ends in `_etat` is no longer mistaken for the power switch (it stays in the options).
+- Renaming the appliance or switching Home Assistant between 12 h and 24 h now updates the card right away.
+- Translations: the Spanish power button reads "Encendido/apagado", the German delayed-start badge is shorter ("Verzögerter Start") so the mini card keeps room for the appliance name, and the German editor uses Home Assistant's "Konnektivität".
+
+### Maintenance
+- CI: screenshots checkout no longer falls back to a ref fork PRs cannot resolve; the Chromium download is time-boxed and retried, and the browser deps step fails explicitly after three failed attempts.
+- CI: after pushing refreshed screenshots to a pull request, the Screenshots workflow re-runs Lint, Validate and HACS on that commit (via `workflow_dispatch`, which a `GITHUB_TOKEN` push can trigger); Lint gains a `workflow_dispatch` trigger.
+
+## 1.11.0 - 2026-10-28
+### Changes
+- Spanish translation (cards and visual editor); the editor's language picker offers Español.
+
+## 1.10.0 - 2026-10-28
+### Changes
+- German translation (cards and visual editor), contributed by domwu0001.
+
+## 1.9.0 - 2026-10-28
+### Changes
+- Option toggles / selects, Pause, Resume, Stop and the program select now retry and show their errors in the card (like Start) instead of Home Assistant's toast.
+- The finish time follows the Home Assistant locale's 12 h / 24 h preference.
+- Faster updates: entity role matching and appliance detection are cached instead of being recomputed on every state change in Home Assistant.
+
+### Fixes
+- The visual editor's Appliance field shows its label and helper instead of the raw `ed_device_id` key.
+- A focused drop-down no longer freezes the card's updates until a click elsewhere: Escape or leaving the card releases it.
+
+### Maintenance
+- README: new GIFs of the running, paused, delayed-start and finished animations for both appliances; all screenshots regenerated.
+- CI: fork-safe screenshots workflow, release gated on the tests, Dependabot also watches npm.
+
 ## 1.8.0 - 2026-10-26
 ### Changes
 - The mini card's progress bar is now built with a template literal instead of string concatenation, matching the rest of the file. No change to the rendered output or behavior.
