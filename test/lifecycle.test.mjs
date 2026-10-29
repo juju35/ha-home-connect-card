@@ -71,7 +71,6 @@ test("Stop armed then the card leaves the view: back on screen it is disarmed, o
   c.disconnectedCallback();
   mock.timers.tick(3500);
   c.connectedCallback();
-  c.hass = { ...hass };
   assert.doesNotMatch(c.shadowRoot.innerHTML, /Confirm\?/);
   click(c, "stop");
   assert.equal(hass.calls.length, 0, "a single tap must only arm Stop");
@@ -86,7 +85,6 @@ test("an error shown when the card leaves the view is gone when it comes back", 
   c.disconnectedCallback();
   mock.timers.tick(15000);
   c.connectedCallback();
-  c.hass = { ...hass };
   assert.doesNotMatch(c.shadowRoot.innerHTML, /class="error"/);
 });
 
@@ -125,4 +123,14 @@ test("focus moving from one drop-down to another keeps the render frozen", () =>
   dispatch(c, "focusout", { target: first });
   mock.timers.tick(0);
   assert.doesNotMatch(c.shadowRoot.innerHTML, /data-action="resume"/);
+});
+
+test("attaching the card before its config or hass doesn't throw", () => {
+  const c = new HomeConnectWasherCard();
+  c.connectedCallback();
+  c.disconnectedCallback();
+  c.setConfig({ device_id: "d2" });
+  c.connectedCallback();
+  c.hass = mockHass();
+  assert.match(c.shadowRoot.innerHTML, /data-action="stop"/);
 });

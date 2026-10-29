@@ -649,6 +649,8 @@ class HomeConnectBaseCard extends HTMLElement {
       };
       this.shadowRoot.addEventListener('keydown', (ev) => { if (ev.key === 'Escape') unfreeze(); });
       this.addEventListener('mouseleave', unfreeze);
+      // Touch: a drop-down closed without a change only loses focus. Re-check once focus has moved.
+      this.shadowRoot.addEventListener('focusout', () => setTimeout(() => this._update()));
     }
     this._sig = null;
     this._update();
@@ -667,12 +669,18 @@ class HomeConnectBaseCard extends HTMLElement {
       this._sig = null;
       this._update();
     }, 30000);
+    // Back on screen: redraw now (state reset on disconnect) instead of waiting for the next hass update.
+    this._update();
   }
 
   disconnectedCallback() {
     clearInterval(this._timer);
     clearTimeout(this._confirmTimer);
     clearTimeout(this._errorTimer);
+    // The cancelled timers would have reset these: an armed Stop or an old error must not survive leaving the view.
+    this._confirming = null;
+    this._error = null;
+    this._sig = null;
   }
 
   getCardSize() { return 4; }
