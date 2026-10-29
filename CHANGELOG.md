@@ -8,6 +8,7 @@
 
 ### Maintenance
 - CI: screenshots checkout no longer falls back to a ref fork PRs cannot resolve; the Chromium download is time-boxed and retried, and the browser deps step fails explicitly after three failed attempts.
+- CI: after pushing refreshed screenshots to a pull request, the Screenshots workflow re-runs Lint, Validate and HACS on that commit (via `workflow_dispatch`, which a `GITHUB_TOKEN` push can trigger); Lint gains a `workflow_dispatch` trigger.
 
 ## 1.11.0 - 2026-10-28
 ### Changes
