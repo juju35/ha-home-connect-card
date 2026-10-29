@@ -11,7 +11,17 @@ export function loadCard(file, names) {
     console: { info() {}, log() {}, warn() {}, error() {} },
     HTMLElement: class {
       attachShadow() {
-        this.shadowRoot = { innerHTML: "", activeElement: null, addEventListener() {}, querySelector: () => null };
+        // Listeners are recorded so tests can dispatch shadow root events (focusout, keydown...).
+        const listeners = {};
+        this.shadowRoot = {
+          innerHTML: "",
+          activeElement: null,
+          listeners,
+          addEventListener(type, fn) {
+            (listeners[type] ||= []).push(fn);
+          },
+          querySelector: () => null,
+        };
         return this.shadowRoot;
       }
       addEventListener() {}
