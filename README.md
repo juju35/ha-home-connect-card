@@ -177,19 +177,28 @@ Waiting on a delayed start, the badge becomes a little clock whose hands turn un
 |---|---|
 | ![dishwasher delayed start](screenshots/dishwasher-delayed.gif) | ![washer delayed start](screenshots/washer-delayed.gif) |
 
-| Dishwasher | Washing machine |
-|---|---|
-| ![dishwasher](screenshots/dishwasher.png) | ![washer](screenshots/washer.png) |
-| ![dishwasher dark](screenshots/dishwasher-dark.png) | ![washer dark](screenshots/washer-dark.png) |
-| ![dishwasher with program options](screenshots/dishwasher-options.png) | ![washer mini card unfolded](screenshots/washer-mini-zoom.png) |
-| ![dishwasher mini card](screenshots/dishwasher-mini.png) | ![washer mini card](screenshots/washer-mini.png) |
-| ![dishwasher mini card dark](screenshots/dishwasher-mini-dark.png) | |
+Dishwasher:
+
+| | Light | Dark |
+|---|---|---|
+| Card | ![dishwasher](screenshots/dishwasher.png) | ![dishwasher dark](screenshots/dishwasher-dark.png) |
+| Program options | ![dishwasher with program options](screenshots/dishwasher-options.png) | ![dishwasher with program options dark](screenshots/dishwasher-options-dark.png) |
+| Mini card | ![dishwasher mini card](screenshots/dishwasher-mini.png) | ![dishwasher mini card dark](screenshots/dishwasher-mini-dark.png) |
+
+Washing machine:
+
+| | Light | Dark |
+|---|---|---|
+| Card | ![washer](screenshots/washer.png) | ![washer dark](screenshots/washer-dark.png) |
+| Mini card | ![washer mini card](screenshots/washer-mini.png) | ![washer mini card dark](screenshots/washer-mini-dark.png) |
+| Mini card unfolded | ![washer mini card unfolded](screenshots/washer-mini-zoom.png) | ![washer mini card unfolded dark](screenshots/washer-mini-zoom-dark.png) |
 
 Door open — the dishwasher's door lowered on its racks, the washing machine's porthole swung aside:
 
-| Dishwasher | Washing machine |
-|---|---|
-| ![dishwasher door open](screenshots/dishwasher-open.png) | ![washer door open](screenshots/washer-open.png) |
+| | Light | Dark |
+|---|---|---|
+| Dishwasher | ![dishwasher door open](screenshots/dishwasher-open.png) | ![dishwasher door open dark](screenshots/dishwasher-open-dark.png) |
+| Washing machine | ![washer door open](screenshots/washer-open.png) | ![washer door open dark](screenshots/washer-open-dark.png) |
 
 ## How it works
 
