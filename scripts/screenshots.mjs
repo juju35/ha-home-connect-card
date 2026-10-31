@@ -301,35 +301,17 @@ await render(
 // running turns the drum and waves the water; a finished appliance draws its tick and twinkles
 // sparkles; the paused badge breathes; the delayed-start badge turns its clock hands. Each
 // reuses openCard through animate(), so no mount is duplicated.
-await animate(
+const gifs = [
   { file: "dishwasher-running", type: "home-connect-dishwasher-card", theme: "light", width: 460, config: {} },
-  { icons, hass }
-);
-await animate(
   { file: "washer-running", type: "home-connect-washer-card", theme: "light", width: 460, config: {}, hass: { states: washerRunning } },
-  { icons, hass }
-);
-await animate(
   { file: "dishwasher-finished", type: "home-connect-dishwasher-card", theme: "light", width: 460, config: {}, hass: { states: finished } },
-  { icons, hass }
-);
-await animate(
   { file: "washer-finished", type: "home-connect-washer-card", theme: "light", width: 460, config: {}, hass: { states: washerFinished } },
-  { icons, hass }
-);
-await animate(
   { file: "dishwasher-paused", type: "home-connect-dishwasher-card", theme: "light", width: 460, config: {}, hass: { states: dishwasherPaused } },
-  { icons, hass }
-);
-await animate(
   { file: "washer-paused", type: "home-connect-washer-card", theme: "light", width: 460, config: {}, hass: { states: washerPaused } },
-  { icons, hass }
-);
-await animate(
   { file: "dishwasher-delayed", type: "home-connect-dishwasher-card", theme: "light", width: 460, config: {}, hass: { states: dishwasherDelayed } },
-  { icons, hass }
-);
-await animate(
   { file: "washer-delayed", type: "home-connect-washer-card", theme: "light", width: 460, config: {}, hass: { states: washerDelayed } },
-  { icons, hass }
-);
+];
+// Every animation is also rendered in the other theme, with the exact same setup: X-dark.gif for a light X.gif,
+// X-light.gif for a dark one.
+const twin = (gif) => ({ ...gif, file: `${gif.file}-${gif.theme === "light" ? "dark" : "light"}`, theme: gif.theme === "light" ? "dark" : "light" });
+for (const gif of gifs.flatMap((g) => [g, twin(g)])) await animate(gif, { icons, hass });
