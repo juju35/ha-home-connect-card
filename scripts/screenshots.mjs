@@ -266,15 +266,26 @@ await render(
     { file: "dishwasher", type: "home-connect-dishwasher-card", theme: "light", width: 460, config: {} },
     { file: "dishwasher-dark", type: "home-connect-dishwasher-card", theme: "dark", width: 460, config: {} },
     { file: "dishwasher-options", type: "home-connect-dishwasher-card", theme: "light", width: 460, config: {}, hass: { states: ready } },
+    { file: "dishwasher-options-dark", type: "home-connect-dishwasher-card", theme: "dark", width: 460, config: {}, hass: { states: ready } },
     { file: "dishwasher-open", type: "home-connect-dishwasher-card", theme: "light", width: 460, config: {}, hass: { states: dishwasherOpen } },
+    { file: "dishwasher-open-dark", type: "home-connect-dishwasher-card", theme: "dark", width: 460, config: {}, hass: { states: dishwasherOpen } },
     { file: "washer", type: "home-connect-washer-card", theme: "light", width: 460, config: {} },
     { file: "washer-dark", type: "home-connect-washer-card", theme: "dark", width: 460, config: {} },
     { file: "washer-open", type: "home-connect-washer-card", theme: "light", width: 460, config: {}, hass: { states: washerOpen } },
+    { file: "washer-open-dark", type: "home-connect-washer-card", theme: "dark", width: 460, config: {}, hass: { states: washerOpen } },
     { file: "dishwasher-mini", type: "home-connect-dishwasher-mini-card", theme: "light", width: 380, config: {} },
     { file: "dishwasher-mini-dark", type: "home-connect-dishwasher-mini-card", theme: "dark", width: 380, config: {} },
     { file: "washer-mini", type: "home-connect-washer-mini-card", theme: "light", width: 380, config: {} },
+    { file: "washer-mini-dark", type: "home-connect-washer-mini-card", theme: "dark", width: 380, config: {} },
     {
       file: "washer-mini-zoom", type: "home-connect-washer-mini-card", theme: "light", width: 460, config: {},
+      after: async (page) => {
+        await page.locator("home-connect-washer-mini-card .zoom").click();
+        await page.mouse.move(0, 0);
+      },
+    },
+    {
+      file: "washer-mini-zoom-dark", type: "home-connect-washer-mini-card", theme: "dark", width: 460, config: {},
       after: async (page) => {
         await page.locator("home-connect-washer-mini-card .zoom").click();
         await page.mouse.move(0, 0);
