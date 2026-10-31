@@ -153,29 +153,36 @@ While a program runs the illustration comes alive, and each appliance animates d
 
 A dishwasher mid-cycle sprays water across the tub, lets steam curl off the top and glows a pool of light on the floor while its status light blinks and the progress bar fills:
 
-![dishwasher running](screenshots/dishwasher-running.gif)
+| Light | Dark |
+|---|---|
+| ![dishwasher running](screenshots/dishwasher-running.gif) | ![dishwasher running dark](screenshots/dishwasher-running-dark.gif) |
 
 A washing machine mid-cycle turns its drum, sloshes the water behind the porthole and lifts a few suds as the whole body gently shakes:
 
-![washing machine running](screenshots/washer-running.gif)
+| Light | Dark |
+|---|---|
+| ![washing machine running](screenshots/washer-running.gif) | ![washing machine running dark](screenshots/washer-running-dark.gif) |
 
 When a cycle finishes the motion stops, a tick is drawn into the badge and sparkles twinkle around the appliance:
 
-| Dishwasher | Washing machine |
-|---|---|
-| ![dishwasher finished](screenshots/dishwasher-finished.gif) | ![washer finished](screenshots/washer-finished.gif) |
+| | Light | Dark |
+|---|---|---|
+| Dishwasher | ![dishwasher finished](screenshots/dishwasher-finished.gif) | ![dishwasher finished dark](screenshots/dishwasher-finished-dark.gif) |
+| Washing machine | ![washer finished](screenshots/washer-finished.gif) | ![washer finished dark](screenshots/washer-finished-dark.gif) |
 
 Paused mid-cycle, the program badge breathes in and out so the pause reads at a glance (the washer offers Resume):
 
-| Dishwasher | Washing machine |
-|---|---|
-| ![dishwasher paused](screenshots/dishwasher-paused.gif) | ![washer paused](screenshots/washer-paused.gif) |
+| | Light | Dark |
+|---|---|---|
+| Dishwasher | ![dishwasher paused](screenshots/dishwasher-paused.gif) | ![dishwasher paused dark](screenshots/dishwasher-paused-dark.gif) |
+| Washing machine | ![washer paused](screenshots/washer-paused.gif) | ![washer paused dark](screenshots/washer-paused-dark.gif) |
 
 Waiting on a delayed start, the badge becomes a little clock whose hands turn until the program begins:
 
-| Dishwasher | Washing machine |
-|---|---|
-| ![dishwasher delayed start](screenshots/dishwasher-delayed.gif) | ![washer delayed start](screenshots/washer-delayed.gif) |
+| | Light | Dark |
+|---|---|---|
+| Dishwasher | ![dishwasher delayed start](screenshots/dishwasher-delayed.gif) | ![dishwasher delayed start dark](screenshots/dishwasher-delayed-dark.gif) |
+| Washing machine | ![washer delayed start](screenshots/washer-delayed.gif) | ![washer delayed start dark](screenshots/washer-delayed-dark.gif) |
 
 Dishwasher:
 
