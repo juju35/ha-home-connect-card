@@ -1,5 +1,14 @@
 # Changelog
 
+## 1.11.3 - 2026-10-29
+### Fixes
+- Masonry dashboards balance their columns better: the card now reports its real height (from 3 to about 8 rows depending on the program picker, options and buttons shown) instead of a fixed size.
+- Every button (Pause, option pills, power, Load options) now reacts when hovered and shows a clear focus ring when reached with the keyboard.
+
+### Maintenance
+- Screenshots: the animated GIFs are now identical from one run to the next (the card's animations were not paused while recording), so pull requests no longer get a needless screenshots commit.
+- CI: Dependabot also updates the pre-commit hooks, and the Biome lint job reads its version from `.pre-commit-config.yaml`.
+
 ## 1.11.2 - 2026-10-29
 ### Fixes
 - Leaving the view right after tapping Stop no longer leaves the button armed: back on the view it shows Stop again, so a single tap can't stop the program. An error message no longer stays on screen either.
