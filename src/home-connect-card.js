@@ -1528,7 +1528,9 @@ class HomeConnectBaseCard extends HTMLElement {
 
   _styles(color) {
     return '<style>' +
-      ':host { display: block; height: 100%; --hc-color: ' + (color || 'var(--disabled-text-color, #9e9e9e)') + ';' +
+      // min-width 0: the intrinsic width below is only a preferred size; in a `1fr 1fr` grid or a flex row the
+      // card must still shrink to its track instead of overflowing it.
+      ':host { display: block; height: 100%; min-width: 0; --hc-color: ' + (color || 'var(--disabled-text-color, #9e9e9e)') + ';' +
       // State, warning, error and primary colours stay on dots, bars, tints and the illustration; texts get them
       // mixed with the theme's text colour so they read at 4.5:1 or more on light and dark cards alike.
         ' --hc-text: color-mix(in srgb, var(--hc-color) 45%, var(--primary-text-color));' +
@@ -1536,14 +1538,18 @@ class HomeConnectBaseCard extends HTMLElement {
         ' --hc-error-text: color-mix(in srgb, var(--error-color, #db4437) 45%, var(--primary-text-color));' +
         ' --hc-primary-text: color-mix(in srgb, var(--primary-color, #03a9f4) 45%, var(--primary-text-color)); }' +
       // A size container: narrow layouts (6 columns of a Sections view, the mini card) follow the card's own width.
-      'ha-card { height: 100%; box-sizing: border-box; padding: 12px; display: flex; flex-direction: column; gap: 10px; container-type: inline-size; }' +
+      // Containment drops the content's own width, so hosts that size the card from it (layout-card, button-card,
+      // an `auto` grid column, an inline-block) get this intrinsic width instead of the bare 24 px of padding.
+      'ha-card { height: 100%; box-sizing: border-box; padding: 12px; display: flex; flex-direction: column; gap: 10px;' +
+        ' container-type: inline-size; contain-intrinsic-inline-size: 276px; }' +
       '.empty { display: flex; align-items: center; gap: 10px; color: var(--secondary-text-color); }' +
       // The body starts 8px under the header (the card gap is 10px between body blocks).
       '.header { display: flex; align-items: center; gap: 10px; margin-bottom: -2px; }' +
       '.logo-link { display: flex; flex: none; }' +
       '.logo { width: 40px; height: 40px; }' +
-      // The title shrinks with an ellipsis but keeps about four characters.
-      '.titles { flex: 1 1 auto; min-width: 5ch; font-size: 16px; }' +
+      // The title takes the room the pill and the buttons leave (basis 0, so it doesn't squeeze the pill at
+      // ordinary widths); it shrinks with an ellipsis but keeps about four characters.
+      '.titles { flex: 1 1 0; min-width: 5ch; font-size: 16px; }' +
       '.name { font-size: 16px; font-weight: 500; line-height: 1.25; color: var(--primary-text-color); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }' +
       '.sub { font-size: 12px; color: var(--secondary-text-color); margin-top: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }' +
       '.hero { display: flex; align-items: center; gap: 14px; }' +
@@ -1602,8 +1608,9 @@ class HomeConnectBaseCard extends HTMLElement {
       '.big { display: flex; align-items: baseline; gap: 8px; min-width: 0; }' +
       '.big .pct { font-size: 30px; font-weight: 400; line-height: 1.1; color: var(--primary-text-color); }' +
       '.big .pct small { font-size: 15px; color: var(--secondary-text-color); }' +
-      '.big .state { font-size: 13px; font-weight: 500; color: var(--hc-text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }' +
-      '.state-big { font-size: 22px; font-weight: 400; line-height: 1.2; color: var(--hc-text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }' +
+      // The state wraps rather than ending in "…" (long Polish / Serbian states on a narrow card).
+      '.big .state { min-width: 0; font-size: 13px; font-weight: 500; color: var(--hc-text); overflow-wrap: break-word; }' +
+      '.state-big { min-width: 0; font-size: 22px; font-weight: 400; line-height: 1.2; color: var(--hc-text); overflow-wrap: break-word; }' +
       '.time { font-size: 12px; color: var(--secondary-text-color); }' +
       'button { font: inherit; cursor: pointer; border: none; }' +
       'button:disabled { cursor: default; opacity: 0.5; }' +
@@ -1632,9 +1639,10 @@ class HomeConnectBaseCard extends HTMLElement {
       '.section-title ha-icon { --mdc-icon-size: 16px; }' +
       '.grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(110px, 1fr)); gap: 6px; }' +
       '.toggles { display: flex; flex-wrap: wrap; gap: 6px; }' +
-      '.toggle { display: inline-flex; align-items: center; gap: 4px; font-size: 11px; font-weight: 500; padding: 3px 8px 3px 5px; border-radius: 12px;' +
+      '.toggle { display: inline-flex; align-items: center; gap: 4px; max-width: 100%; box-sizing: border-box; overflow-wrap: anywhere; text-align: start;' +
+        ' font-size: 11px; font-weight: 500; padding: 3px 8px 3px 5px; border-radius: 12px;' +
         ' background: var(--secondary-background-color, rgba(128,128,128,0.12)); color: var(--secondary-text-color); }' +
-      '.toggle ha-icon { --mdc-icon-size: 16px; }' +
+      '.toggle ha-icon { --mdc-icon-size: 16px; flex: none; }' +
       '.toggle:disabled { opacity: 0.45; }' +
       '.reload { display: flex; align-items: center; justify-content: space-between; gap: 8px; flex-wrap: wrap; font-size: 12px; color: var(--secondary-text-color); }' +
       '.link { display: inline-flex; align-items: center; gap: 4px; font-size: 12px; font-weight: 500; padding: 4px 8px; border-radius: 10px; background: none; color: var(--hc-primary-text); }' +
@@ -1677,7 +1685,8 @@ class HomeConnectBaseCard extends HTMLElement {
       '.mbar .v { font-weight: 500; min-width: 40px; text-align: right; color: var(--primary-text-color); }' +
       '.line { display: flex; align-items: center; gap: 6px; font-size: 12px; color: var(--secondary-text-color); min-width: 0; }' +
       '.line ha-icon { --mdc-icon-size: 14px; flex-shrink: 0; }' +
-      '.line span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }' +
+      // Program and finish time wrap rather than being cut.
+      '.line span { min-width: 0; overflow-wrap: break-word; }' +
       '.mstate { display: none; font-weight: 500; color: var(--hc-text); }' +
       '.mcontrols { display: flex; gap: 6px; flex-shrink: 0; }' +
       '.round { width: 40px; height: 40px; flex: none; border-radius: 50%; display: grid; place-items: center;' +
@@ -1689,7 +1698,6 @@ class HomeConnectBaseCard extends HTMLElement {
       '@container (max-width: 320px) {' +
         ' ha-card.mini .content { flex-wrap: wrap; row-gap: 8px; }' +
         ' ha-card.mini .mcontrols { flex: 1 1 100%; justify-content: flex-end; }' +
-        ' ha-card.mini .line span { white-space: normal; overflow-wrap: anywhere; }' +
       ' }' +
       // At 6 columns the mini card's pill is a dot (its text stays in its title and for screen readers) and the
       // state is spelt out above the program instead, where it has room to wrap.
