@@ -1528,7 +1528,7 @@ class HomeConnectBaseCard extends HTMLElement {
 
   _styles(color) {
     return '<style>' +
-      // min-width 0: the intrinsic width below is only a preferred size; in a `1fr 1fr` grid or a flex row the
+      // min-width 0: the natural width below is only a preferred size; in a `1fr 1fr` grid or a flex row the
       // card must still shrink to its track instead of overflowing it.
       ':host { display: block; height: 100%; min-width: 0; --hc-color: ' + (color || 'var(--disabled-text-color, #9e9e9e)') + ';' +
       // State, warning, error and primary colours stay on dots, bars, tints and the illustration; texts get them
@@ -1538,10 +1538,14 @@ class HomeConnectBaseCard extends HTMLElement {
         ' --hc-error-text: color-mix(in srgb, var(--error-color, #db4437) 45%, var(--primary-text-color));' +
         ' --hc-primary-text: color-mix(in srgb, var(--primary-color, #03a9f4) 45%, var(--primary-text-color)); }' +
       // A size container: narrow layouts (6 columns of a Sections view, the mini card) follow the card's own width.
-      // Containment drops the content's own width, so hosts that size the card from it (layout-card, button-card,
-      // an `auto` grid column, an inline-block) get this intrinsic width instead of the bare 24 px of padding.
       'ha-card { height: 100%; box-sizing: border-box; padding: 12px; display: flex; flex-direction: column; gap: 10px;' +
-        ' container-type: inline-size; contain-intrinsic-inline-size: 276px; }' +
+        ' container-type: inline-size; }' +
+      // Containment drops the content's own width: hosts that size the card from it (layout-card, button-card, an
+      // `auto` grid column, an inline-block) would shrink it to its 24 px of padding. This empty, zero-height grid
+      // gives the card a natural (max-content) width of 300 px with no minimum (its min-content width is 0), so in
+      // a `1fr 1fr` grid (grid card, horizontal-stack, layout-card), wrapped in a <div> such as hui-card or not, the
+      // card still shrinks to its column. contain-intrinsic-inline-size or a px min-width would be a minimum there.
+      ':host::before { content: ""; display: grid; grid-template-columns: minmax(0, 300px); height: 0; }' +
       '.empty { display: flex; align-items: center; gap: 10px; color: var(--secondary-text-color); }' +
       // The body starts 8px under the header (the card gap is 10px between body blocks).
       '.header { display: flex; align-items: center; gap: 10px; margin-bottom: -2px; }' +
