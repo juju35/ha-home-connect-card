@@ -235,7 +235,7 @@ test("language resolution: full code if translated, else the base language, else
   assert.equal(editor("washer", {}, "pl-PL")._lang(), "pl");
 });
 
-test("editor offers every language, Italiano, Nederlands, Português and Polski last, and follows them", () => {
+test("editor offers every language, Italiano, Nederlands, Português (Portugal) and Polski last, and follows them", () => {
   const options = editor("washer", {})._schema().find((s) => s.name === "language").selector.select.options;
   assert.deepEqual(JSON.parse(JSON.stringify(options)), [
     { value: "fr", label: "Français" },
@@ -246,7 +246,7 @@ test("editor offers every language, Italiano, Nederlands, Português and Polski 
     { value: "sr-Latn", label: "Srpski (latinica)" },
     { value: "it", label: "Italiano" },
     { value: "nl", label: "Nederlands" },
-    { value: "pt", label: "Português" },
+    { value: "pt", label: "Português (Portugal)" },
     { value: "pl", label: "Polski" },
   ]);
   const label = (language) => editor("washer", { language })._form.computeLabel({ name: "language" });
@@ -272,6 +272,22 @@ test("editor offers Српски and Srpski (latinica) and follows them", () => 
   assert.equal(editor("washer", { language: "sr" })._form.computeLabel({ name: "name" }), "Назив");
   assert.equal(editor("washer", { language: "sr-Latn" })._form.computeLabel({ name: "name" }), "Naziv");
   assert.equal(editor("washer", {}, "sr-Latn")._form.computeLabel({ name: "language" }), "Jezik");
+});
+
+test("Intl gets pt-PT for Home Assistant's pt, keeps pt-BR, and the language option wins", () => {
+  const locale = (config, hass) => {
+    const card = new HomeConnectWasherCard();
+    card.setConfig(config);
+    card._hass = { ...mockHass(), ...hass };
+    return card._locale();
+  };
+  assert.equal(locale({}, { language: "pt", locale: { language: "pt" } }), "pt-PT");
+  assert.equal(locale({}, { language: "pt" }), "pt-PT");
+  assert.equal(locale({}, { language: "pt-BR", locale: { language: "pt-BR" } }), "pt-BR");
+  assert.equal(locale({}, { language: "de", locale: { language: "de-CH" } }), "de-CH");
+  assert.equal(locale({ language: "pt" }, { language: "pt-BR", locale: { language: "pt-BR" } }), "pt-PT");
+  assert.equal(locale({ language: "fr" }, { language: "pt", locale: { language: "pt" } }), "fr");
+  assert.equal(locale({}, { language: "sr-Latn", locale: { language: "sr" } }), "sr-Latn");
 });
 
 test("finish time in sr-Latn is written in Latin script", () => {

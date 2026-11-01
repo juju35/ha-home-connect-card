@@ -813,6 +813,17 @@ function hcLang(code) {
   return HcI18n[l] ? l : 'en';
 }
 
+// Locale handed to Intl / toLocale*: the full Home Assistant locale (pt-BR, de-CH…) when it is the
+// card's language, else the card's language. A `language:` option wins over Home Assistant, sr-Latn
+// stays as is, and a bare `pt` (Home Assistant's code for European Portuguese) becomes pt-PT, since
+// Intl reads `pt` as Brazilian Portuguese.
+function hcLocale(lang, hass, explicit) {
+  if (lang === 'sr-Latn') return lang;
+  var full = !explicit && (hass?.locale?.language || hass?.language);
+  var l = full && String(full).split('-')[0] === lang.split('-')[0] ? String(full) : lang;
+  return l === 'pt' ? 'pt-PT' : l;
+}
+
 function hcT(lang, key) {
   var strings = HcI18n[lang] || HcI18n.en;
   return strings[key] || HcI18n.en[key] || key;
@@ -1199,6 +1210,8 @@ class HomeConnectBaseCard extends HTMLElement {
 
   _t(k) { return hcT(this._lang(), k); }
 
+  _locale() { return hcLocale(this._lang(), this._hass, !!this._config?.language); }
+
   _deviceId() {
     var hass = this._hass, c = this._config;
     if (c.device_id) return c.device_id;
@@ -1292,7 +1305,7 @@ class HomeConnectBaseCard extends HTMLElement {
     var opts = { hour: '2-digit', minute: '2-digit' };
     var tf = this._hass.locale?.time_format;
     if (tf === '12' || tf === '24') opts.hour12 = tf === '12';
-    var at = finish.toLocaleTimeString(this._lang(), opts);
+    var at = finish.toLocaleTimeString(this._locale(), opts);
     return `${this._t('ends_at')} ${at} · ${this._t('remaining').replace('{t}', left)}`;
   }
 
@@ -1959,7 +1972,7 @@ class HomeConnectCardEditor extends HTMLElement {
       },
       {
         name: 'language',
-        selector: { select: { mode: 'dropdown', options: [{ value: 'fr', label: 'Français' }, { value: 'en', label: 'English' }, { value: 'de', label: 'Deutsch' }, { value: 'es', label: 'Español' }, { value: 'sr', label: 'Српски' }, { value: 'sr-Latn', label: 'Srpski (latinica)' }, { value: 'it', label: 'Italiano' }, { value: 'nl', label: 'Nederlands' }, { value: 'pt', label: 'Português' }, { value: 'pl', label: 'Polski' }] } },
+        selector: { select: { mode: 'dropdown', options: [{ value: 'fr', label: 'Français' }, { value: 'en', label: 'English' }, { value: 'de', label: 'Deutsch' }, { value: 'es', label: 'Español' }, { value: 'sr', label: 'Српски' }, { value: 'sr-Latn', label: 'Srpski (latinica)' }, { value: 'it', label: 'Italiano' }, { value: 'nl', label: 'Nederlands' }, { value: 'pt', label: 'Português (Portugal)' }, { value: 'pl', label: 'Polski' }] } },
       },
       {
         type: 'expandable', name: 'entities', title: t('ed_entities'), flatten: false,
