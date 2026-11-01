@@ -6,6 +6,7 @@ import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { chromium } from "playwright";
+import { writeIfChanged } from "./pixels.mjs";
 
 const root = fileURLToPath(new URL("..", import.meta.url));
 // Fixed clock and time zone: "Ends at …" in the captures does not depend on when they are taken.
@@ -100,12 +101,14 @@ export async function render(shots, { icons = {}, hass = {}, extra = "" } = {}) 
     await page.waitForTimeout(400);
     // The card plus the 16px page padding around it, on the theme background.
     const box = await page.locator("#root").boundingBox();
+    const tmp = join(tmpdir(), `hc-${process.pid}-${s.file}.png`);
     await page.screenshot({
-      path: `${root}screenshots/${s.file}.png`,
+      path: tmp,
       clip: { x: 0, y: 0, width: s.width + 32, height: Math.ceil(box.height) + 32 },
       animations: "disabled",
     });
-    console.log(`screenshots/${s.file}.png`);
+    const png = `screenshots/${s.file}.png`;
+    console.log(writeIfChanged(tmp, `${root}${png}`) ? png : `${png} (unchanged)`);
     await page.close();
   }
   await browser.close();
@@ -137,15 +140,17 @@ export async function animate(shot, { icons = {}, hass = {}, extra = "", fps = 2
     await page.screenshot({ path: join(dir, `f${String(i).padStart(3, "0")}.png`), clip });
   }
   await browser.close();
-  const out = `${root}screenshots/${shot.file}.gif`;
+  const gif = `screenshots/${shot.file}.gif`;
+  const tmp = join(dir, "out.gif");
   // Halve the retina capture and build a per-clip palette: the colours stay clean and the file stays small.
   execFileSync("ffmpeg", [
     "-y", "-loglevel", "error", "-framerate", String(fps), "-i", join(dir, "f%03d.png"),
     "-vf", `scale=${clip.width}:-1:flags=lanczos,split[a][b];[a]palettegen=max_colors=128[p];[b][p]paletteuse=dither=bayer:bayer_scale=4`,
-    "-loop", "0", out,
+    "-loop", "0", tmp,
   ]);
+  const written = writeIfChanged(tmp, `${root}${gif}`);
   rmSync(dir, { recursive: true });
-  console.log(`screenshots/${shot.file}.gif`);
+  console.log(written ? gif : `${gif} (unchanged)`);
 }
 
 const icons = {
