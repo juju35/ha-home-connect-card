@@ -25,7 +25,7 @@ Pick the appliance, the card finds all its entities by itself.
 - Program options before starting: temperature, spin speed, Vario Perfect for washers; intensive zone, brilliance dry, speed perfect, hygiene plus for dishwashers… whatever your appliance exposes. Options the selected program doesn't support are greyed out
 - Door state, salt and rinse aid alerts
 - Visual editor in the dashboard UI (no YAML needed)
-- English, French, German and Spanish, follows the Home Assistant language
+- English, French, German, Spanish and Serbian (Cyrillic and Latin), follows the Home Assistant language
 - Light and dark theme compatible
 - Single file, no dependencies, HACS-ready
 
@@ -128,7 +128,7 @@ entities:
 | `custom_toggle` | ❌ | — | Optional additional toggle button: `entity` (an `input_boolean`), optional `icon`, `name` and `active_color`; the active color accepts an RGB array from the editor or a CSS color / `var(--...)` in YAML |
 | `show_logo` | ❌ | `true` | Show the Home Connect logo in the header |
 | `zoom` | ❌ | `true` | Mini cards only: detail button at the top right that unfolds the full card (a click elsewhere folds it back) |
-| `language` | ❌ | Auto | Force language: `fr`, `en`, `de` or `es` (auto-detects from HA settings) |
+| `language` | ❌ | Auto | Force language: `fr`, `en`, `de`, `es`, `sr` or `sr-Latn` (auto-detects from HA settings) |
 | `entities` | ❌ | Auto | Override detected entities (see below) |
 
 ### Entity overrides
@@ -159,43 +159,59 @@ While a program runs the illustration comes alive, and each appliance animates d
 
 A dishwasher mid-cycle sprays water across the tub, lets steam curl off the top and glows a pool of light on the floor while its status light blinks and the progress bar fills:
 
-![dishwasher running](screenshots/dishwasher-running.gif)
+| Light | Dark |
+|---|---|
+| ![dishwasher running](screenshots/dishwasher-running.gif) | ![dishwasher running dark](screenshots/dishwasher-running-dark.gif) |
 
 A washing machine mid-cycle turns its drum, sloshes the water behind the porthole and lifts a few suds as the whole body gently shakes:
 
-![washing machine running](screenshots/washer-running.gif)
+| Light | Dark |
+|---|---|
+| ![washing machine running](screenshots/washer-running.gif) | ![washing machine running dark](screenshots/washer-running-dark.gif) |
 
 When a cycle finishes the motion stops, a tick is drawn into the badge and sparkles twinkle around the appliance:
 
-| Dishwasher | Washing machine |
-|---|---|
-| ![dishwasher finished](screenshots/dishwasher-finished.gif) | ![washer finished](screenshots/washer-finished.gif) |
+| | Light | Dark |
+|---|---|---|
+| Dishwasher | ![dishwasher finished](screenshots/dishwasher-finished.gif) | ![dishwasher finished dark](screenshots/dishwasher-finished-dark.gif) |
+| Washing machine | ![washer finished](screenshots/washer-finished.gif) | ![washer finished dark](screenshots/washer-finished-dark.gif) |
 
 Paused mid-cycle, the program badge breathes in and out so the pause reads at a glance (the washer offers Resume):
 
-| Dishwasher | Washing machine |
-|---|---|
-| ![dishwasher paused](screenshots/dishwasher-paused.gif) | ![washer paused](screenshots/washer-paused.gif) |
+| | Light | Dark |
+|---|---|---|
+| Dishwasher | ![dishwasher paused](screenshots/dishwasher-paused.gif) | ![dishwasher paused dark](screenshots/dishwasher-paused-dark.gif) |
+| Washing machine | ![washer paused](screenshots/washer-paused.gif) | ![washer paused dark](screenshots/washer-paused-dark.gif) |
 
 Waiting on a delayed start, the badge becomes a little clock whose hands turn until the program begins:
 
-| Dishwasher | Washing machine |
-|---|---|
-| ![dishwasher delayed start](screenshots/dishwasher-delayed.gif) | ![washer delayed start](screenshots/washer-delayed.gif) |
+| | Light | Dark |
+|---|---|---|
+| Dishwasher | ![dishwasher delayed start](screenshots/dishwasher-delayed.gif) | ![dishwasher delayed start dark](screenshots/dishwasher-delayed-dark.gif) |
+| Washing machine | ![washer delayed start](screenshots/washer-delayed.gif) | ![washer delayed start dark](screenshots/washer-delayed-dark.gif) |
 
-| Dishwasher | Washing machine |
-|---|---|
-| ![dishwasher](screenshots/dishwasher.png) | ![washer](screenshots/washer.png) |
-| ![dishwasher dark](screenshots/dishwasher-dark.png) | ![washer dark](screenshots/washer-dark.png) |
-| ![dishwasher with program options](screenshots/dishwasher-options.png) | ![washer mini card unfolded](screenshots/washer-mini-zoom.png) |
-| ![dishwasher mini card](screenshots/dishwasher-mini.png) | ![washer mini card](screenshots/washer-mini.png) |
-| ![dishwasher mini card dark](screenshots/dishwasher-mini-dark.png) | |
+Dishwasher:
+
+| | Light | Dark |
+|---|---|---|
+| Card | ![dishwasher](screenshots/dishwasher.png) | ![dishwasher dark](screenshots/dishwasher-dark.png) |
+| Program options | ![dishwasher with program options](screenshots/dishwasher-options.png) | ![dishwasher with program options dark](screenshots/dishwasher-options-dark.png) |
+| Mini card | ![dishwasher mini card](screenshots/dishwasher-mini.png) | ![dishwasher mini card dark](screenshots/dishwasher-mini-dark.png) |
+
+Washing machine:
+
+| | Light | Dark |
+|---|---|---|
+| Card | ![washer](screenshots/washer.png) | ![washer dark](screenshots/washer-dark.png) |
+| Mini card | ![washer mini card](screenshots/washer-mini.png) | ![washer mini card dark](screenshots/washer-mini-dark.png) |
+| Mini card unfolded | ![washer mini card unfolded](screenshots/washer-mini-zoom.png) | ![washer mini card unfolded dark](screenshots/washer-mini-zoom-dark.png) |
 
 Door open — the dishwasher's door lowered on its racks, the washing machine's porthole swung aside:
 
-| Dishwasher | Washing machine |
-|---|---|
-| ![dishwasher door open](screenshots/dishwasher-open.png) | ![washer door open](screenshots/washer-open.png) |
+| | Light | Dark |
+|---|---|---|
+| Dishwasher | ![dishwasher door open](screenshots/dishwasher-open.png) | ![dishwasher door open dark](screenshots/dishwasher-open-dark.png) |
+| Washing machine | ![washer door open](screenshots/washer-open.png) | ![washer door open dark](screenshots/washer-open-dark.png) |
 
 ## How it works
 
@@ -234,6 +250,8 @@ The card auto-detects the language from your Home Assistant settings. Currently 
 | Français | `fr` |
 | Deutsch | `de` |
 | Español | `es` |
+| Српски | `sr` |
+| Srpski (latinica) | `sr-Latn` |
 
 Contributions for additional languages are welcome!
 
