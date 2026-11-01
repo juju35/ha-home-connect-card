@@ -515,6 +515,22 @@ var HC_SITE = 'https://www.home-connect.com';
 
 // Appliance illustrations (front view). The state color lights the display; when running the
 // washer drum turns and the dishwasher projects its floor light, like the real appliances.
+// Heights (px, with the 10 px gap above each block) used for getCardSize, measured in Chromium on the README captures.
+var HC_PX = {
+  base: 158, // padding, header and illustration
+  miniBase: 142, // padding, header and the illustration row of a mini card
+  program: 58,
+  section: 26,
+  selectRow: 56,
+  toggleRow: 28,
+  reload: 30,
+  error: 26,
+  controls: 44,
+  hint: 20,
+};
+
+function hcRows(px) { return Math.max(1, Math.round(px / 50)); }
+
 var HC_ART = {
   washer: '<svg viewBox="0 0 80 94" aria-hidden="true">' +
     '<defs><linearGradient id="hc-wb" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffffff"/><stop offset="1" stop-color="#e2e6eb"/></linearGradient>' +
@@ -683,7 +699,8 @@ class HomeConnectBaseCard extends HTMLElement {
     this._sig = null;
   }
 
-  getCardSize() { return 4; }
+  // Masonry columns are balanced on this: the height of the blocks last drawn, in 50 px rows.
+  getCardSize() { return this._rows || (this._compact() ? 3 : 4); }
 
   getGridOptions() { return { columns: 12, min_columns: 6 }; }
 
@@ -829,6 +846,7 @@ class HomeConnectBaseCard extends HTMLElement {
     this._ticking = false;
 
     if (!r.deviceId && !c.entities) {
+      this._rows = 1;
       this.shadowRoot.innerHTML = `${this._styles()}<ha-card><div class="empty"><ha-icon icon="${hcEsc(icon)}"></ha-icon>${this._t('no_device')}</div></ha-card>`;
       return;
     }
@@ -884,7 +902,7 @@ class HomeConnectBaseCard extends HTMLElement {
     }
 
     // Program options: selects (temperature, spin…) and switches (intensive zone, hygiene…).
-    var optionsHtml = '';
+    var optionsHtml = '', optPx = 0;
     // Options can't be changed once a program runs, so they're only shown before starting.
     if (c.show_options && online && powerOn && !running) {
       // Options the selected program doesn't support (or not loaded yet) stay visible, greyed out.
@@ -916,6 +934,10 @@ class HomeConnectBaseCard extends HTMLElement {
           (canReload ? `<button class="link" data-action="reload_options"${reloadOff ? ' disabled' : ''}${local ? ` title="${hcEsc(this._t('options_local'))}"` : ''}><ha-icon icon="mdi:refresh"></ha-icon>${this._t('reload_options')}</button>` : '') + '</div>';
       }
       if (selects || toggles) {
+        // Drop-downs sit three to a row at the usual card width, the option pills about three to a row too.
+        var nSel = ent.option_selects.filter((id) => this._st(id)).length;
+        var nTog = ent.option_switches.filter((id) => this._st(id)).length;
+        optPx = HC_PX.section + Math.ceil(nSel / 3) * HC_PX.selectRow + Math.ceil(nTog / 3) * HC_PX.toggleRow + (reload ? HC_PX.reload : 0);
         optionsHtml = '<div class="section"><div class="section-title"><ha-icon icon="mdi:tune-variant"></ha-icon>' + this._t('options') + '</div>' +
           (selects ? `<div class="grid">${selects}</div>` : '') +
           (toggles ? `<div class="toggles">${toggles}</div>` : '') + reload + '</div>';
@@ -967,11 +989,14 @@ class HomeConnectBaseCard extends HTMLElement {
     var sub = progLabel || this._t(kind);
 
     if (this._compact()) {
+      this._rows = hcRows(HC_PX.miniBase + (this._error ? HC_PX.error : 0));
       this.shadowRoot.innerHTML = this._miniHtml({ c, ent, name, color, state, statusText, running, online, powerOn, progress,
         finish, progLabel, chips: chips.filter((x) => x.indexOf('chip warn') >= 0 || !online), art, logo, powerBtn });
       return;
     }
 
+    this._rows = hcRows(HC_PX.base + (programHtml ? HC_PX.program : 0) + optPx + (errorHtml ? HC_PX.error : 0) +
+      (controls ? HC_PX.controls : 0) + (controls.indexOf('class="hint"') >= 0 ? HC_PX.hint : 0));
     this.shadowRoot.innerHTML = this._styles(color) + '<ha-card>' +
       '<div class="header">' + logo +
         '<div class="titles"><div class="name">' + hcEsc(name) + '</div><div class="sub">' + hcEsc(sub) + '</div></div>' +
@@ -1091,6 +1116,10 @@ class HomeConnectBaseCard extends HTMLElement {
       '.btn { flex: 1; display: inline-flex; align-items: center; justify-content: center; gap: 6px; font-size: 13px; font-weight: 500;' +
         ' padding: 7px 10px; border-radius: 10px; background: var(--secondary-background-color, rgba(128,128,128,0.12)); color: var(--primary-text-color); }' +
       '.btn ha-icon { --mdc-icon-size: 18px; }' +
+      // Hover: a light veil over whatever the button's own tint is (neutral, on, primary, danger), so the state colour stays.
+      '.btn:hover:not(:disabled), .round:hover:not(:disabled), .toggle:hover:not(:disabled), .power:hover:not(:disabled), .link:hover:not(:disabled) {' +
+        ' background-image: linear-gradient(color-mix(in srgb, var(--primary-text-color) 8%, transparent), color-mix(in srgb, var(--primary-text-color) 8%, transparent)); }' +
+      '.btn:focus-visible, .round:focus-visible, .toggle:focus-visible, .power:focus-visible, .link:focus-visible { outline: 2px solid var(--primary-color, #03a9f4); outline-offset: 2px; }' +
       '.btn.primary, .round.primary { background: color-mix(in srgb, var(--primary-color, #03a9f4) 16%, transparent); color: var(--primary-color, #03a9f4); }' +
       '.btn.primary:hover:not(:disabled), .round.primary:hover:not(:disabled) { background: color-mix(in srgb, var(--primary-color, #03a9f4) 24%, transparent); }' +
       '.btn.danger { background: color-mix(in srgb, var(--error-color, #db4437) 16%, transparent); color: var(--error-color, #db4437); }' +
@@ -1329,8 +1358,6 @@ var hcMini = (Base) => class extends Base {
     super.disconnectedCallback();
     document.removeEventListener('click', this._onUnzoom, true);
   }
-
-  getCardSize() { return this._zoomed ? super.getCardSize() : 2; }
 
   getGridOptions() { return this._zoomed ? super.getGridOptions() : { columns: 6, min_columns: 6 }; }
 
