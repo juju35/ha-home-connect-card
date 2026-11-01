@@ -3,10 +3,15 @@
 ## 1.11.6 - 2026-11-01
 ### Fixes
 - Mini cards at their default size (half a section of a Sections view) are readable again: the appliance name no longer disappears and the power button no longer sticks out of the card. On a narrow card the round buttons move under the text, the finish time wraps instead of being cut, the status pill shows only its coloured dot and the state is written above the program instead. Below about 200 px the Home Connect logo steps aside. The full card's buttons, percentage and door chip wrap at that width too.
-- The status pill no longer squeezes the appliance name: it takes at most half the header and shortens its text.
-- Keyboard: the focused button keeps the focus after the card redraws, so pressing Enter on Stop and then Enter again confirms it, and Pause, Resume, the option pills and the power button no longer send the focus back to the top of the page.
+- The status pill no longer squeezes the appliance name: it takes at most half the header and shortens its text. The name now gives way first, so at ordinary widths the pill shows its whole label ("Ready" was cut to "Re…" on a 320 px card).
+- Keyboard: the focused button keeps the focus after the card redraws, so pressing Enter on Stop and then Enter again confirms it, and Pause, Resume, the option pills and the power button no longer send the focus back to the top of the page. Giving the focus back never scrolls the page: after tapping Pause or the zoom button and scrolling away, the dashboard no longer jumps back to the card on every update (every 30 s during a program).
+- Long states ("Wymagane działanie", "Niedostępne"), the program and the finish time wrap instead of ending in "…" on a narrow card, and a long option label wraps inside its pill instead of sticking out of the card.
+- The card keeps a usable width in containers that size it from its content (layout-card, button-card, an `auto` grid column) instead of shrinking to its padding, and it still shrinks to fit two per row in a grid card, layout-card `1fr 1fr` grid or horizontal stack instead of overflowing it.
 - Screen readers announce whether an option pill or the power button is on or off.
 - Better contrast: the door, salt and rinse aid warnings, the state texts, error messages and the blue/red button labels are now readable on light and dark themes (at least 4.5:1). The delayed start purple follows the theme (`--purple-color`) and is no longer too dark on a dark card.
+
+### Maintenance
+- Screenshots: a capture is only rewritten when its pixels change, so a re-render that looks the same no longer shows up in the screenshots commit.
 
 ## 1.11.5 - 2026-11-01
 ### Changes
