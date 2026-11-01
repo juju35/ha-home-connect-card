@@ -276,3 +276,11 @@ test("getCardSize before the first render (no hass yet) or for an unavailable ap
   card.hass = hass;
   assert.equal(card.getCardSize(), 3);
 });
+
+test("every kind of button has a hover and a keyboard focus style", () => {
+  const css = new HomeConnectWasherCard()._styles();
+  for (const cls of ["btn", "round", "toggle", "power", "link", "zoom"]) {
+    assert.match(css, new RegExp(`\\.${cls}:hover`), `.${cls} has no :hover rule`);
+    assert.match(css, new RegExp(`\\.${cls}:focus-visible`), `.${cls} has no :focus-visible rule`);
+  }
+});

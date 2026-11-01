@@ -1116,6 +1116,10 @@ class HomeConnectBaseCard extends HTMLElement {
       '.btn { flex: 1; display: inline-flex; align-items: center; justify-content: center; gap: 6px; font-size: 13px; font-weight: 500;' +
         ' padding: 7px 10px; border-radius: 10px; background: var(--secondary-background-color, rgba(128,128,128,0.12)); color: var(--primary-text-color); }' +
       '.btn ha-icon { --mdc-icon-size: 18px; }' +
+      // Hover: a light veil over whatever the button's own tint is (neutral, on, primary, danger), so the state colour stays.
+      '.btn:hover:not(:disabled), .round:hover:not(:disabled), .toggle:hover:not(:disabled), .power:hover:not(:disabled), .link:hover:not(:disabled) {' +
+        ' background-image: linear-gradient(color-mix(in srgb, var(--primary-text-color) 8%, transparent), color-mix(in srgb, var(--primary-text-color) 8%, transparent)); }' +
+      '.btn:focus-visible, .round:focus-visible, .toggle:focus-visible, .power:focus-visible, .link:focus-visible { outline: 2px solid var(--primary-color, #03a9f4); outline-offset: 2px; }' +
       '.btn.primary, .round.primary { background: color-mix(in srgb, var(--primary-color, #03a9f4) 16%, transparent); color: var(--primary-color, #03a9f4); }' +
       '.btn.primary:hover:not(:disabled), .round.primary:hover:not(:disabled) { background: color-mix(in srgb, var(--primary-color, #03a9f4) 24%, transparent); }' +
       '.btn.danger { background: color-mix(in srgb, var(--error-color, #db4437) 16%, transparent); color: var(--error-color, #db4437); }' +
