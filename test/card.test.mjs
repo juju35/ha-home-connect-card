@@ -239,16 +239,71 @@ test("editor lists the connectivity, salt and rinse aid overrides where they app
   assert.ok(!roles("washer").includes("salt"));
 });
 
-test("I18N parity: every language has exactly the English keys and placeholders", () => {
+test("I18N parity: every language has exactly the English keys, array lengths and placeholders", () => {
   const { HcI18n } = loadCard("home-connect-card.js", ["HcI18n"]);
   const ref = Object.keys(HcI18n.en).sort();
-  for (const lang of ["fr", "de", "es"]) {
+  for (const lang of ["fr", "de", "es", "sr", "sr-Latn"]) {
+    assert.ok(HcI18n[lang], `${lang} dictionary`);
     assert.deepEqual(Object.keys(HcI18n[lang]).sort(), ref, `${lang} keys`);
     for (const k of ref) {
+      const en = HcI18n.en[k];
+      assert.equal(Array.isArray(HcI18n[lang][k]), Array.isArray(en), `${lang}.${k} type`);
+      if (Array.isArray(en)) assert.equal(HcI18n[lang][k].length, en.length, `${lang}.${k} length`);
       const ph = (s) => (String(s).match(/\{\w+\}/g) || []).sort();
       assert.deepEqual(ph(HcI18n[lang][k]), ph(HcI18n.en[k]), `${lang}.${k} placeholders`);
     }
   }
+});
+
+test("Serbian: sr is all Cyrillic and sr-Latn all Latin, brand names and placeholders aside", () => {
+  const { HcI18n } = loadCard("home-connect-card.js", ["HcI18n"]);
+  const strip = (s) => String(s).replace(/Home Connect|Home Assistant|\{\w+\}/g, "");
+  for (const [k, v] of Object.entries(HcI18n.sr)) assert.doesNotMatch(strip(v), /[A-Za-z]/, `sr.${k}`);
+  for (const [k, v] of Object.entries(HcI18n["sr-Latn"])) assert.doesNotMatch(strip(v), /[\u0400-\u04FF]/, `sr-Latn.${k}`);
+});
+
+test("language resolution: full code if translated, else the base language, else English", () => {
+  const lang = (code) => {
+    const card = new HomeConnectWasherCard();
+    card.setConfig({ language: code });
+    return card._lang();
+  };
+  assert.equal(lang("fr-FR"), "fr");
+  assert.equal(lang("sr-Latn"), "sr-Latn");
+  assert.equal(lang("sr"), "sr");
+  assert.equal(lang("pt-BR"), "en");
+  // Without a language option the card follows Home Assistant, sr-Latn included.
+  const card = new HomeConnectWasherCard();
+  card.setConfig({});
+  card.hass = { ...mockHass(), language: "sr-Latn" };
+  assert.equal(card._lang(), "sr-Latn");
+  assert.match(card.shadowRoot.innerHTML, /Mašina za veš|Radi/);
+  assert.equal(editor("washer", {}, "sr-Latn")._lang(), "sr-Latn");
+  assert.equal(editor("washer", {}, "fr-FR")._lang(), "fr");
+  assert.equal(editor("washer", { language: "sr" }, "fr")._lang(), "sr");
+});
+
+test("editor offers Српски and Srpski (latinica) and follows them", () => {
+  const options = editor("washer", {})._schema().find((s) => s.name === "language").selector.select.options;
+  assert.deepEqual(
+    JSON.parse(JSON.stringify(options.slice(-2))),
+    [
+      { value: "sr", label: "Српски" },
+      { value: "sr-Latn", label: "Srpski (latinica)" },
+    ],
+  );
+  assert.equal(editor("washer", { language: "sr" })._form.computeLabel({ name: "name" }), "Назив");
+  assert.equal(editor("washer", { language: "sr-Latn" })._form.computeLabel({ name: "name" }), "Naziv");
+  assert.equal(editor("washer", {}, "sr-Latn")._form.computeLabel({ name: "language" }), "Jezik");
+});
+
+test("finish time in sr-Latn is written in Latin script", () => {
+  const card = new HomeConnectWasherCard();
+  card.setConfig({ language: "sr-Latn" });
+  card._hass = mockHass();
+  const line = card._timeLine(new Date(Date.now() + 48 * 60000));
+  assert.match(line, /^Završava se u .* · još 48 min$/);
+  assert.doesNotMatch(line, /[\u0400-\u04FF]/);
 });
 
 test("editor offers Deutsch and Español and follows them", () => {
@@ -288,4 +343,59 @@ test("renaming the device or switching 12/24 h redraws the card at once", () => 
   const before = card._sig;
   card.hass = { ...card._hass, locale: { time_format: "12" } };
   assert.notEqual(card._sig, before);
+});
+
+// A washer switched on, ready, with a program to pick and two option drop-downs and two option switches:
+// the tallest layout (picker, options, Start).
+function readyWithOptions() {
+  const hass = mockHass({ washerState: "ready" });
+  hass.states["select.wm_active_program"] = st("unavailable");
+  const opt = (id, state, attributes) => {
+    hass.states[id] = st(state, attributes);
+    hass.entities[id] = { entity_id: id, device_id: "d2" };
+  };
+  opt("select.wm_temperature", "t40", { options: ["t30", "t40"] });
+  opt("select.wm_spin_speed", "r1200", { options: ["r800", "r1200"] });
+  opt("switch.wm_prewash", "off");
+  opt("switch.wm_speed_perfect", "on");
+  return hass;
+}
+
+test("getCardSize follows the blocks drawn (50 px rows, as measured on the captures)", () => {
+  const sized = (Card, hass, config = {}) => {
+    const card = new Card();
+    card.setConfig(config);
+    card.hass = hass;
+    return card;
+  };
+  // Running: header, illustration and Pause / Stop, about 200 px (dishwasher.png): 4 rows.
+  assert.equal(sized(HomeConnectWasherCard, mockHass()).getCardSize(), 4);
+  // Ready with picker, two drop-downs, two switches and Start, about 364 px (washer.png): 7 rows.
+  assert.equal(sized(HomeConnectWasherCard, readyWithOptions()).getCardSize(), 7);
+  // Same appliance with the picker, options and controls hidden: back to the header and illustration.
+  assert.equal(sized(HomeConnectWasherCard, readyWithOptions(), { show_program: false, show_options: false, show_controls: false }).getCardSize(), 3);
+  // Mini, about 142 px (dishwasher-mini.png): 3 rows; zoomed, the full card's size.
+  const Mini = customElements.get("home-connect-washer-mini-card");
+  const mini = sized(Mini, readyWithOptions());
+  assert.equal(mini.getCardSize(), 3);
+  mini._setZoom(true);
+  assert.equal(mini.getCardSize(), 7);
+});
+
+test("getCardSize before the first render (no hass yet) or for an unavailable appliance doesn't throw", () => {
+  const card = new HomeConnectWasherCard();
+  card.setConfig({ device_id: "d2" });
+  assert.equal(card.getCardSize(), 4);
+  const hass = readyWithOptions();
+  for (const id of Object.keys(hass.states)) hass.states[id] = st("unavailable");
+  card.hass = hass;
+  assert.equal(card.getCardSize(), 3);
+});
+
+test("every kind of button has a hover and a keyboard focus style", () => {
+  const css = new HomeConnectWasherCard()._styles();
+  for (const cls of ["btn", "round", "toggle", "power", "link", "zoom"]) {
+    assert.match(css, new RegExp(`\\.${cls}:hover`), `.${cls} has no :hover rule`);
+    assert.match(css, new RegExp(`\\.${cls}:focus-visible`), `.${cls} has no :focus-visible rule`);
+  }
 });

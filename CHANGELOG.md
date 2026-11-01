@@ -1,8 +1,25 @@
 # Changelog
 
+## 1.13.1 - 2026-11-01
+### Changes
+- Merged changes from upstream-repo
+
 ## 1.13.0 - 2026-10-30
 ### Changes
 - Added an optional active color for the custom `input_boolean` toggle, configurable in the visual editor or YAML.
+
+## 1.11.4 - 2026-11-01
+### Changes
+- Added Serbian (Cyrillic and Latin) translations: `sr` and `sr-Latn`, for the cards and the visual editor, whose language picker offers Српски and Srpski (latinica). With Home Assistant in `sr-Latn` the card picks the Latin script automatically.
+
+## 1.11.3 - 2026-10-29
+### Fixes
+- Masonry dashboards balance their columns better: the card now reports its real height (from 3 to about 8 rows depending on the program picker, options and buttons shown) instead of a fixed size.
+- Every button (Pause, option pills, power, Load options) now reacts when hovered and shows a clear focus ring when reached with the keyboard.
+
+### Maintenance
+- Screenshots: the animated GIFs are now identical from one run to the next (the card's animations were not paused while recording), so pull requests no longer get a needless screenshots commit.
+- CI: Dependabot also updates the pre-commit hooks, and the Biome lint job reads its version from `.pre-commit-config.yaml`.
 
 
 ## 1.12.0 - 2026-10-30

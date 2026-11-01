@@ -112,7 +112,9 @@ export async function render(shots, { icons = {}, hass = {}, extra = "" } = {}) 
 }
 
 // Records one shot as a looping GIF (screenshots/<file>.gif) — needs ffmpeg on PATH. Every animation is paused and
-// stepped frame by frame, so the GIF is identical whatever the machine's speed.
+// stepped frame by frame, so the GIF is identical whatever the machine's speed. document.getAnimations() leaves out
+// the card's own animations (they live in its shadow root), so every shadow root is walked as well: without that the
+// animations ran freely and each run wrote different GIFs.
 export async function animate(shot, { icons = {}, hass = {}, extra = "", fps = 20, seconds = 3 } = {}) {
   const browser = await chromium.launch(process.env.CHROMIUM_PATH ? { executablePath: process.env.CHROMIUM_PATH } : {});
   const page = await openCard(browser, shot, { icons, hass, extra });
@@ -123,7 +125,11 @@ export async function animate(shot, { icons = {}, hass = {}, extra = "", fps = 2
   const frames = Math.round(fps * seconds);
   for (let i = 0; i < frames; i++) {
     await page.evaluate((t) => {
-      for (const a of document.getAnimations()) {
+      const all = (root) => [
+        ...root.getAnimations(),
+        ...[...root.querySelectorAll("*")].flatMap((el) => (el.shadowRoot ? all(el.shadowRoot) : [])),
+      ];
+      for (const a of all(document)) {
         a.pause();
         a.currentTime = t;
       }
@@ -266,15 +272,26 @@ await render(
     { file: "dishwasher", type: "home-connect-dishwasher-card", theme: "light", width: 460, config: {} },
     { file: "dishwasher-dark", type: "home-connect-dishwasher-card", theme: "dark", width: 460, config: {} },
     { file: "dishwasher-options", type: "home-connect-dishwasher-card", theme: "light", width: 460, config: {}, hass: { states: ready } },
+    { file: "dishwasher-options-dark", type: "home-connect-dishwasher-card", theme: "dark", width: 460, config: {}, hass: { states: ready } },
     { file: "dishwasher-open", type: "home-connect-dishwasher-card", theme: "light", width: 460, config: {}, hass: { states: dishwasherOpen } },
+    { file: "dishwasher-open-dark", type: "home-connect-dishwasher-card", theme: "dark", width: 460, config: {}, hass: { states: dishwasherOpen } },
     { file: "washer", type: "home-connect-washer-card", theme: "light", width: 460, config: {} },
     { file: "washer-dark", type: "home-connect-washer-card", theme: "dark", width: 460, config: {} },
     { file: "washer-open", type: "home-connect-washer-card", theme: "light", width: 460, config: {}, hass: { states: washerOpen } },
+    { file: "washer-open-dark", type: "home-connect-washer-card", theme: "dark", width: 460, config: {}, hass: { states: washerOpen } },
     { file: "dishwasher-mini", type: "home-connect-dishwasher-mini-card", theme: "light", width: 380, config: {} },
     { file: "dishwasher-mini-dark", type: "home-connect-dishwasher-mini-card", theme: "dark", width: 380, config: {} },
     { file: "washer-mini", type: "home-connect-washer-mini-card", theme: "light", width: 380, config: {} },
+    { file: "washer-mini-dark", type: "home-connect-washer-mini-card", theme: "dark", width: 380, config: {} },
     {
       file: "washer-mini-zoom", type: "home-connect-washer-mini-card", theme: "light", width: 460, config: {},
+      after: async (page) => {
+        await page.locator("home-connect-washer-mini-card .zoom").click();
+        await page.mouse.move(0, 0);
+      },
+    },
+    {
+      file: "washer-mini-zoom-dark", type: "home-connect-washer-mini-card", theme: "dark", width: 460, config: {},
       after: async (page) => {
         await page.locator("home-connect-washer-mini-card .zoom").click();
         await page.mouse.move(0, 0);
@@ -290,35 +307,17 @@ await render(
 // running turns the drum and waves the water; a finished appliance draws its tick and twinkles
 // sparkles; the paused badge breathes; the delayed-start badge turns its clock hands. Each
 // reuses openCard through animate(), so no mount is duplicated.
-await animate(
+const gifs = [
   { file: "dishwasher-running", type: "home-connect-dishwasher-card", theme: "light", width: 460, config: {} },
-  { icons, hass }
-);
-await animate(
   { file: "washer-running", type: "home-connect-washer-card", theme: "light", width: 460, config: {}, hass: { states: washerRunning } },
-  { icons, hass }
-);
-await animate(
   { file: "dishwasher-finished", type: "home-connect-dishwasher-card", theme: "light", width: 460, config: {}, hass: { states: finished } },
-  { icons, hass }
-);
-await animate(
   { file: "washer-finished", type: "home-connect-washer-card", theme: "light", width: 460, config: {}, hass: { states: washerFinished } },
-  { icons, hass }
-);
-await animate(
   { file: "dishwasher-paused", type: "home-connect-dishwasher-card", theme: "light", width: 460, config: {}, hass: { states: dishwasherPaused } },
-  { icons, hass }
-);
-await animate(
   { file: "washer-paused", type: "home-connect-washer-card", theme: "light", width: 460, config: {}, hass: { states: washerPaused } },
-  { icons, hass }
-);
-await animate(
   { file: "dishwasher-delayed", type: "home-connect-dishwasher-card", theme: "light", width: 460, config: {}, hass: { states: dishwasherDelayed } },
-  { icons, hass }
-);
-await animate(
   { file: "washer-delayed", type: "home-connect-washer-card", theme: "light", width: 460, config: {}, hass: { states: washerDelayed } },
-  { icons, hass }
-);
+];
+// Every animation is also rendered in the other theme, with the exact same setup: X-dark.gif for a light X.gif,
+// X-light.gif for a dark one.
+const twin = (gif) => ({ ...gif, file: `${gif.file}-${gif.theme === "light" ? "dark" : "light"}`, theme: gif.theme === "light" ? "dark" : "light" });
+for (const gif of gifs.flatMap((g) => [g, twin(g)])) await animate(gif, { icons, hass });

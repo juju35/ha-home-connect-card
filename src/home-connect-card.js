@@ -349,8 +349,176 @@ var HcI18n = {
     en_connectivity: 'Conectividad',
     en_salt: 'Sal casi agotada',
     en_rinse_aid: 'Abrillantador casi agotado',
+  },
+  sr: {
+    dishwasher: 'Машина за судове',
+    washer: 'Машина за веш',
+    st_inactive: 'Неактивно',
+    st_ready: 'Спремно',
+    st_delayedstart: 'Одложени старт',
+    st_run: 'Ради',
+    st_pause: 'Паузирано',
+    st_actionrequired: 'Потребна радња',
+    st_finished: 'Завршено',
+    st_error: 'Грешка',
+    st_aborting: 'Прекидање',
+    st_off: 'Искључено',
+    st_unavailable: 'Недоступно',
+    door_open: 'Врата отворена',
+    door_closed: 'Врата затворена',
+    door_locked: 'Врата закључана',
+    program: 'Програм',
+    no_program: 'Нема програма',
+    ends_at: 'Завршава се у',
+    remaining: 'још {t}',
+    start: 'Покрени',
+    stop: 'Заустави',
+    confirm: 'Потврдити?',
+    pause: 'Паузирај',
+    resume: 'Настави',
+    power: 'Укључи / искључи',
+    options: 'Опције',
+    options_not_loaded: 'Опције за овај програм нису учитане',
+    reload_options: 'Учитај опције',
+    options_local: 'Подешава се на уређају: опције нису доступне',
+    starting: 'Покретање…',
+    start_rejected: 'Уређај је одбио покретање. Проверите врата и даљинско покретање, па покушајте поново.',
+    start_failed: 'Програм није могао да се покрене.',
+    reload_failed: 'Опције нису могле да се учитају. Покушајте поново за тренутак.',
+    restore_failed: 'Првобитни програм није могао да се врати: проверите га на уређају.',
+    power_off_unsupported: 'Овај уређај не може да се искључи даљински.',
+    power_failed: 'Уређај није одговорио на команду за укључивање / искључивање.',
+    command_failed: 'Уређај је одбио команду. Покушајте поново за тренутак.',
+    option_failed: 'Опција није могла да се промени. Покушајте поново за тренутак.',
+    salt: 'Со скоро потрошена',
+    rinse_aid: 'Средство за испирање скоро потрошено',
+    remote_start_off: 'Даљинско покретање искључено',
+    offline: 'Уређај ван мреже',
+    no_device: 'Није пронађен ниједан Home Connect уређај',
+    ed_device_id: 'Уређај',
+    ed_device_id_helper: 'Уређај из интеграције Home Connect',
+    ed_name: 'Назив',
+    ed_name_helper: 'Оставите празно за назив уређаја',
+    ed_icon: 'Икона',
+    ed_show_program: 'Избор програма',
+    ed_show_controls: 'Дугмад за контролу',
+    ed_show_options: 'Опције програма',
+    ed_show_power: 'Дугме за укључивање / искључивање',
+    ed_show_logo: 'Home Connect лого',
+    ed_zoom: 'Дугме за детаље',
+    ed_zoom_helper: 'Дугме у горњем десном углу које пребацује мини картицу на пун приказ и назад',
+    zoom_in: 'Прикажи целу картицу',
+    zoom_out: 'Назад на компактни приказ',
+    ed_show_alerts: 'Упозорења',
+    ed_language: 'Језик',
+    ed_language_helper: 'Оставите празно да бисте пратили језик Home Assistant-а',
+    ed_entities: 'Ентитети (напредно)',
+    ed_entities_helper: 'Аутоматски препознати на основу уређаја; попуните само да бисте заменили ентитет',
+    en_operation_state: 'Радно стање',
+    en_door: 'Врата',
+    en_progress: 'Напредак',
+    en_finish_time: 'Време завршетка',
+    en_selected_program: 'Изабрани програм',
+    en_active_program: 'Активни програм',
+    en_power: 'Напајање',
+    en_stop: 'Заустави програм',
+    en_pause: 'Паузирај програм',
+    en_resume: 'Настави програм',
+    en_remote_start: 'Даљинско покретање',
+    en_remote_control: 'Даљинско управљање',
+    en_connectivity: 'Повезаност',
+    en_salt: 'Со скоро потрошена',
+    en_rinse_aid: 'Средство за испирање скоро потрошено',
+  },
+  'sr-Latn': {
+    dishwasher: 'Mašina za sudove',
+    washer: 'Mašina za veš',
+    st_inactive: 'Neaktivno',
+    st_ready: 'Spremno',
+    st_delayedstart: 'Odloženi start',
+    st_run: 'Radi',
+    st_pause: 'Pauzirano',
+    st_actionrequired: 'Potrebna radnja',
+    st_finished: 'Završeno',
+    st_error: 'Greška',
+    st_aborting: 'Prekidanje',
+    st_off: 'Isključeno',
+    st_unavailable: 'Nedostupno',
+    door_open: 'Vrata otvorena',
+    door_closed: 'Vrata zatvorena',
+    door_locked: 'Vrata zaključana',
+    program: 'Program',
+    no_program: 'Nema programa',
+    ends_at: 'Završava se u',
+    remaining: 'još {t}',
+    start: 'Pokreni',
+    stop: 'Zaustavi',
+    confirm: 'Potvrditi?',
+    pause: 'Pauziraj',
+    resume: 'Nastavi',
+    power: 'Uključi / isključi',
+    options: 'Opcije',
+    options_not_loaded: 'Opcije za ovaj program nisu učitane',
+    reload_options: 'Učitaj opcije',
+    options_local: 'Podešava se na uređaju: opcije nisu dostupne',
+    starting: 'Pokretanje…',
+    start_rejected: 'Uređaj je odbio pokretanje. Proverite vrata i daljinsko pokretanje, pa pokušajte ponovo.',
+    start_failed: 'Program nije mogao da se pokrene.',
+    reload_failed: 'Opcije nisu mogle da se učitaju. Pokušajte ponovo za trenutak.',
+    restore_failed: 'Prvobitni program nije mogao da se vrati: proverite ga na uređaju.',
+    power_off_unsupported: 'Ovaj uređaj ne može da se isključi daljinski.',
+    power_failed: 'Uređaj nije odgovorio na komandu za uključivanje / isključivanje.',
+    command_failed: 'Uređaj je odbio komandu. Pokušajte ponovo za trenutak.',
+    option_failed: 'Opcija nije mogla da se promeni. Pokušajte ponovo za trenutak.',
+    salt: 'So skoro potrošena',
+    rinse_aid: 'Sredstvo za ispiranje skoro potrošeno',
+    remote_start_off: 'Daljinsko pokretanje isključeno',
+    offline: 'Uređaj van mreže',
+    no_device: 'Nije pronađen nijedan Home Connect uređaj',
+    ed_device_id: 'Uređaj',
+    ed_device_id_helper: 'Uređaj iz integracije Home Connect',
+    ed_name: 'Naziv',
+    ed_name_helper: 'Ostavite prazno za naziv uređaja',
+    ed_icon: 'Ikona',
+    ed_show_program: 'Izbor programa',
+    ed_show_controls: 'Dugmad za kontrolu',
+    ed_show_options: 'Opcije programa',
+    ed_show_power: 'Dugme za uključivanje / isključivanje',
+    ed_show_logo: 'Home Connect logo',
+    ed_zoom: 'Dugme za detalje',
+    ed_zoom_helper: 'Dugme u gornjem desnom uglu koje prebacuje mini karticu na pun prikaz i nazad',
+    zoom_in: 'Prikaži celu karticu',
+    zoom_out: 'Nazad na kompaktni prikaz',
+    ed_show_alerts: 'Upozorenja',
+    ed_language: 'Jezik',
+    ed_language_helper: 'Ostavite prazno da biste pratili jezik Home Assistant-a',
+    ed_entities: 'Entiteti (napredno)',
+    ed_entities_helper: 'Automatski prepoznati na osnovu uređaja; popunite samo da biste zamenili entitet',
+    en_operation_state: 'Radno stanje',
+    en_door: 'Vrata',
+    en_progress: 'Napredak',
+    en_finish_time: 'Vreme završetka',
+    en_selected_program: 'Izabrani program',
+    en_active_program: 'Aktivni program',
+    en_power: 'Napajanje',
+    en_stop: 'Zaustavi program',
+    en_pause: 'Pauziraj program',
+    en_resume: 'Nastavi program',
+    en_remote_start: 'Daljinsko pokretanje',
+    en_remote_control: 'Daljinsko upravljanje',
+    en_connectivity: 'Povezanost',
+    en_salt: 'So skoro potrošena',
+    en_rinse_aid: 'Sredstvo za ispiranje skoro potrošeno',
   }
 };
+
+// Card language: the full code when the dictionary has it (sr-Latn), else the part before the dash, else English.
+function hcLang(code) {
+  var l = String(code || 'en');
+  if (HcI18n[l]) return l;
+  l = l.split('-')[0];
+  return HcI18n[l] ? l : 'en';
+}
 
 function hcT(lang, key) {
   var strings = HcI18n[lang] || HcI18n.en;
@@ -554,6 +722,22 @@ var HC_SITE = 'https://www.home-connect.com';
 
 // Appliance illustrations (front view). The state color lights the display; when running the
 // washer drum turns and the dishwasher projects its floor light, like the real appliances.
+// Heights (px, with the 10 px gap above each block) used for getCardSize, measured in Chromium on the README captures.
+var HC_PX = {
+  base: 158, // padding, header and illustration
+  miniBase: 142, // padding, header and the illustration row of a mini card
+  program: 58,
+  section: 26,
+  selectRow: 56,
+  toggleRow: 28,
+  reload: 30,
+  error: 26,
+  controls: 44,
+  hint: 20,
+};
+
+function hcRows(px) { return Math.max(1, Math.round(px / 50)); }
+
 var HC_ART = {
   washer: '<svg viewBox="0 0 80 94" aria-hidden="true">' +
     '<defs><linearGradient id="hc-wb" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffffff"/><stop offset="1" stop-color="#e2e6eb"/></linearGradient>' +
@@ -722,14 +906,13 @@ class HomeConnectBaseCard extends HTMLElement {
     this._sig = null;
   }
 
-  getCardSize() { return 4; }
+  // Masonry columns are balanced on this: the height of the blocks last drawn, in 50 px rows.
+  getCardSize() { return this._rows || (this._compact() ? 3 : 4); }
 
   getGridOptions() { return { columns: 12, min_columns: 6 }; }
 
   _lang() {
-    var l = (this._config?.language) || (this._hass?.language) || document.documentElement.lang || 'en';
-    l = l.split('-')[0];
-    return HcI18n[l] ? l : 'en';
+    return hcLang((this._config?.language) || (this._hass?.language) || document.documentElement.lang);
   }
 
   _t(k) { return hcT(this._lang(), k); }
@@ -869,6 +1052,7 @@ class HomeConnectBaseCard extends HTMLElement {
     this._ticking = false;
 
     if (!r.deviceId && !c.entities) {
+      this._rows = 1;
       this.shadowRoot.innerHTML = `${this._styles()}<ha-card><div class="empty"><ha-icon icon="${hcEsc(icon)}"></ha-icon>${this._t('no_device')}</div></ha-card>`;
       return;
     }
@@ -924,7 +1108,7 @@ class HomeConnectBaseCard extends HTMLElement {
     }
 
     // Program options: selects (temperature, spin…) and switches (intensive zone, hygiene…).
-    var optionsHtml = '';
+    var optionsHtml = '', optPx = 0;
     // Options can't be changed once a program runs, so they're only shown before starting.
     if (c.show_options && online && powerOn && !running) {
       // Options the selected program doesn't support (or not loaded yet) stay visible, greyed out.
@@ -956,6 +1140,10 @@ class HomeConnectBaseCard extends HTMLElement {
           (canReload ? `<button class="link" data-action="reload_options"${reloadOff ? ' disabled' : ''}${local ? ` title="${hcEsc(this._t('options_local'))}"` : ''}><ha-icon icon="mdi:refresh"></ha-icon>${this._t('reload_options')}</button>` : '') + '</div>';
       }
       if (selects || toggles) {
+        // Drop-downs sit three to a row at the usual card width, the option pills about three to a row too.
+        var nSel = ent.option_selects.filter((id) => this._st(id)).length;
+        var nTog = ent.option_switches.filter((id) => this._st(id)).length;
+        optPx = HC_PX.section + Math.ceil(nSel / 3) * HC_PX.selectRow + Math.ceil(nTog / 3) * HC_PX.toggleRow + (reload ? HC_PX.reload : 0);
         optionsHtml = '<div class="section"><div class="section-title"><ha-icon icon="mdi:tune-variant"></ha-icon>' + this._t('options') + '</div>' +
           (selects ? `<div class="grid">${selects}</div>` : '') +
           (toggles ? `<div class="toggles">${toggles}</div>` : '') + reload + '</div>';
@@ -1014,11 +1202,14 @@ class HomeConnectBaseCard extends HTMLElement {
     var sub = progLabel || this._t(kind);
 
     if (this._compact()) {
+      this._rows = hcRows(HC_PX.miniBase + (this._error ? HC_PX.error : 0));
       this.shadowRoot.innerHTML = this._miniHtml({ c, ent, name, color, state, statusText, running, online, powerOn, progress,
         finish, progLabel, chips: chips.filter((x) => x.indexOf('chip warn') >= 0 || !online), art, logo, powerBtn, customToggleBtn });
       return;
     }
 
+    this._rows = hcRows(HC_PX.base + (programHtml ? HC_PX.program : 0) + optPx + (errorHtml ? HC_PX.error : 0) +
+      (controls ? HC_PX.controls : 0) + (controls.indexOf('class="hint"') >= 0 ? HC_PX.hint : 0));
     this.shadowRoot.innerHTML = this._styles(color) + '<ha-card>' +
       '<div class="header">' + logo +
         '<div class="titles"><div class="name">' + hcEsc(name) + '</div><div class="sub">' + hcEsc(sub) + '</div></div>' +
@@ -1139,6 +1330,10 @@ class HomeConnectBaseCard extends HTMLElement {
       '.btn { flex: 1; display: inline-flex; align-items: center; justify-content: center; gap: 6px; font-size: 13px; font-weight: 500;' +
         ' padding: 7px 10px; border-radius: 10px; background: var(--secondary-background-color, rgba(128,128,128,0.12)); color: var(--primary-text-color); }' +
       '.btn ha-icon { --mdc-icon-size: 18px; }' +
+      // Hover: a light veil over whatever the button's own tint is (neutral, on, primary, danger), so the state colour stays.
+      '.btn:hover:not(:disabled), .round:hover:not(:disabled), .toggle:hover:not(:disabled), .power:hover:not(:disabled), .link:hover:not(:disabled) {' +
+        ' background-image: linear-gradient(color-mix(in srgb, var(--primary-text-color) 8%, transparent), color-mix(in srgb, var(--primary-text-color) 8%, transparent)); }' +
+      '.btn:focus-visible, .round:focus-visible, .toggle:focus-visible, .power:focus-visible, .link:focus-visible { outline: 2px solid var(--primary-color, #03a9f4); outline-offset: 2px; }' +
       '.btn.primary, .round.primary { background: color-mix(in srgb, var(--primary-color, #03a9f4) 16%, transparent); color: var(--primary-color, #03a9f4); }' +
       '.btn.primary:hover:not(:disabled), .round.primary:hover:not(:disabled) { background: color-mix(in srgb, var(--primary-color, #03a9f4) 24%, transparent); }' +
       '.btn.danger { background: color-mix(in srgb, var(--error-color, #db4437) 16%, transparent); color: var(--error-color, #db4437); }' +
@@ -1392,8 +1587,6 @@ var hcMini = (Base) => class extends Base {
     document.removeEventListener('click', this._onUnzoom, true);
   }
 
-  getCardSize() { return this._zoomed ? super.getCardSize() : 2; }
-
   getGridOptions() { return this._zoomed ? super.getGridOptions() : { columns: 6, min_columns: 6 }; }
 
   _compact() { return !this._zoomed; }
@@ -1475,8 +1668,7 @@ class HomeConnectCardEditor extends HTMLElement {
   }
 
   _lang() {
-    var lang = ((this._config?.language) || (this._hass?.language) || 'en').split('-')[0];
-    return HcI18n[lang] ? lang : 'en';
+    return hcLang((this._config?.language) || (this._hass?.language));
   }
 
   _schema() {
@@ -1518,7 +1710,7 @@ class HomeConnectCardEditor extends HTMLElement {
       },
       {
         name: 'language',
-        selector: { select: { mode: 'dropdown', options: [{ value: 'fr', label: 'Français' }, { value: 'en', label: 'English' }, { value: 'de', label: 'Deutsch' }, { value: 'es', label: 'Español' }] } },
+        selector: { select: { mode: 'dropdown', options: [{ value: 'fr', label: 'Français' }, { value: 'en', label: 'English' }, { value: 'de', label: 'Deutsch' }, { value: 'es', label: 'Español' }, { value: 'sr', label: 'Српски' }, { value: 'sr-Latn', label: 'Srpski (latinica)' }] } },
       },
       {
         type: 'expandable', name: 'entities', title: t('ed_entities'), flatten: false,
