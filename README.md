@@ -84,7 +84,7 @@ entity: sensor.washing_machine_operation_state
 type: custom:home-connect-washer-mini-card
 ```
 
-The mini card shows the appliance, its state, the program, the progress and finish time, the alerts, and round Start / Pause / Resume and power buttons. The detail button (top right) unfolds the full card with every option; a click anywhere else on the page folds it back. It takes the same options as the full card, which apply once unfolded, plus `zoom`.
+The mini card shows the appliance, its state, the program, the progress and finish time, the alerts, and round Start / Pause / Resume and power buttons. The detail button (top right) unfolds the full card with every option; a click anywhere else on the page folds it back. It takes the same options as the full card, which apply once unfolded, plus `zoom`. At its default size in a Sections view (6 columns), the round buttons sit under the text and the status pill shows only its coloured dot, the state being written above the program.
 
 Use either `device_id` (what the visual editor writes) or `entity` (any entity of the appliance). With neither, the card uses the first dishwasher / washing machine it finds.
 
@@ -120,7 +120,7 @@ entities:
 | `show_controls` | ❌ | `true` | Show Start / Pause / Resume / Stop buttons |
 | `show_alerts` | ❌ | `true` | Show salt and rinse aid alerts |
 | `show_power` | ❌ | `true` | Show the power button (turn off for appliances that can't be switched on / off remotely) |
-| `show_logo` | ❌ | `true` | Show the Home Connect logo in the header |
+| `show_logo` | ❌ | `true` | Show the Home Connect logo in the header (left out when the card is narrower than about 200 px) |
 | `zoom` | ❌ | `true` | Mini cards only: detail button at the top right that unfolds the full card (a click elsewhere folds it back) |
 | `language` | ❌ | Auto | Force language: `fr`, `en`, `de`, `es`, `sr`, `sr-Latn`, `it`, `nl`, `pt` or `pl` (auto-detects from HA settings) |
 | `entities` | ❌ | Auto | Override detected entities (see below) |
