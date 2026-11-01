@@ -179,16 +179,71 @@ test("editor lists the connectivity, salt and rinse aid overrides where they app
   assert.ok(!roles("washer").includes("salt"));
 });
 
-test("I18N parity: every language has exactly the English keys and placeholders", () => {
+test("I18N parity: every language has exactly the English keys, array lengths and placeholders", () => {
   const { HcI18n } = loadCard("home-connect-card.js", ["HcI18n"]);
   const ref = Object.keys(HcI18n.en).sort();
-  for (const lang of ["fr", "de", "es"]) {
+  for (const lang of ["fr", "de", "es", "sr", "sr-Latn"]) {
+    assert.ok(HcI18n[lang], `${lang} dictionary`);
     assert.deepEqual(Object.keys(HcI18n[lang]).sort(), ref, `${lang} keys`);
     for (const k of ref) {
+      const en = HcI18n.en[k];
+      assert.equal(Array.isArray(HcI18n[lang][k]), Array.isArray(en), `${lang}.${k} type`);
+      if (Array.isArray(en)) assert.equal(HcI18n[lang][k].length, en.length, `${lang}.${k} length`);
       const ph = (s) => (String(s).match(/\{\w+\}/g) || []).sort();
       assert.deepEqual(ph(HcI18n[lang][k]), ph(HcI18n.en[k]), `${lang}.${k} placeholders`);
     }
   }
+});
+
+test("Serbian: sr is all Cyrillic and sr-Latn all Latin, brand names and placeholders aside", () => {
+  const { HcI18n } = loadCard("home-connect-card.js", ["HcI18n"]);
+  const strip = (s) => String(s).replace(/Home Connect|Home Assistant|\{\w+\}/g, "");
+  for (const [k, v] of Object.entries(HcI18n.sr)) assert.doesNotMatch(strip(v), /[A-Za-z]/, `sr.${k}`);
+  for (const [k, v] of Object.entries(HcI18n["sr-Latn"])) assert.doesNotMatch(strip(v), /[\u0400-\u04FF]/, `sr-Latn.${k}`);
+});
+
+test("language resolution: full code if translated, else the base language, else English", () => {
+  const lang = (code) => {
+    const card = new HomeConnectWasherCard();
+    card.setConfig({ language: code });
+    return card._lang();
+  };
+  assert.equal(lang("fr-FR"), "fr");
+  assert.equal(lang("sr-Latn"), "sr-Latn");
+  assert.equal(lang("sr"), "sr");
+  assert.equal(lang("pt-BR"), "en");
+  // Without a language option the card follows Home Assistant, sr-Latn included.
+  const card = new HomeConnectWasherCard();
+  card.setConfig({});
+  card.hass = { ...mockHass(), language: "sr-Latn" };
+  assert.equal(card._lang(), "sr-Latn");
+  assert.match(card.shadowRoot.innerHTML, /Mašina za veš|Radi/);
+  assert.equal(editor("washer", {}, "sr-Latn")._lang(), "sr-Latn");
+  assert.equal(editor("washer", {}, "fr-FR")._lang(), "fr");
+  assert.equal(editor("washer", { language: "sr" }, "fr")._lang(), "sr");
+});
+
+test("editor offers Српски and Srpski (latinica) and follows them", () => {
+  const options = editor("washer", {})._schema().find((s) => s.name === "language").selector.select.options;
+  assert.deepEqual(
+    JSON.parse(JSON.stringify(options.slice(-2))),
+    [
+      { value: "sr", label: "Српски" },
+      { value: "sr-Latn", label: "Srpski (latinica)" },
+    ],
+  );
+  assert.equal(editor("washer", { language: "sr" })._form.computeLabel({ name: "name" }), "Назив");
+  assert.equal(editor("washer", { language: "sr-Latn" })._form.computeLabel({ name: "name" }), "Naziv");
+  assert.equal(editor("washer", {}, "sr-Latn")._form.computeLabel({ name: "language" }), "Jezik");
+});
+
+test("finish time in sr-Latn is written in Latin script", () => {
+  const card = new HomeConnectWasherCard();
+  card.setConfig({ language: "sr-Latn" });
+  card._hass = mockHass();
+  const line = card._timeLine(new Date(Date.now() + 48 * 60000));
+  assert.match(line, /^Završava se u .* · još 48 min$/);
+  assert.doesNotMatch(line, /[\u0400-\u04FF]/);
 });
 
 test("editor offers Deutsch and Español and follows them", () => {
