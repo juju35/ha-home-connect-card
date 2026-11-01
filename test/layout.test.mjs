@@ -25,9 +25,27 @@ test("the card is a size container, so its layout follows its own width (Section
   assert.match(rule("ha-card"), /container-type: inline-size/);
 });
 
+test("size container: the card keeps a usable width in intrinsic-width hosts (inline-block, auto grid column, flex row)", () => {
+  // Inline-size containment makes the card's own content width 0: without an intrinsic size it fell to its
+  // 24 px of padding in layout-card, button-card or an `auto` grid column (measured in Chromium, see the PR).
+  const m = rule("ha-card").match(/contain-intrinsic-inline-size: (\d+)px/);
+  assert.ok(m, "no contain-intrinsic-inline-size on the size container");
+  assert.ok(Number(m[1]) >= 200 && Number(m[1]) <= 320, `intrinsic width ${m[1]} px`);
+});
+
+test("size container: the intrinsic width never stops the card from shrinking in a `1fr 1fr` grid or a flex row", () => {
+  // The intrinsic width becomes the host's min-content width: without `min-width: 0` on the host, two cards in a
+  // `1fr 1fr` grid (layout-card, grid card) or a horizontal stack kept 300 px each and overflowed a 320-500 px row.
+  const host = rule(":host");
+  assert.match(host, /min-width: 0;/);
+  assert.doesNotMatch(host, /min-width: [1-9]\d*px/, "a px min-width on the host overflows narrow rows");
+});
+
 test("header: the title block shrinks with an ellipsis but always keeps a few characters", () => {
   const t = rule(".titles");
-  assert.match(t, /flex: 1 1 auto/);
+  // flex-basis 0: the title takes what is left once the pill and the buttons are laid out, so it no longer
+  // squeezes the pill ("Ready" cut to "Re…" on a 320 px card); its min-width keeps a few characters.
+  assert.match(t, /flex: 1 1 0(px)?;/);
   assert.match(t, /min-width: \d+(\.\d+)?ch/);
   const n = rule(".name");
   for (const d of [/overflow: hidden/, /text-overflow: ellipsis/, /white-space: nowrap/]) assert.match(n, d);
@@ -65,8 +83,24 @@ test("narrow card: the pill only shows its dot, the logo steps aside, the mini c
   // Mini card: the round buttons take their own row, so the info column gets the card's width back.
   assert.match(all, /ha-card\.mini \.content \{[^}]*flex-wrap: wrap/);
   assert.match(all, /ha-card\.mini \.mcontrols \{[^}]*flex: 1 1 100%/);
-  // and the finish time wraps instead of being cut.
-  assert.match(all, /ha-card\.mini \.line span \{[^}]*white-space: normal/);
+});
+
+test("values wrap instead of being cut: state, finish time, program (6 columns on a phone, and 280-364 px)", () => {
+  // Measured in Chromium: "Wymagane działanie" / "Niedostępne" ended in "…" on a 156-280 px full card, and the
+  // mini card's finish time ("Koniec o 10:56 · zostało 2 h 12") on a 364 px one.
+  for (const sel of [".big .state", ".state-big", ".line span"]) {
+    const r = rule(sel);
+    assert.doesNotMatch(r, /white-space: nowrap|text-overflow: ellipsis/, `${sel} is cut`);
+    assert.match(r, /min-width: 0/, `${sel} can't shrink`);
+    assert.match(r, /overflow-wrap: (break-word|anywhere)/, `${sel}: a long word overflows`);
+  }
+});
+
+test("option pills never get wider than the card: a long label wraps inside the pill", () => {
+  const t = rule(".toggle");
+  assert.match(t, /max-width: 100%/);
+  assert.match(t, /box-sizing: border-box/);
+  assert.match(t, /overflow-wrap: anywhere/);
 });
 
 test("mini card: the minimum width stays 6 columns (it is readable there now)", () => {
