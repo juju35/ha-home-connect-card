@@ -179,10 +179,13 @@ test("editor lists the connectivity, salt and rinse aid overrides where they app
   assert.ok(!roles("washer").includes("salt"));
 });
 
-test("I18N parity: every language has exactly the English keys, array lengths and placeholders", () => {
+const LANGS = ["fr", "de", "es", "sr", "sr-Latn", "it", "nl", "pt", "pl"];
+
+test("I18N parity: every language has exactly the English keys, array lengths and placeholders, and no empty value", () => {
   const { HcI18n } = loadCard("home-connect-card.js", ["HcI18n"]);
   const ref = Object.keys(HcI18n.en).sort();
-  for (const lang of ["fr", "de", "es", "sr", "sr-Latn"]) {
+  assert.deepEqual(Object.keys(HcI18n).sort(), ["en", ...LANGS].sort(), "dictionaries");
+  for (const lang of LANGS) {
     assert.ok(HcI18n[lang], `${lang} dictionary`);
     assert.deepEqual(Object.keys(HcI18n[lang]).sort(), ref, `${lang} keys`);
     for (const k of ref) {
@@ -191,6 +194,7 @@ test("I18N parity: every language has exactly the English keys, array lengths an
       if (Array.isArray(en)) assert.equal(HcI18n[lang][k].length, en.length, `${lang}.${k} length`);
       const ph = (s) => (String(s).match(/\{\w+\}/g) || []).sort();
       assert.deepEqual(ph(HcI18n[lang][k]), ph(HcI18n.en[k]), `${lang}.${k} placeholders`);
+      for (const v of [].concat(HcI18n[lang][k])) assert.ok(String(v).trim(), `${lang}.${k} not empty`);
     }
   }
 });
@@ -211,7 +215,13 @@ test("language resolution: full code if translated, else the base language, else
   assert.equal(lang("fr-FR"), "fr");
   assert.equal(lang("sr-Latn"), "sr-Latn");
   assert.equal(lang("sr"), "sr");
-  assert.equal(lang("pt-BR"), "en");
+  assert.equal(lang("it-IT"), "it");
+  assert.equal(lang("nl-BE"), "nl");
+  assert.equal(lang("pt"), "pt");
+  // No Brazilian dictionary: pt-BR falls back to European Portuguese on purpose.
+  assert.equal(lang("pt-BR"), "pt");
+  assert.equal(lang("pl-PL"), "pl");
+  assert.equal(lang("ja"), "en");
   // Without a language option the card follows Home Assistant, sr-Latn included.
   const card = new HomeConnectWasherCard();
   card.setConfig({});
@@ -221,12 +231,39 @@ test("language resolution: full code if translated, else the base language, else
   assert.equal(editor("washer", {}, "sr-Latn")._lang(), "sr-Latn");
   assert.equal(editor("washer", {}, "fr-FR")._lang(), "fr");
   assert.equal(editor("washer", { language: "sr" }, "fr")._lang(), "sr");
+  assert.equal(editor("washer", {}, "pt-BR")._lang(), "pt");
+  assert.equal(editor("washer", {}, "pl-PL")._lang(), "pl");
+});
+
+test("editor offers every language, Italiano, Nederlands, Português and Polski last, and follows them", () => {
+  const options = editor("washer", {})._schema().find((s) => s.name === "language").selector.select.options;
+  assert.deepEqual(JSON.parse(JSON.stringify(options)), [
+    { value: "fr", label: "Français" },
+    { value: "en", label: "English" },
+    { value: "de", label: "Deutsch" },
+    { value: "es", label: "Español" },
+    { value: "sr", label: "Српски" },
+    { value: "sr-Latn", label: "Srpski (latinica)" },
+    { value: "it", label: "Italiano" },
+    { value: "nl", label: "Nederlands" },
+    { value: "pt", label: "Português" },
+    { value: "pl", label: "Polski" },
+  ]);
+  const label = (language) => editor("washer", { language })._form.computeLabel({ name: "language" });
+  assert.equal(label("it"), "Lingua");
+  assert.equal(label("nl"), "Taal");
+  assert.equal(label("pt"), "Idioma");
+  assert.equal(label("pl"), "Język");
+  const card = new HomeConnectWasherCard();
+  card.setConfig({});
+  card.hass = { ...mockHass(), language: "pl" };
+  assert.match(card.shadowRoot.innerHTML, /Pralka|Pracuje/);
 });
 
 test("editor offers Српски and Srpski (latinica) and follows them", () => {
   const options = editor("washer", {})._schema().find((s) => s.name === "language").selector.select.options;
   assert.deepEqual(
-    JSON.parse(JSON.stringify(options.slice(-2))),
+    JSON.parse(JSON.stringify(options.filter((o) => o.value.startsWith("sr")))),
     [
       { value: "sr", label: "Српски" },
       { value: "sr-Latn", label: "Srpski (latinica)" },

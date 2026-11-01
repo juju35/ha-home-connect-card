@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.11.5 - 2026-11-01
+### Changes
+- Added Italian, Dutch, European Portuguese and Polish translations: `it`, `nl`, `pt` and `pl`, for the cards and the visual editor, whose language picker offers Italiano, Nederlands, Português and Polski. Home Assistant in `pt-BR` gets the European Portuguese texts.
+
 ## 1.11.4 - 2026-11-01
 ### Changes
 - Added Serbian (Cyrillic and Latin) translations: `sr` and `sr-Latn`, for the cards and the visual editor, whose language picker offers Српски and Srpski (latinica). With Home Assistant in `sr-Latn` the card picks the Latin script automatically.

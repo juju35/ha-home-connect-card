@@ -1,6 +1,6 @@
 {
   "name": "ha-home-connect-card",
-  "version": "1.11.4",
+  "version": "1.11.5",
   "description": "Lovelace cards for Home Connect dishwashers and washing machines in Home Assistant.",
   "private": true,
   "type": "module",
