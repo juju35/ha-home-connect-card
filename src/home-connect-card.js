@@ -1304,7 +1304,9 @@ class HomeConnectBaseCard extends HTMLElement {
 
   _refocus(focus) {
     var el = Array.from(this.shadowRoot.querySelectorAll(`[data-${focus[0]}]`)).find((n) => n.dataset[focus[0]] === focus[1]);
-    if (el) el.focus();
+    // preventScroll: a button clicked earlier keeps the focus, and every later render (hass update, 30 s tick)
+    // gives it back; that must not scroll the dashboard back to the card.
+    if (el) el.focus({ preventScroll: true });
   }
 
   _powerKey(r) { return r.deviceId || r.ent.power; }
