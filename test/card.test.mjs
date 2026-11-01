@@ -229,3 +229,50 @@ test("renaming the device or switching 12/24 h redraws the card at once", () => 
   card.hass = { ...card._hass, locale: { time_format: "12" } };
   assert.notEqual(card._sig, before);
 });
+
+// A washer switched on, ready, with a program to pick and two option drop-downs and two option switches:
+// the tallest layout (picker, options, Start).
+function readyWithOptions() {
+  const hass = mockHass({ washerState: "ready" });
+  hass.states["select.wm_active_program"] = st("unavailable");
+  const opt = (id, state, attributes) => {
+    hass.states[id] = st(state, attributes);
+    hass.entities[id] = { entity_id: id, device_id: "d2" };
+  };
+  opt("select.wm_temperature", "t40", { options: ["t30", "t40"] });
+  opt("select.wm_spin_speed", "r1200", { options: ["r800", "r1200"] });
+  opt("switch.wm_prewash", "off");
+  opt("switch.wm_speed_perfect", "on");
+  return hass;
+}
+
+test("getCardSize follows the blocks drawn (50 px rows, as measured on the captures)", () => {
+  const sized = (Card, hass, config = {}) => {
+    const card = new Card();
+    card.setConfig(config);
+    card.hass = hass;
+    return card;
+  };
+  // Running: header, illustration and Pause / Stop, about 200 px (dishwasher.png): 4 rows.
+  assert.equal(sized(HomeConnectWasherCard, mockHass()).getCardSize(), 4);
+  // Ready with picker, two drop-downs, two switches and Start, about 364 px (washer.png): 7 rows.
+  assert.equal(sized(HomeConnectWasherCard, readyWithOptions()).getCardSize(), 7);
+  // Same appliance with the picker, options and controls hidden: back to the header and illustration.
+  assert.equal(sized(HomeConnectWasherCard, readyWithOptions(), { show_program: false, show_options: false, show_controls: false }).getCardSize(), 3);
+  // Mini, about 142 px (dishwasher-mini.png): 3 rows; zoomed, the full card's size.
+  const Mini = customElements.get("home-connect-washer-mini-card");
+  const mini = sized(Mini, readyWithOptions());
+  assert.equal(mini.getCardSize(), 3);
+  mini._setZoom(true);
+  assert.equal(mini.getCardSize(), 7);
+});
+
+test("getCardSize before the first render (no hass yet) or for an unavailable appliance doesn't throw", () => {
+  const card = new HomeConnectWasherCard();
+  card.setConfig({ device_id: "d2" });
+  assert.equal(card.getCardSize(), 4);
+  const hass = readyWithOptions();
+  for (const id of Object.keys(hass.states)) hass.states[id] = st("unavailable");
+  card.hass = hass;
+  assert.equal(card.getCardSize(), 3);
+});
