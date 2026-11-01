@@ -855,7 +855,8 @@ function hcDelay(ms) {
 var HC_STATE_COLORS = {
   run: 'var(--info-color, #039be5)',
   ready: 'var(--info-color, #039be5)',
-  delayedstart: '#8e24aa',
+  // HA's purple, lighter than the old #8e24aa, which was hard to read on a dark card (texts mix it with the text colour).
+  delayedstart: 'var(--hc-delayed-color, var(--purple-color, #926bc7))',
   pause: 'var(--warning-color, #ffa600)',
   actionrequired: 'var(--warning-color, #ffa600)',
   finished: 'var(--success-color, #43a047)',
@@ -1028,6 +1029,14 @@ var HC_PX = {
   controls: 44,
   hint: 20,
 };
+
+// The control under focus, as [data attribute, value], to find its replacement after a render.
+function hcFocusKey(el) {
+  var ds = el?.dataset;
+  if (!ds) return null;
+  var k = ['action', 'toggle', 'select'].find((a) => ds[a]);
+  return k ? [k, ds[k]] : null;
+}
 
 function hcRows(px) { return Math.max(1, Math.round(px / 50)); }
 
@@ -1286,7 +1295,16 @@ class HomeConnectBaseCard extends HTMLElement {
     if (active && active.tagName === 'SELECT') return;
     this._sig = sig;
     this._r = r;
+    // innerHTML replaces every control: the one that had the keyboard focus gets it back (an armed Stop
+    // must stay focused for a second Enter to confirm it).
+    var focus = hcFocusKey(active);
     this._render(r);
+    if (focus) this._refocus(focus);
+  }
+
+  _refocus(focus) {
+    var el = Array.from(this.shadowRoot.querySelectorAll(`[data-${focus[0]}]`)).find((n) => n.dataset[focus[0]] === focus[1]);
+    if (el) el.focus();
   }
 
   _powerKey(r) { return r.deviceId || r.ent.power; }
@@ -1418,7 +1436,7 @@ class HomeConnectBaseCard extends HTMLElement {
       }).join('');
       var toggles = ent.option_switches.filter((id) => this._st(id)).map((id) => {
         var ok = this._avail(id), on = ok && this._val(id) === 'on';
-        return '<button class="toggle' + (on ? ' on' : '') + '" data-toggle="' + hcEsc(id) + '"' + (ok ? '' : ' disabled') + '>' +
+        return '<button class="toggle' + (on ? ' on' : '') + '" data-toggle="' + hcEsc(id) + '" aria-pressed="' + on + '"' + (ok ? '' : ' disabled') + '>' +
           '<ha-icon icon="' + (on ? 'mdi:checkbox-marked-circle' : 'mdi:checkbox-blank-circle-outline') + '"></ha-icon>' + hcEsc(this._entityLabel(id, deviceName)) + '</button>';
       }).join('');
       // Home Connect only loads options when the selected program changes, so after
@@ -1461,7 +1479,7 @@ class HomeConnectBaseCard extends HTMLElement {
     var noOff = powerOn && hcNoPowerOff.has(this._powerKey(r));
     var powerTitle = this._t(noOff ? 'power_off_unsupported' : 'power');
     var powerBtn = c.show_power && ent.power && online
-      ? `<button class="power${powerOn ? ' on' : ''}" data-action="power" title="${hcEsc(powerTitle)}" aria-label="${this._t('power')}"${noOff ? ' disabled' : ''}><ha-icon icon="mdi:power"></ha-icon></button>`
+      ? `<button class="power${powerOn ? ' on' : ''}" data-action="power" title="${hcEsc(powerTitle)}" aria-label="${this._t('power')}" aria-pressed="${!!powerOn}"${noOff ? ' disabled' : ''}><ha-icon icon="mdi:power"></ha-icon></button>`
       : '';
 
     var errorHtml = this._error
@@ -1508,14 +1526,22 @@ class HomeConnectBaseCard extends HTMLElement {
 
   _styles(color) {
     return '<style>' +
-      ':host { display: block; height: 100%; --hc-color: ' + (color || 'var(--disabled-text-color, #9e9e9e)') + '; }' +
-      'ha-card { height: 100%; box-sizing: border-box; padding: 12px; display: flex; flex-direction: column; gap: 10px; }' +
+      ':host { display: block; height: 100%; --hc-color: ' + (color || 'var(--disabled-text-color, #9e9e9e)') + ';' +
+      // State, warning, error and primary colours stay on dots, bars, tints and the illustration; texts get them
+      // mixed with the theme's text colour so they read at 4.5:1 or more on light and dark cards alike.
+        ' --hc-text: color-mix(in srgb, var(--hc-color) 45%, var(--primary-text-color));' +
+        ' --hc-warning-text: color-mix(in srgb, var(--warning-color, #ffa600) 45%, var(--primary-text-color));' +
+        ' --hc-error-text: color-mix(in srgb, var(--error-color, #db4437) 45%, var(--primary-text-color));' +
+        ' --hc-primary-text: color-mix(in srgb, var(--primary-color, #03a9f4) 45%, var(--primary-text-color)); }' +
+      // A size container: narrow layouts (6 columns of a Sections view, the mini card) follow the card's own width.
+      'ha-card { height: 100%; box-sizing: border-box; padding: 12px; display: flex; flex-direction: column; gap: 10px; container-type: inline-size; }' +
       '.empty { display: flex; align-items: center; gap: 10px; color: var(--secondary-text-color); }' +
       // The body starts 8px under the header (the card gap is 10px between body blocks).
       '.header { display: flex; align-items: center; gap: 10px; margin-bottom: -2px; }' +
-      '.logo-link { display: flex; flex-shrink: 0; }' +
+      '.logo-link { display: flex; flex: none; }' +
       '.logo { width: 40px; height: 40px; }' +
-      '.titles { flex: 1; min-width: 0; }' +
+      // The title shrinks with an ellipsis but keeps about four characters.
+      '.titles { flex: 1 1 auto; min-width: 5ch; font-size: 16px; }' +
       '.name { font-size: 16px; font-weight: 500; line-height: 1.25; color: var(--primary-text-color); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }' +
       '.sub { font-size: 12px; color: var(--secondary-text-color); margin-top: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }' +
       '.hero { display: flex; align-items: center; gap: 14px; }' +
@@ -1574,19 +1600,19 @@ class HomeConnectBaseCard extends HTMLElement {
       '.big { display: flex; align-items: baseline; gap: 8px; min-width: 0; }' +
       '.big .pct { font-size: 30px; font-weight: 400; line-height: 1.1; color: var(--primary-text-color); }' +
       '.big .pct small { font-size: 15px; color: var(--secondary-text-color); }' +
-      '.big .state { font-size: 13px; font-weight: 500; color: var(--hc-color); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }' +
-      '.state-big { font-size: 22px; font-weight: 400; line-height: 1.2; color: var(--hc-color); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }' +
+      '.big .state { font-size: 13px; font-weight: 500; color: var(--hc-text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }' +
+      '.state-big { font-size: 22px; font-weight: 400; line-height: 1.2; color: var(--hc-text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }' +
       '.time { font-size: 12px; color: var(--secondary-text-color); }' +
       'button { font: inherit; cursor: pointer; border: none; }' +
       'button:disabled { cursor: default; opacity: 0.5; }' +
-      '.power { width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0;' +
+      '.power { width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex: none;' +
         ' background: var(--secondary-background-color, rgba(128,128,128,0.12)); color: var(--secondary-text-color); }' +
       '.power.on { background: color-mix(in srgb, var(--hc-color) 15%, transparent); color: var(--hc-color); }' +
       '.chips { display: flex; flex-wrap: wrap; gap: 6px; }' +
-      '.chip { display: inline-flex; align-items: center; gap: 4px; font-size: 11px; font-weight: 500; padding: 1px 8px 1px 5px; border-radius: 12px;' +
+      '.chip { display: inline-flex; align-items: center; gap: 4px; max-width: 100%; box-sizing: border-box; overflow-wrap: anywhere; font-size: 11px; font-weight: 500; padding: 1px 8px 1px 5px; border-radius: 12px;' +
         ' background: var(--secondary-background-color, rgba(128,128,128,0.12)); color: var(--secondary-text-color); }' +
-      '.chip ha-icon { --mdc-icon-size: 13px; }' +
-      '.chip.warn { background: color-mix(in srgb, var(--warning-color, #ffa600) 15%, transparent); color: var(--warning-color, #ffa600); }' +
+      '.chip ha-icon { --mdc-icon-size: 13px; flex: none; }' +
+      '.chip.warn { background: color-mix(in srgb, var(--warning-color, #ffa600) 15%, transparent); color: var(--hc-warning-text); }' +
       '.bar { height: 4px; border-radius: 3px; background: var(--secondary-background-color, rgba(128,128,128,0.15)); overflow: hidden; }' +
       '.fill { height: 100%; border-radius: 3px; background: var(--hc-color); transition: width 0.6s ease; }' +
       '.field { display: flex; flex-direction: column; gap: 4px; min-width: 0; }' +
@@ -1609,9 +1635,9 @@ class HomeConnectBaseCard extends HTMLElement {
       '.toggle ha-icon { --mdc-icon-size: 16px; }' +
       '.toggle:disabled { opacity: 0.45; }' +
       '.reload { display: flex; align-items: center; justify-content: space-between; gap: 8px; flex-wrap: wrap; font-size: 12px; color: var(--secondary-text-color); }' +
-      '.link { display: inline-flex; align-items: center; gap: 4px; font-size: 12px; font-weight: 500; padding: 4px 8px; border-radius: 10px; background: none; color: var(--primary-color, #03a9f4); }' +
+      '.link { display: inline-flex; align-items: center; gap: 4px; font-size: 12px; font-weight: 500; padding: 4px 8px; border-radius: 10px; background: none; color: var(--hc-primary-text); }' +
       '.link ha-icon { --mdc-icon-size: 16px; }' +
-      '.toggle.on { background: color-mix(in srgb, var(--primary-color, #03a9f4) 15%, transparent); color: var(--primary-color, #03a9f4); }' +
+      '.toggle.on { background: color-mix(in srgb, var(--primary-color, #03a9f4) 15%, transparent); color: var(--hc-primary-text); }' +
       '.controls { display: flex; gap: 6px; }' +
       '.btn { flex: 1; display: inline-flex; align-items: center; justify-content: center; gap: 6px; font-size: 13px; font-weight: 500;' +
         ' padding: 7px 10px; border-radius: 10px; background: var(--secondary-background-color, rgba(128,128,128,0.12)); color: var(--primary-text-color); }' +
@@ -1620,25 +1646,28 @@ class HomeConnectBaseCard extends HTMLElement {
       '.btn:hover:not(:disabled), .round:hover:not(:disabled), .toggle:hover:not(:disabled), .power:hover:not(:disabled), .link:hover:not(:disabled) {' +
         ' background-image: linear-gradient(color-mix(in srgb, var(--primary-text-color) 8%, transparent), color-mix(in srgb, var(--primary-text-color) 8%, transparent)); }' +
       '.btn:focus-visible, .round:focus-visible, .toggle:focus-visible, .power:focus-visible, .link:focus-visible { outline: 2px solid var(--primary-color, #03a9f4); outline-offset: 2px; }' +
-      '.btn.primary, .round.primary { background: color-mix(in srgb, var(--primary-color, #03a9f4) 16%, transparent); color: var(--primary-color, #03a9f4); }' +
+      '.btn.primary, .round.primary { background: color-mix(in srgb, var(--primary-color, #03a9f4) 16%, transparent); color: var(--hc-primary-text); }' +
       '.btn.primary:hover:not(:disabled), .round.primary:hover:not(:disabled) { background: color-mix(in srgb, var(--primary-color, #03a9f4) 24%, transparent); }' +
-      '.btn.danger { background: color-mix(in srgb, var(--error-color, #db4437) 16%, transparent); color: var(--error-color, #db4437); }' +
+      '.btn.danger { background: color-mix(in srgb, var(--error-color, #db4437) 16%, transparent); color: var(--hc-error-text); }' +
       '.btn.danger:hover { background: color-mix(in srgb, var(--error-color, #db4437) 24%, transparent); }' +
       // Armed (second click confirms): stronger tint and an inner ring, still no solid fill.
       '.btn.danger.armed { background: color-mix(in srgb, var(--error-color, #db4437) 24%, transparent); box-shadow: inset 0 0 0 1px var(--error-color, #db4437); }' +
       '.hint { display: flex; align-items: center; gap: 6px; font-size: 12px; color: var(--secondary-text-color); margin-top: -6px; }' +
       '.hint ha-icon { --mdc-icon-size: 16px; }' +
-      '.error { display: flex; align-items: center; gap: 6px; font-size: 12px; color: var(--error-color, #db4437); }' +
+      '.error { display: flex; align-items: center; gap: 6px; font-size: 12px; color: var(--hc-error-text); }' +
       '.error ha-icon { --mdc-icon-size: 16px; flex-shrink: 0; }' +
-      '.zoom { all: unset; flex-shrink: 0; cursor: pointer; width: 24px; height: 24px; margin: -4px -4px -4px 0; border-radius: 50%;' +
+      '.zoom { all: unset; flex: none; cursor: pointer; width: 24px; height: 24px; margin: -4px -4px -4px 0; border-radius: 50%;' +
         ' display: grid; place-items: center; color: var(--secondary-text-color); }' +
       '.zoom ha-icon { --mdc-icon-size: 16px; }' +
       '.zoom:hover { background: color-mix(in srgb, var(--secondary-text-color) 16%, transparent); color: var(--primary-text-color); }' +
       '.zoom:focus-visible { outline: 2px solid var(--primary-color, #03a9f4); outline-offset: 1px; }' +
       'ha-card.mini .logo { width: 32px; height: 32px; }' +
-      '.st { display: inline-flex; align-items: center; gap: 4px; flex-shrink: 0; padding: 1px 8px; border-radius: 12px; font-size: 11px; font-weight: 500;' +
-        ' white-space: nowrap; background: color-mix(in srgb, var(--hc-color) 15%, transparent); color: var(--hc-color); }' +
-      '.dot { width: 6px; height: 6px; border-radius: 50%; background: var(--hc-color); }' +
+      // The status pill takes at most half the header and truncates; on a narrow card only its dot shows.
+      '.st { display: inline-flex; align-items: center; gap: 4px; flex: 0 1 auto; min-width: 0; max-width: 50%; overflow: hidden; box-sizing: border-box;' +
+        ' padding: 1px 8px; border-radius: 12px; font-size: 11px; font-weight: 500;' +
+        ' background: color-mix(in srgb, var(--hc-color) 15%, transparent); color: var(--hc-text); }' +
+      '.stt { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }' +
+      '.dot { width: 6px; height: 6px; flex: none; border-radius: 50%; background: var(--hc-color); }' +
       '.content { display: flex; align-items: center; gap: 12px; }' +
       'ha-card.mini .picture { width: 56px; height: 66px; }' +
       '.mbar { display: flex; align-items: center; gap: 8px; font-size: 13px; }' +
@@ -1647,11 +1676,42 @@ class HomeConnectBaseCard extends HTMLElement {
       '.line { display: flex; align-items: center; gap: 6px; font-size: 12px; color: var(--secondary-text-color); min-width: 0; }' +
       '.line ha-icon { --mdc-icon-size: 14px; flex-shrink: 0; }' +
       '.line span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }' +
+      '.mstate { display: none; font-weight: 500; color: var(--hc-text); }' +
       '.mcontrols { display: flex; gap: 6px; flex-shrink: 0; }' +
-      '.round { width: 40px; height: 40px; border-radius: 50%; display: grid; place-items: center;' +
+      '.round { width: 40px; height: 40px; flex: none; border-radius: 50%; display: grid; place-items: center;' +
         ' background: var(--secondary-background-color, rgba(128,128,128,0.12)); color: var(--primary-text-color); }' +
       '.round ha-icon { --mdc-icon-size: 20px; }' +
       'ha-card.mini .power { width: 40px; height: 40px; }' +
+      // Narrow card (6 columns of a Sections view): the mini card's round buttons get their own row under the
+      // text, which wraps instead of being cut; the full card's buttons and percentage wrap too.
+      '@container (max-width: 320px) {' +
+        ' ha-card.mini .content { flex-wrap: wrap; row-gap: 8px; }' +
+        ' ha-card.mini .mcontrols { flex: 1 1 100%; justify-content: flex-end; }' +
+        ' ha-card.mini .line span { white-space: normal; overflow-wrap: anywhere; }' +
+      ' }' +
+      // At 6 columns the mini card's pill is a dot (its text stays in its title and for screen readers) and the
+      // state is spelt out above the program instead, where it has room to wrap.
+      '@container (max-width: 230px) {' +
+        ' ha-card.mini .st { padding: 4px; }' +
+        ' ha-card.mini .stt { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }' +
+        ' ha-card.mini .mstate { display: flex; }' +
+      ' }' +
+      '@container (max-width: 230px) {' +
+        ' .header { gap: 8px; }' +
+        ' .logo, ha-card.mini .logo { width: 28px; height: 28px; }' +
+        ' .hero { gap: 10px; }' +
+        ' .picture { width: 56px; height: 66px; }' +
+        ' .big { flex-wrap: wrap; row-gap: 0; }' +
+        ' .time { overflow-wrap: anywhere; }' +
+        ' .controls { flex-wrap: wrap; }' +
+        ' .btn { flex: 1 1 auto; }' +
+      ' }' +
+      // Very narrow (about 200 px): no logo.
+      '@container (max-width: 180px) {' +
+        ' .logo-link { display: none; }' +
+        ' ha-card.mini .picture { width: 44px; height: 52px; }' +
+        ' ha-card.mini .content { column-gap: 8px; }' +
+      ' }' +
     '</style>';
   }
 
@@ -1665,7 +1725,7 @@ class HomeConnectBaseCard extends HTMLElement {
     }
     switch (btn.dataset.action) {
       case 'zoom':
-        this._toggleZoom(ev);
+        this._toggleZoom();
         break;
       case 'power':
         this._power();
@@ -1875,14 +1935,15 @@ var hcMini = (Base) => class extends Base {
     this._update();
   }
 
-  // From the keyboard (Enter / Space: no click count), the focus follows to the button that replaced this one.
-  _toggleZoom(ev) {
+  // The focus follows to the button that replaced this one (see _update).
+  _toggleZoom() {
     this._setZoom(!this._zoomed);
-    if (ev.detail === 0) this.shadowRoot.querySelector('.zoom')?.focus();
   }
 
   _miniHtml(m) {
+    // The state also as the first line: on a narrow card it stands in for the pill, which then only shows its dot.
     var c = m.c, ent = m.ent, lines = [];
+    var mstate = `<div class="line mstate" aria-hidden="true"><span>${hcEsc(m.statusText)}</span></div>`;
     var bar = '';
     if (m.running || m.state === 'finished') {
       var pct = m.state === 'finished' ? 100 : (m.progress == null ? 0 : m.progress);
@@ -1905,10 +1966,10 @@ var hcMini = (Base) => class extends Base {
     return this._styles(m.color) + '<ha-card class="mini">' +
       '<div class="header">' + m.logo +
         '<div class="titles"><div class="name">' + hcEsc(m.name) + '</div></div>' +
-        `<span class="st"><span class="dot"></span>${hcEsc(m.statusText)}</span>` + this._zoomButton() +
+        `<span class="st" title="${hcEsc(m.statusText)}"><span class="dot"></span><span class="stt">${hcEsc(m.statusText)}</span></span>` + this._zoomButton() +
       '</div>' +
       '<div class="content">' + hcPicture(m.art, m.state, !c.icon) +
-        '<div class="info">' + bar + lines.join('') + '</div>' +
+        '<div class="info">' + mstate + bar + lines.join('') + '</div>' +
         (btns.length ? `<div class="mcontrols">${btns.join('')}</div>` : '') +
       '</div>' + errorHtml +
     '</ha-card>';
