@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.11.4 - 2026-11-01
+### Changes
+- Added Serbian (Cyrillic and Latin) translations: `sr` and `sr-Latn`, for the cards and the visual editor, whose language picker offers Српски and Srpski (latinica). With Home Assistant in `sr-Latn` the card picks the Latin script automatically.
+
 ## 1.11.3 - 2026-10-29
 ### Fixes
 - Masonry dashboards balance their columns better: the card now reports its real height (from 3 to about 8 rows depending on the program picker, options and buttons shown) instead of a fixed size.
