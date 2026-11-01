@@ -404,6 +404,13 @@ var HcI18n = {
     ed_show_controls: 'Дугмад за контролу',
     ed_show_options: 'Опције програма',
     ed_show_power: 'Дугме за укључивање / искључивање',
+    ed_custom_toggle: 'Додатно дугме',
+    ed_custom_toggle_helper: 'Ентитет који се пребацује са картице',
+    ed_toggle_entity: 'Ентитет',
+    ed_toggle_icon: 'Икона',
+    ed_toggle_name: 'Назив',
+    ed_active_color: 'Активна боја',
+    ed_active_color_helper: 'Боја дугмета када је ентитет укључен',
     ed_show_logo: 'Home Connect лого',
     ed_zoom: 'Дугме за детаље',
     ed_zoom_helper: 'Дугме у горњем десном углу које пребацује мини картицу на пун приказ и назад',
@@ -484,6 +491,13 @@ var HcI18n = {
     ed_show_controls: 'Dugmad za kontrolu',
     ed_show_options: 'Opcije programa',
     ed_show_power: 'Dugme za uključivanje / isključivanje',
+    ed_custom_toggle: 'Dodatno dugme',
+    ed_custom_toggle_helper: 'input_boolean entitet koji se prebacuje sa kartice',
+    ed_toggle_entity: 'Entitet',
+    ed_toggle_icon: 'Ikona',
+    ed_toggle_name: 'Naziv',
+    ed_active_color: 'Aktivna boja',
+    ed_active_color_helper: 'Boja dugmeta kada je entitet uključen',
     ed_show_logo: 'Home Connect logo',
     ed_zoom: 'Dugme za detalje',
     ed_zoom_helper: 'Dugme u gornjem desnom uglu koje prebacuje mini karticu na pun prikaz i nazad',
@@ -1732,8 +1746,6 @@ class HomeConnectCardEditor extends HTMLElement {
     this._form.computeLabel = (s) => {
       if (HC_ROLES[s.name]) return hcT(lang, `en_${s.name}`);
       if (s.name === 'entity') return hcT(lang, 'ed_toggle_entity');
-      if (s.name === 'icon') return hcT(lang, 'ed_toggle_icon');
-      if (s.name === 'name') return hcT(lang, 'ed_toggle_name');
       return hcT(lang, `ed_${s.name}`);
     };
     this._form.computeHelper = (s) => {
