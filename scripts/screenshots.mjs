@@ -112,7 +112,9 @@ export async function render(shots, { icons = {}, hass = {}, extra = "" } = {}) 
 }
 
 // Records one shot as a looping GIF (screenshots/<file>.gif) — needs ffmpeg on PATH. Every animation is paused and
-// stepped frame by frame, so the GIF is identical whatever the machine's speed.
+// stepped frame by frame, so the GIF is identical whatever the machine's speed. document.getAnimations() leaves out
+// the card's own animations (they live in its shadow root), so every shadow root is walked as well: without that the
+// animations ran freely and each run wrote different GIFs.
 export async function animate(shot, { icons = {}, hass = {}, extra = "", fps = 20, seconds = 3 } = {}) {
   const browser = await chromium.launch(process.env.CHROMIUM_PATH ? { executablePath: process.env.CHROMIUM_PATH } : {});
   const page = await openCard(browser, shot, { icons, hass, extra });
@@ -123,7 +125,11 @@ export async function animate(shot, { icons = {}, hass = {}, extra = "", fps = 2
   const frames = Math.round(fps * seconds);
   for (let i = 0; i < frames; i++) {
     await page.evaluate((t) => {
-      for (const a of document.getAnimations()) {
+      const all = (root) => [
+        ...root.getAnimations(),
+        ...[...root.querySelectorAll("*")].flatMap((el) => (el.shadowRoot ? all(el.shadowRoot) : [])),
+      ];
+      for (const a of all(document)) {
         a.pause();
         a.currentTime = t;
       }
