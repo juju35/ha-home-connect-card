@@ -99,6 +99,11 @@ show_options: true
 show_controls: true
 show_alerts: true
 show_power: true
+custom_toggle:
+  entity: input_boolean.dishwasher_automation
+  icon: mdi:robot
+  name: Automation
+  active_color: [33, 150, 243] # optional; RGB color for the active state
 show_logo: true
 language: en
 entities:
@@ -120,6 +125,7 @@ entities:
 | `show_controls` | ❌ | `true` | Show Start / Pause / Resume / Stop buttons |
 | `show_alerts` | ❌ | `true` | Show salt and rinse aid alerts |
 | `show_power` | ❌ | `true` | Show the power button (turn off for appliances that can't be switched on / off remotely) |
+| `custom_toggle` | ❌ | — | Optional additional toggle button: `entity` (an `input_boolean`), optional `icon`, `name` and `active_color`; the active color accepts an RGB array from the editor or a CSS color / `var(--...)` in YAML |
 | `show_logo` | ❌ | `true` | Show the Home Connect logo in the header |
 | `zoom` | ❌ | `true` | Mini cards only: detail button at the top right that unfolds the full card (a click elsewhere folds it back) |
 | `language` | ❌ | Auto | Force language: `fr`, `en`, `de`, `es`, `sr`, `sr-Latn`, `it`, `nl`, `pt` or `pl` (auto-detects from HA settings) |

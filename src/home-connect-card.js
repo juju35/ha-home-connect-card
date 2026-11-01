@@ -57,6 +57,13 @@ var HcI18n = {
     ed_show_options: 'Options du programme',
     ed_show_alerts: 'Alertes',
     ed_show_power: 'Bouton marche / arrêt',
+    ed_custom_toggle: 'Bouton supplémentaire',
+    ed_custom_toggle_helper: 'Entité input_boolean à basculer depuis la carte',
+    ed_toggle_entity: 'Entité',
+    ed_toggle_icon: 'Icône',
+    ed_toggle_name: 'Nom',
+    ed_active_color: 'Couleur active',
+    ed_active_color_helper: 'Couleur du bouton lorsque l’entité est activée',
     ed_show_logo: 'Logo Home Connect',
     ed_zoom: 'Bouton détail',
     ed_zoom_helper: 'Bouton en haut à droite qui passe la mini-carte en carte complète et inversement',
@@ -136,6 +143,13 @@ var HcI18n = {
     ed_show_controls: 'Control buttons',
     ed_show_options: 'Program options',
     ed_show_power: 'Power button',
+    ed_custom_toggle: 'Additional toggle button',
+    ed_custom_toggle_helper: 'input_boolean entity to toggle from the card',
+    ed_toggle_entity: 'Entity',
+    ed_toggle_icon: 'Icon',
+    ed_toggle_name: 'Name',
+    ed_active_color: 'Active color',
+    ed_active_color_helper: 'Button color while the entity is on',
     ed_show_logo: 'Home Connect logo',
     ed_zoom: 'Detail button',
     ed_zoom_helper: 'Button at the top right that switches the mini card to the full card and back',
@@ -216,6 +230,13 @@ var HcI18n = {
     ed_show_controls: 'Steuerungsschaltflächen',
     ed_show_options: 'Programmoptionen',
     ed_show_power: 'Ein-/Aus-Schaltfläche',
+    ed_custom_toggle: 'Zusätzlicher Schalter',
+    ed_custom_toggle_helper: 'input_boolean-Entität, die über die Karte umgeschaltet wird',
+    ed_toggle_entity: 'Entität',
+    ed_toggle_icon: 'Symbol',
+    ed_toggle_name: 'Name',
+    ed_active_color: 'Aktivfarbe',
+    ed_active_color_helper: 'Farbe des Buttons, wenn die Entität eingeschaltet ist',
     ed_show_logo: 'Home-Connect-Logo',
     ed_zoom: 'Detailansicht-Schaltfläche',
     ed_zoom_helper: 'Schaltfläche oben rechts zum Wechseln zwischen kompakter und vollständiger Kartenansicht',
@@ -296,6 +317,13 @@ var HcI18n = {
     ed_show_controls: 'Botones de control',
     ed_show_options: 'Opciones del programa',
     ed_show_power: 'Botón de encendido',
+    ed_custom_toggle: 'Botón adicional',
+    ed_custom_toggle_helper: 'Entidad input_boolean que se alterna desde la tarjeta',
+    ed_toggle_entity: 'Entidad',
+    ed_toggle_icon: 'Icono',
+    ed_toggle_name: 'Nombre',
+    ed_active_color: 'Color activo',
+    ed_active_color_helper: 'Color del botón cuando la entidad está activada',
     ed_show_logo: 'Logotipo de Home Connect',
     ed_zoom: 'Botón de detalle',
     ed_zoom_helper: 'Botón arriba a la derecha que cambia la mini tarjeta a la tarjeta completa y viceversa',
@@ -376,6 +404,13 @@ var HcI18n = {
     ed_show_controls: 'Дугмад за контролу',
     ed_show_options: 'Опције програма',
     ed_show_power: 'Дугме за укључивање / искључивање',
+    ed_custom_toggle: 'Додатно дугме',
+    ed_custom_toggle_helper: 'Ентитет који се пребацује са картице',
+    ed_toggle_entity: 'Ентитет',
+    ed_toggle_icon: 'Икона',
+    ed_toggle_name: 'Назив',
+    ed_active_color: 'Активна боја',
+    ed_active_color_helper: 'Боја дугмета када је ентитет укључен',
     ed_show_logo: 'Home Connect лого',
     ed_zoom: 'Дугме за детаље',
     ed_zoom_helper: 'Дугме у горњем десном углу које пребацује мини картицу на пун приказ и назад',
@@ -456,6 +491,13 @@ var HcI18n = {
     ed_show_controls: 'Dugmad za kontrolu',
     ed_show_options: 'Opcije programa',
     ed_show_power: 'Dugme za uključivanje / isključivanje',
+    ed_custom_toggle: 'Dodatno dugme',
+    ed_custom_toggle_helper: 'input_boolean entitet koji se prebacuje sa kartice',
+    ed_toggle_entity: 'Entitet',
+    ed_toggle_icon: 'Ikona',
+    ed_toggle_name: 'Naziv',
+    ed_active_color: 'Aktivna boja',
+    ed_active_color_helper: 'Boja dugmeta kada je entitet uključen',
     ed_show_logo: 'Home Connect logo',
     ed_zoom: 'Dugme za detalje',
     ed_zoom_helper: 'Dugme u gornjem desnom uglu koje prebacuje mini karticu na pun prikaz i nazad',
@@ -831,6 +873,17 @@ function hcT(lang, key) {
 
 function hcEsc(s) {
   return String(s == null ? '' : s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+}
+
+// Accept Home Assistant's RGB color-picker value or a safe CSS color (including var(--...)).
+function hcCssColor(value) {
+  if (Array.isArray(value) && value.length === 3 && value.every((n) => Number.isFinite(n) && n >= 0 && n <= 255)) {
+    return `rgb(${value.map((n) => Math.round(n)).join(', ')})`;
+  }
+  if (typeof value !== 'string') return '';
+  var color = value.trim();
+  var safe = /^(#[0-9a-f]{3,4}|#[0-9a-f]{6}|#[0-9a-f]{8}|[a-z]+|rgba?\(\s*[\d.]+%?(?:\s*,\s*[\d.]+%?){2,3}\s*\)|hsla?\(\s*[-\d.]+(?:deg|rad|turn)?(?:\s*,\s*[-\d.]+%?){2,3}\s*\)|var\(\s*--[\w-]+\s*\))$/i;
+  return safe.test(color) ? color : '';
 }
 
 // Service call errors from Home Assistant: a websocket error object ({ code, message }) or an Error.
@@ -1227,6 +1280,7 @@ class HomeConnectBaseCard extends HTMLElement {
     Object.keys(HC_ROLES).forEach((role) => {
       ent[role] = over[role] || found.roles[role];
     });
+    ent.custom_toggle = this._config.custom_toggle?.entity;
     var used = Object.values(ent);
     // Everything else the integration exposes as a switch or select is a program option.
     ent.option_switches = found.switches.filter((id) => used.indexOf(id) < 0);
@@ -1264,7 +1318,7 @@ class HomeConnectBaseCard extends HTMLElement {
     var r = this._resolve();
     var ids = [r.ent.operation_state, r.ent.door, r.ent.progress, r.ent.finish_time, r.ent.selected_program,
       r.ent.active_program, r.ent.power, r.ent.remote_start, r.ent.remote_control, r.ent.connectivity, r.ent.salt, r.ent.rinse_aid,
-      r.ent.stop, r.ent.pause, r.ent.resume].concat(r.ent.option_switches, r.ent.option_selects);
+      r.ent.stop, r.ent.pause, r.ent.resume, r.ent.custom_toggle].concat(r.ent.option_switches, r.ent.option_selects);
     var hass = this._hass;
     var states = JSON.stringify(ids.map((id) => {
       var s = id && hass.states[id];
@@ -1463,6 +1517,13 @@ class HomeConnectBaseCard extends HTMLElement {
     var powerBtn = c.show_power && ent.power && online
       ? `<button class="power${powerOn ? ' on' : ''}" data-action="power" title="${hcEsc(powerTitle)}" aria-label="${this._t('power')}"${noOff ? ' disabled' : ''}><ha-icon icon="mdi:power"></ha-icon></button>`
       : '';
+    var toggleState = this._val(ent.custom_toggle);
+    var toggleConfig = c.custom_toggle || {};
+    var toggleColor = hcCssColor(toggleConfig.active_color);
+    var toggleStyle = toggleState === 'on' && toggleColor ? ` style="--hc-toggle-color: ${hcEsc(toggleColor)}"` : '';
+    var customToggleBtn = ent.custom_toggle && toggleState !== undefined && toggleState !== 'unavailable'
+      ? `<button class="power custom-toggle${toggleState === 'on' ? ' on' : ''}" data-action="custom_toggle" title="${hcEsc(toggleConfig.name || ent.custom_toggle)}" aria-label="${hcEsc(toggleConfig.name || ent.custom_toggle)}"${toggleStyle}><ha-icon icon="${hcEsc(toggleConfig.icon || 'mdi:toggle-switch')}"></ha-icon></button>`
+      : '';
 
     var errorHtml = this._error
       ? `<div class="error" role="alert" title="${hcEsc(this._error.detail)}"><ha-icon icon="mdi:alert-circle-outline"></ha-icon><span>${hcEsc(this._t(this._error.key))}</span></div>`
@@ -1491,7 +1552,7 @@ class HomeConnectBaseCard extends HTMLElement {
     if (this._compact()) {
       this._rows = hcRows(HC_PX.miniBase + (this._error ? HC_PX.error : 0));
       this.shadowRoot.innerHTML = this._miniHtml({ c, ent, name, color, state, statusText, running, online, powerOn, progress,
-        finish, progLabel, chips: chips.filter((x) => x.indexOf('chip warn') >= 0 || !online), art, logo, powerBtn });
+        finish, progLabel, chips: chips.filter((x) => x.indexOf('chip warn') >= 0 || !online), art, logo, powerBtn, customToggleBtn });
       return;
     }
 
@@ -1500,7 +1561,7 @@ class HomeConnectBaseCard extends HTMLElement {
     this.shadowRoot.innerHTML = this._styles(color) + '<ha-card>' +
       '<div class="header">' + logo +
         '<div class="titles"><div class="name">' + hcEsc(name) + '</div><div class="sub">' + hcEsc(sub) + '</div></div>' +
-        powerBtn + this._zoomButton() +
+        customToggleBtn + powerBtn + this._zoomButton() +
       '</div>' +
       heroHtml + programHtml + optionsHtml + errorHtml + controls +
     '</ha-card>';
@@ -1582,6 +1643,7 @@ class HomeConnectBaseCard extends HTMLElement {
       '.power { width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0;' +
         ' background: var(--secondary-background-color, rgba(128,128,128,0.12)); color: var(--secondary-text-color); }' +
       '.power.on { background: color-mix(in srgb, var(--hc-color) 15%, transparent); color: var(--hc-color); }' +
+      '.power.custom-toggle.on { background: color-mix(in srgb, var(--hc-toggle-color, var(--hc-color)) 15%, transparent); color: var(--hc-toggle-color, var(--hc-color)); }' +
       '.chips { display: flex; flex-wrap: wrap; gap: 6px; }' +
       '.chip { display: inline-flex; align-items: center; gap: 4px; font-size: 11px; font-weight: 500; padding: 1px 8px 1px 5px; border-radius: 12px;' +
         ' background: var(--secondary-background-color, rgba(128,128,128,0.12)); color: var(--secondary-text-color); }' +
@@ -1669,6 +1731,9 @@ class HomeConnectBaseCard extends HTMLElement {
         break;
       case 'power':
         this._power();
+        break;
+      case 'custom_toggle':
+        this._customToggle();
         break;
       case 'start':
         this._start();
@@ -1761,6 +1826,17 @@ class HomeConnectBaseCard extends HTMLElement {
       this._showError(HC_RETRYABLE.test(hcErrText(err)) ? 'start_rejected' : 'start_failed', err);
     } finally {
       this._starting = false;
+      this._update();
+    }
+  }
+
+  async _customToggle() {
+    var id = this._r.ent.custom_toggle;
+    if (!id) return;
+    try {
+      await this._call('input_boolean', 'toggle', { entity_id: id });
+    } catch (err) {
+      this._showError('command_failed', err);
       this._update();
     }
   }
@@ -1896,6 +1972,7 @@ var hcMini = (Base) => class extends Base {
 
     // Round buttons: start (or pause / resume) and power.
     var btns = c.show_controls && m.online && m.powerOn ? this._actionButtons(ent, m.state, m.running, true).btns : [];
+    if (m.customToggleBtn) btns.push(m.customToggleBtn);
     if (m.powerBtn) btns.push(m.powerBtn);
 
     var errorHtml = this._error
@@ -1971,6 +2048,15 @@ class HomeConnectCardEditor extends HTMLElement {
         ].concat(this.mini || /-mini-card$/.test(this._config.type || '') ? [{ name: 'zoom', selector: { boolean: {} } }] : []),
       },
       {
+        type: 'expandable', name: 'custom_toggle', title: t('ed_custom_toggle'), flatten: false,
+        schema: [
+          { name: 'entity', selector: { entity: { domain: 'input_boolean' } } },
+          { name: 'icon', selector: { icon: {} } },
+          { name: 'name', selector: { text: {} } },
+          { name: 'active_color', selector: { color_rgb: {} } },
+        ],
+      },
+      {
         name: 'language',
         selector: { select: { mode: 'dropdown', options: [{ value: 'fr', label: 'Français' }, { value: 'en', label: 'English' }, { value: 'de', label: 'Deutsch' }, { value: 'es', label: 'Español' }, { value: 'sr', label: 'Српски' }, { value: 'sr-Latn', label: 'Srpski (latinica)' }, { value: 'it', label: 'Italiano' }, { value: 'nl', label: 'Nederlands' }, { value: 'pt', label: 'Português (Portugal)' }, { value: 'pl', label: 'Polski' }] } },
       },
@@ -1993,6 +2079,7 @@ class HomeConnectCardEditor extends HTMLElement {
     this._form.schema = this._schema();
     this._form.computeLabel = (s) => {
       if (HC_ROLES[s.name]) return hcT(lang, `en_${s.name}`);
+      if (s.name === 'entity') return hcT(lang, 'ed_toggle_entity');
       return hcT(lang, `ed_${s.name}`);
     };
     this._form.computeHelper = (s) => {
@@ -2013,6 +2100,11 @@ class HomeConnectCardEditor extends HTMLElement {
     Object.keys(HC_EDITOR_DEFAULTS).forEach((key) => {
       if (value[key] === HC_EDITOR_DEFAULTS[key]) delete value[key];
     });
+    if (value.custom_toggle) {
+      var toggle = Object.assign({}, value.custom_toggle);
+      Object.keys(toggle).forEach((k) => { if (!toggle[k]) delete toggle[k]; });
+      if (Object.keys(toggle).length) value.custom_toggle = toggle; else delete value.custom_toggle;
+    }
     if (value.entities) {
       var e = Object.assign({}, value.entities);
       Object.keys(e).forEach((k) => { if (!e[k]) delete e[k]; });
