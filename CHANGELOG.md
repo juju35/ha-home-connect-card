@@ -1,12 +1,8 @@
 # Changelog
 
-## 1.13.1 - 2026-11-01
+## 1.11.5 - 2026-11-01
 ### Changes
-- Merged changes from upstream-repo
-
-## 1.13.0 - 2026-10-30
-### Changes
-- Added an optional active color for the custom `input_boolean` toggle, configurable in the visual editor or YAML.
+- Added Italian, Dutch, European Portuguese and Polish translations: `it`, `nl`, `pt` and `pl`, for the cards and the visual editor, whose language picker offers Italiano, Nederlands, Português (Portugal) and Polski. Home Assistant in `pt-BR` gets the European Portuguese texts.
 
 ## 1.11.4 - 2026-11-01
 ### Changes
@@ -20,11 +16,6 @@
 ### Maintenance
 - Screenshots: the animated GIFs are now identical from one run to the next (the card's animations were not paused while recording), so pull requests no longer get a needless screenshots commit.
 - CI: Dependabot also updates the pre-commit hooks, and the Biome lint job reads its version from `.pre-commit-config.yaml`.
-
-
-## 1.12.0 - 2026-10-30
-### Changes
-- Added new optional button for input_boolean entity
 
 ## 1.11.2 - 2026-10-29
 ### Fixes

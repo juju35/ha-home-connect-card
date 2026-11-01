@@ -25,7 +25,7 @@ Pick the appliance, the card finds all its entities by itself.
 - Program options before starting: temperature, spin speed, Vario Perfect for washers; intensive zone, brilliance dry, speed perfect, hygiene plus for dishwashers… whatever your appliance exposes. Options the selected program doesn't support are greyed out
 - Door state, salt and rinse aid alerts
 - Visual editor in the dashboard UI (no YAML needed)
-- English, French, German, Spanish and Serbian (Cyrillic and Latin), follows the Home Assistant language
+- English, French, German, Spanish, Serbian (Cyrillic and Latin), Italian, Dutch, European Portuguese and Polish, follows the Home Assistant language
 - Light and dark theme compatible
 - Single file, no dependencies, HACS-ready
 
@@ -128,7 +128,7 @@ entities:
 | `custom_toggle` | ❌ | — | Optional additional toggle button: `entity` (an `input_boolean`), optional `icon`, `name` and `active_color`; the active color accepts an RGB array from the editor or a CSS color / `var(--...)` in YAML |
 | `show_logo` | ❌ | `true` | Show the Home Connect logo in the header |
 | `zoom` | ❌ | `true` | Mini cards only: detail button at the top right that unfolds the full card (a click elsewhere folds it back) |
-| `language` | ❌ | Auto | Force language: `fr`, `en`, `de`, `es`, `sr` or `sr-Latn` (auto-detects from HA settings) |
+| `language` | ❌ | Auto | Force language: `fr`, `en`, `de`, `es`, `sr`, `sr-Latn`, `it`, `nl`, `pt` or `pl` (auto-detects from HA settings) |
 | `entities` | ❌ | Auto | Override detected entities (see below) |
 
 ### Entity overrides
@@ -252,6 +252,10 @@ The card auto-detects the language from your Home Assistant settings. Currently 
 | Español | `es` |
 | Српски | `sr` |
 | Srpski (latinica) | `sr-Latn` |
+| Italiano | `it` |
+| Nederlands | `nl` |
+| Português (Portugal), also used for `pt-BR` | `pt` |
+| Polski | `pl` |
 
 Contributions for additional languages are welcome!
 
