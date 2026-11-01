@@ -57,9 +57,12 @@ function card(hass, Card = HomeConnectWasherCard) {
 
 // Stands in for the browser's focus handling: the element focused before a render, and the
 // freshly rendered controls the card can find with querySelectorAll.
+// The options of each focus() call made by the card.
+const focusOptions = [];
 function focusable(c, dataset) {
   const focused = [];
-  const node = (ds) => ({ tagName: "BUTTON", dataset: ds, focus: () => focused.push(ds) });
+  focusOptions.length = 0;
+  const node = (ds) => ({ tagName: "BUTTON", dataset: ds, focus: (opts) => { focused.push(ds); focusOptions.push(opts); } });
   c.shadowRoot.activeElement = node(dataset);
   c.shadowRoot.querySelectorAll = () =>
     [...c.shadowRoot.innerHTML.matchAll(/data-(action|toggle|select)="([^"]*)"/g)].map((m) => node({ [m[1]]: m[2] }));
@@ -85,6 +88,19 @@ test("keyboard: an option pill keeps the focus when its switch changes", () => {
   hass.states["switch.wm_prewash"] = st("on", { friendly_name: "Washer Prewash" });
   c.hass = { ...hass };
   assert.deepEqual(focused.map((d) => ({ ...d })), [{ toggle: "switch.wm_prewash" }]);
+});
+
+test("focus: giving the focus back after a render never scrolls the page to the card", () => {
+  // A clicked button keeps the focus; each later render (hass update, 30 s tick) gives it back, which
+  // must not bring the dashboard back to the card while the user has scrolled away.
+  const hass = mockHass();
+  const c = card(hass);
+  const focused = focusable(c, { action: "pause" });
+  hass.states["switch.wm_prewash"] = st("on", { friendly_name: "Washer Prewash" });
+  c.hass = { ...hass };
+  c._onClick({ composedPath: () => [{ dataset: { action: "stop" }, disabled: false }] });
+  assert.equal(focused.length, 2, "no refocus");
+  for (const o of focusOptions) assert.deepEqual({ ...o }, { preventScroll: true });
 });
 
 test("focus: nothing is focused when the focus wasn't in the card, or the control is gone", () => {
