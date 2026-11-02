@@ -29,6 +29,12 @@ Pick the appliance, the card finds all its entities by itself.
 - Light and dark theme compatible
 - Single file, no dependencies, HACS-ready
 
+## Supported integrations
+
+| Integration | Appliances | What the cards show |
+|---|---|---|
+| [Home Connect](https://www.home-assistant.io/integrations/home_connect/) (built in) | Dishwashers and washing machines | Status, progress, finish time and time left, program picker with its options, **Start** (remote start enabled), **Pause / Resume** (washers), **Stop**, door state, salt and rinse aid alerts |
+
 ## Prerequisites
 
 - Home Assistant 2024.8 or later with the [Home Connect](https://www.home-assistant.io/integrations/home_connect/) integration set up
