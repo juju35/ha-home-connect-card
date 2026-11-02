@@ -1,5 +1,10 @@
 # Changelog
 
+## Unreleased
+
+### Changes
+- Cards: the `show_logo` option is removed: the appliance icon is always shown (still left out on very narrow cards). An existing `show_logo` line is ignored.
+
 ## 1.11.7 - 2026-11-02
 
 ### Changes

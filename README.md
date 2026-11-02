@@ -99,7 +99,6 @@ show_options: true
 show_controls: true
 show_alerts: true
 show_power: true
-show_logo: true
 language: en
 entities:
   operation_state: sensor.washing_machine_operation_state
@@ -120,7 +119,6 @@ entities:
 | `show_controls` | ❌ | `true` | Show Start / Pause / Resume / Stop buttons |
 | `show_alerts` | ❌ | `true` | Show salt and rinse aid alerts |
 | `show_power` | ❌ | `true` | Show the power button (turn off for appliances that can't be switched on / off remotely) |
-| `show_logo` | ❌ | `true` | Show the appliance icon in the header (dishwasher or washing machine; left out when the card is narrower than about 200 px) |
 | `zoom` | ❌ | `true` | Mini cards only: detail button at the top right that unfolds the full card (a click elsewhere folds it back) |
 | `language` | ❌ | Auto | Force language: `fr`, `en`, `de`, `es`, `sr`, `sr-Latn`, `it`, `nl`, `pt` or `pl` (auto-detects from HA settings) |
 | `entities` | ❌ | Auto | Override detected entities (see below) |

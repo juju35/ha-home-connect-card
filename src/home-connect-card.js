@@ -57,7 +57,6 @@ var HcI18n = {
     ed_show_options: 'Options du programme',
     ed_show_alerts: 'Alertes',
     ed_show_power: 'Bouton marche / arrêt',
-    ed_show_logo: 'Icône',
     ed_zoom: 'Bouton détail',
     ed_zoom_helper: 'Bouton en haut à droite qui passe la mini-carte en carte complète et inversement',
     zoom_in: 'Afficher la carte complète',
@@ -136,7 +135,6 @@ var HcI18n = {
     ed_show_controls: 'Control buttons',
     ed_show_options: 'Program options',
     ed_show_power: 'Power button',
-    ed_show_logo: 'Icon',
     ed_zoom: 'Detail button',
     ed_zoom_helper: 'Button at the top right that switches the mini card to the full card and back',
     zoom_in: 'Show the full card',
@@ -216,7 +214,6 @@ var HcI18n = {
     ed_show_controls: 'Steuerungsschaltflächen',
     ed_show_options: 'Programmoptionen',
     ed_show_power: 'Ein-/Aus-Schaltfläche',
-    ed_show_logo: 'Symbol',
     ed_zoom: 'Detailansicht-Schaltfläche',
     ed_zoom_helper: 'Schaltfläche oben rechts zum Wechseln zwischen kompakter und vollständiger Kartenansicht',
     zoom_in: 'Vollständige Karte anzeigen',
@@ -296,7 +293,6 @@ var HcI18n = {
     ed_show_controls: 'Botones de control',
     ed_show_options: 'Opciones del programa',
     ed_show_power: 'Botón de encendido',
-    ed_show_logo: 'Icono',
     ed_zoom: 'Botón de detalle',
     ed_zoom_helper: 'Botón arriba a la derecha que cambia la mini tarjeta a la tarjeta completa y viceversa',
     zoom_in: 'Mostrar la tarjeta completa',
@@ -376,7 +372,6 @@ var HcI18n = {
     ed_show_controls: 'Дугмад за контролу',
     ed_show_options: 'Опције програма',
     ed_show_power: 'Дугме за укључивање / искључивање',
-    ed_show_logo: 'Иконица',
     ed_zoom: 'Дугме за детаље',
     ed_zoom_helper: 'Дугме у горњем десном углу које пребацује мини картицу на пун приказ и назад',
     zoom_in: 'Прикажи целу картицу',
@@ -456,7 +451,6 @@ var HcI18n = {
     ed_show_controls: 'Dugmad za kontrolu',
     ed_show_options: 'Opcije programa',
     ed_show_power: 'Dugme za uključivanje / isključivanje',
-    ed_show_logo: 'Ikonica',
     ed_zoom: 'Dugme za detalje',
     ed_zoom_helper: 'Dugme u gornjem desnom uglu koje prebacuje mini karticu na pun prikaz i nazad',
     zoom_in: 'Prikaži celu karticu',
@@ -536,7 +530,6 @@ var HcI18n = {
     ed_show_controls: 'Pulsanti di comando',
     ed_show_options: 'Opzioni del programma',
     ed_show_power: 'Pulsante di accensione',
-    ed_show_logo: 'Icona',
     ed_zoom: 'Pulsante dettaglio',
     ed_zoom_helper: 'Pulsante in alto a destra che passa dalla mini scheda alla scheda completa e viceversa',
     zoom_in: 'Mostra la scheda completa',
@@ -616,7 +609,6 @@ var HcI18n = {
     ed_show_controls: 'Bedieningsknoppen',
     ed_show_options: 'Programma-opties',
     ed_show_power: 'Aan/uit-knop',
-    ed_show_logo: 'Pictogram',
     ed_zoom: 'Detailknop',
     ed_zoom_helper: 'Knop rechtsboven die de minikaart omschakelt naar de volledige kaart en terug',
     zoom_in: 'Volledige kaart tonen',
@@ -696,7 +688,6 @@ var HcI18n = {
     ed_show_controls: 'Botões de comando',
     ed_show_options: 'Opções do programa',
     ed_show_power: 'Botão ligar / desligar',
-    ed_show_logo: 'Ícone',
     ed_zoom: 'Botão de detalhe',
     ed_zoom_helper: 'Botão no canto superior direito que alterna entre o mini cartão e o cartão completo',
     zoom_in: 'Mostrar o cartão completo',
@@ -776,7 +767,6 @@ var HcI18n = {
     ed_show_controls: 'Przyciski sterowania',
     ed_show_options: 'Opcje programu',
     ed_show_power: 'Przycisk włączania / wyłączania',
-    ed_show_logo: 'Ikona',
     ed_zoom: 'Przycisk szczegółów',
     ed_zoom_helper: 'Przycisk w prawym górnym rogu przełączający minikartę na pełną kartę i z powrotem',
     zoom_in: 'Pokaż pełną kartę',
@@ -1154,7 +1144,7 @@ class HomeConnectBaseCard extends HTMLElement {
   setConfig(config) {
     if (!config) throw new Error('Invalid configuration');
     this._config = Object.assign({
-      show_program: true, show_controls: true, show_options: true, show_alerts: true, show_power: true, show_logo: true,
+      show_program: true, show_controls: true, show_options: true, show_alerts: true, show_power: true,
     }, config);
     if (!this.shadowRoot) {
       this.attachShadow({ mode: 'open' });
@@ -1500,8 +1490,7 @@ class HomeConnectBaseCard extends HTMLElement {
     var heroHtml = '<div class="hero">' + hcPicture(art, state, !c.icon) +
       '<div class="info">' + big + (chips.length ? `<div class="chips">${chips.join('')}</div>` : '') + '</div></div>';
 
-    var logo = c.show_logo === false ? ''
-      : `<div class="logo" aria-hidden="true"><ha-icon icon="${HC_HEADER_ICON[kind] || HC_HEADER_ICON.dishwasher}"></ha-icon></div>`;
+    var logo = `<div class="logo" aria-hidden="true"><ha-icon icon="${HC_HEADER_ICON[kind] || HC_HEADER_ICON.dishwasher}"></ha-icon></div>`;
     var sub = progLabel || this._t(kind);
 
     if (this._compact()) {
@@ -1994,7 +1983,7 @@ class HomeConnectDishwasherMiniCard extends hcMini(HomeConnectDishwasherCard) {}
 class HomeConnectWasherMiniCard extends hcMini(HomeConnectWasherCard) {}
 
 // ── home-connect-card-editor (visual editor, built on HA's ha-form) ──────────
-var HC_EDITOR_DEFAULTS = { show_program: true, show_controls: true, show_options: true, show_alerts: true, show_power: true, show_logo: true, zoom: true };
+var HC_EDITOR_DEFAULTS = { show_program: true, show_controls: true, show_options: true, show_alerts: true, show_power: true, zoom: true };
 
 class HomeConnectCardEditor extends HTMLElement {
   setConfig(config) {
@@ -2041,7 +2030,6 @@ class HomeConnectCardEditor extends HTMLElement {
           { name: 'show_options', selector: { boolean: {} } },
           { name: 'show_alerts', selector: { boolean: {} } },
           { name: 'show_power', selector: { boolean: {} } },
-          { name: 'show_logo', selector: { boolean: {} } },
         ].concat(this.mini || /-mini-card$/.test(this._config.type || '') ? [{ name: 'zoom', selector: { boolean: {} } }] : []),
       },
       {
