@@ -71,6 +71,14 @@ test("header and mini card: icon buttons never shrink", () => {
   for (const sel of [".logo", ".power", ".zoom", ".round"]) assert.match(rule(sel), /flex: none/, `${sel} can shrink`);
 });
 
+test("mini card: the header icon keeps the full card's size (only narrow cards shrink it)", () => {
+  assert.match(rule(".logo"), /width: 40px; height: 40px/);
+  assert.match(rule(".logo ha-icon"), /--mdc-icon-size: 24px/);
+  const top = css.replace(/@container[^{]*\{(?:[^{}]*\{[^{}]*\})*\s*\}/g, "");
+  assert.doesNotMatch(top, /ha-card\.mini \.logo/, "a mini-only header icon size");
+  assert.match(containers().filter((b) => b.px === 230).map((b) => b.body).join("\n"), /\.logo \{ width: 28px; height: 28px; \}/);
+});
+
 test("narrow card: the pill only shows its dot, the logo steps aside, the mini card's buttons go under its text", () => {
   const blocks = containers();
   assert.ok(blocks.length >= 2, "no @container breakpoints");

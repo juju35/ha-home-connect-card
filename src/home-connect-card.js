@@ -1661,8 +1661,6 @@ class HomeConnectBaseCard extends HTMLElement {
       '.zoom ha-icon { --mdc-icon-size: 16px; }' +
       '.zoom:hover { background: color-mix(in srgb, var(--secondary-text-color) 16%, transparent); color: var(--primary-text-color); }' +
       '.zoom:focus-visible { outline: 2px solid var(--primary-color, #03a9f4); outline-offset: 1px; }' +
-      'ha-card.mini .logo { width: 32px; height: 32px; }' +
-      'ha-card.mini .logo ha-icon { --mdc-icon-size: 18px; }' +
       // The status pill takes at most half the header and truncates; on a narrow card only its dot shows.
       '.st { display: inline-flex; align-items: center; gap: 4px; flex: 0 1 auto; min-width: 0; max-width: 50%; overflow: hidden; box-sizing: border-box;' +
         ' padding: 1px 8px; border-radius: 12px; font-size: 11px; font-weight: 500;' +
@@ -1699,8 +1697,8 @@ class HomeConnectBaseCard extends HTMLElement {
       ' }' +
       '@container (max-width: 230px) {' +
         ' .header { gap: 8px; }' +
-        ' .logo, ha-card.mini .logo { width: 28px; height: 28px; }' +
-        ' .logo ha-icon, ha-card.mini .logo ha-icon { --mdc-icon-size: 16px; }' +
+        ' .logo { width: 28px; height: 28px; }' +
+        ' .logo ha-icon { --mdc-icon-size: 16px; }' +
         ' .hero { gap: 10px; }' +
         ' .picture { width: 56px; height: 66px; }' +
         ' .big { flex-wrap: wrap; row-gap: 0; }' +
