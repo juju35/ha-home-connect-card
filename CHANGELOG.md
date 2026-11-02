@@ -1,6 +1,6 @@
 # Changelog
 
-## Unreleased
+## 1.11.7 - 2026-11-02
 
 ### Changes
 - Cards: the header shows the tinted round appliance icon of the project's showcase page (blue `mdi:dishwasher` or `mdi:washing-machine`, by card) instead of the Home Connect logo, like the generic icons of the other cards. The `show_logo` option still hides it.
