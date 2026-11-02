@@ -76,11 +76,12 @@ test("show_power: false hides the power button", () => {
   assert.doesNotMatch(render(HomeConnectWasherCard, mockHass(), { show_power: false }), /data-action="power"/);
 });
 
-test("header shows the Home Connect logo unless show_logo is false, and the appliance illustration", () => {
+test("header shows the appliance icon unless show_logo is false, and the appliance illustration", () => {
   const html = render(HomeConnectWasherCard, mockHass());
-  assert.match(html, /class="logo-link"/);
+  assert.match(html, /class="logo"[^>]*><ha-icon icon="mdi:washing-machine"/);
+  assert.match(render(HomeConnectDishwasherCard, mockHass()), /<ha-icon icon="mdi:dishwasher"/);
   assert.match(html, /class="drum"/);
-  assert.doesNotMatch(render(HomeConnectWasherCard, mockHass(), { show_logo: false }), /class="logo-link"/);
+  assert.doesNotMatch(render(HomeConnectWasherCard, mockHass(), { show_logo: false }), /class="logo"/);
   assert.match(render(HomeConnectWasherCard, mockHass(), { icon: "mdi:washing-machine" }), /class="badge"/);
 });
 

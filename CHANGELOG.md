@@ -1,5 +1,10 @@
 # Changelog
 
+## Unreleased
+
+### Changes
+- Cards: the header shows the tinted round appliance icon of the project's showcase page (blue `mdi:dishwasher` or `mdi:washing-machine`, by card) instead of the Home Connect logo, like the generic icons of the other cards. The `show_logo` option still hides it.
+
 ## 1.11.6 - 2026-11-01
 ### Fixes
 - Mini cards at their default size (half a section of a Sections view) are readable again: the appliance name no longer disappears and the power button no longer sticks out of the card. On a narrow card the round buttons move under the text, the finish time wraps instead of being cut, the status pill shows only its coloured dot and the state is written above the program instead. Below about 200 px the Home Connect logo steps aside. The full card's buttons, percentage and door chip wrap at that width too.

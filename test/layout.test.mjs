@@ -68,7 +68,7 @@ test("header: the status pill shrinks (at most half the header) and truncates it
 });
 
 test("header and mini card: icon buttons never shrink", () => {
-  for (const sel of [".logo-link", ".power", ".zoom", ".round"]) assert.match(rule(sel), /flex: none/, `${sel} can shrink`);
+  for (const sel of [".logo", ".power", ".zoom", ".round"]) assert.match(rule(sel), /flex: none/, `${sel} can shrink`);
 });
 
 test("narrow card: the pill only shows its dot, the logo steps aside, the mini card's buttons go under its text", () => {
@@ -80,7 +80,7 @@ test("narrow card: the pill only shows its dot, the logo steps aside, the mini c
   assert.ok(hidden, "the pill text never hides");
   assert.match(hidden[1], /clip-path: inset\(50%\)|clip: rect\(0/);
   assert.doesNotMatch(hidden[1], /display: none/);
-  assert.match(all, /\.logo-link \{[^}]*display: none/);
+  assert.match(all, /\.logo \{[^}]*display: none/);
   // Mini card: the state is spelt out in the text column instead (hidden from screen readers, which read the pill).
   assert.match(rule(".mstate"), /display: none/);
   assert.match(all, /ha-card\.mini \.mstate \{[^}]*display: flex/);

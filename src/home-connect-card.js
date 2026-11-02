@@ -57,7 +57,7 @@ var HcI18n = {
     ed_show_options: 'Options du programme',
     ed_show_alerts: 'Alertes',
     ed_show_power: 'Bouton marche / arrêt',
-    ed_show_logo: 'Logo Home Connect',
+    ed_show_logo: 'Icône',
     ed_zoom: 'Bouton détail',
     ed_zoom_helper: 'Bouton en haut à droite qui passe la mini-carte en carte complète et inversement',
     zoom_in: 'Afficher la carte complète',
@@ -136,7 +136,7 @@ var HcI18n = {
     ed_show_controls: 'Control buttons',
     ed_show_options: 'Program options',
     ed_show_power: 'Power button',
-    ed_show_logo: 'Home Connect logo',
+    ed_show_logo: 'Icon',
     ed_zoom: 'Detail button',
     ed_zoom_helper: 'Button at the top right that switches the mini card to the full card and back',
     zoom_in: 'Show the full card',
@@ -216,7 +216,7 @@ var HcI18n = {
     ed_show_controls: 'Steuerungsschaltflächen',
     ed_show_options: 'Programmoptionen',
     ed_show_power: 'Ein-/Aus-Schaltfläche',
-    ed_show_logo: 'Home-Connect-Logo',
+    ed_show_logo: 'Symbol',
     ed_zoom: 'Detailansicht-Schaltfläche',
     ed_zoom_helper: 'Schaltfläche oben rechts zum Wechseln zwischen kompakter und vollständiger Kartenansicht',
     zoom_in: 'Vollständige Karte anzeigen',
@@ -296,7 +296,7 @@ var HcI18n = {
     ed_show_controls: 'Botones de control',
     ed_show_options: 'Opciones del programa',
     ed_show_power: 'Botón de encendido',
-    ed_show_logo: 'Logotipo de Home Connect',
+    ed_show_logo: 'Icono',
     ed_zoom: 'Botón de detalle',
     ed_zoom_helper: 'Botón arriba a la derecha que cambia la mini tarjeta a la tarjeta completa y viceversa',
     zoom_in: 'Mostrar la tarjeta completa',
@@ -376,7 +376,7 @@ var HcI18n = {
     ed_show_controls: 'Дугмад за контролу',
     ed_show_options: 'Опције програма',
     ed_show_power: 'Дугме за укључивање / искључивање',
-    ed_show_logo: 'Home Connect лого',
+    ed_show_logo: 'Иконица',
     ed_zoom: 'Дугме за детаље',
     ed_zoom_helper: 'Дугме у горњем десном углу које пребацује мини картицу на пун приказ и назад',
     zoom_in: 'Прикажи целу картицу',
@@ -456,7 +456,7 @@ var HcI18n = {
     ed_show_controls: 'Dugmad za kontrolu',
     ed_show_options: 'Opcije programa',
     ed_show_power: 'Dugme za uključivanje / isključivanje',
-    ed_show_logo: 'Home Connect logo',
+    ed_show_logo: 'Ikonica',
     ed_zoom: 'Dugme za detalje',
     ed_zoom_helper: 'Dugme u gornjem desnom uglu koje prebacuje mini karticu na pun prikaz i nazad',
     zoom_in: 'Prikaži celu karticu',
@@ -536,7 +536,7 @@ var HcI18n = {
     ed_show_controls: 'Pulsanti di comando',
     ed_show_options: 'Opzioni del programma',
     ed_show_power: 'Pulsante di accensione',
-    ed_show_logo: 'Logo Home Connect',
+    ed_show_logo: 'Icona',
     ed_zoom: 'Pulsante dettaglio',
     ed_zoom_helper: 'Pulsante in alto a destra che passa dalla mini scheda alla scheda completa e viceversa',
     zoom_in: 'Mostra la scheda completa',
@@ -616,7 +616,7 @@ var HcI18n = {
     ed_show_controls: 'Bedieningsknoppen',
     ed_show_options: 'Programma-opties',
     ed_show_power: 'Aan/uit-knop',
-    ed_show_logo: 'Home Connect-logo',
+    ed_show_logo: 'Pictogram',
     ed_zoom: 'Detailknop',
     ed_zoom_helper: 'Knop rechtsboven die de minikaart omschakelt naar de volledige kaart en terug',
     zoom_in: 'Volledige kaart tonen',
@@ -696,7 +696,7 @@ var HcI18n = {
     ed_show_controls: 'Botões de comando',
     ed_show_options: 'Opções do programa',
     ed_show_power: 'Botão ligar / desligar',
-    ed_show_logo: 'Logótipo Home Connect',
+    ed_show_logo: 'Ícone',
     ed_zoom: 'Botão de detalhe',
     ed_zoom_helper: 'Botão no canto superior direito que alterna entre o mini cartão e o cartão completo',
     zoom_in: 'Mostrar o cartão completo',
@@ -776,7 +776,7 @@ var HcI18n = {
     ed_show_controls: 'Przyciski sterowania',
     ed_show_options: 'Opcje programu',
     ed_show_power: 'Przycisk włączania / wyłączania',
-    ed_show_logo: 'Logo Home Connect',
+    ed_show_logo: 'Ikona',
     ed_zoom: 'Przycisk szczegółów',
     ed_zoom_helper: 'Przycisk w prawym górnym rogu przełączający minikartę na pełną kartę i z powrotem',
     zoom_in: 'Pokaż pełną kartę',
@@ -1006,13 +1006,9 @@ function hcHumanize(value) {
   return v.charAt(0).toUpperCase() + v.slice(1);
 }
 
-// Home Connect logo: a blue speech bubble with a white house.
-var HC_LOGO = '<svg class="logo" viewBox="0 0 292 292" role="img" aria-label="Home Connect"><title>Home Connect</title>' +
-  '<defs><linearGradient id="hc-logo-g" x1="0" y1="0" x2="292" y2="292" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#304ae2"/><stop offset="1" stop-color="#5fc9ff"/></linearGradient></defs>' +
-  '<path fill="url(#hc-logo-g)" d="M146 .5A145.5 145.5 0 1 0 215 272L278 285Q288 287 286 277L270 220A145.5 145.5 0 0 0 146 .5Z"/>' +
-  '<path fill="#fff" stroke="#fff" stroke-width="8" stroke-linejoin="round" d="M147.5 64L200 108.5V202H95V108.5Z"/></svg>';
-
-var HC_SITE = 'https://www.home-connect.com';
+// Header icon: the tinted round icon of the project page on the showcase site, one per appliance.
+var HC_ACCENT = '#039be5';
+var HC_HEADER_ICON = { dishwasher: 'mdi:dishwasher', washer: 'mdi:washing-machine' };
 
 // Appliance illustrations (front view). The state color lights the display; when running the
 // washer drum turns and the dishwasher projects its floor light, like the real appliances.
@@ -1505,7 +1501,7 @@ class HomeConnectBaseCard extends HTMLElement {
       '<div class="info">' + big + (chips.length ? `<div class="chips">${chips.join('')}</div>` : '') + '</div></div>';
 
     var logo = c.show_logo === false ? ''
-      : `<a class="logo-link" href="${HC_SITE}" target="_blank" rel="noopener noreferrer" title="Home Connect">${HC_LOGO}</a>`;
+      : `<div class="logo" aria-hidden="true"><ha-icon icon="${HC_HEADER_ICON[kind] || HC_HEADER_ICON.dishwasher}"></ha-icon></div>`;
     var sub = progLabel || this._t(kind);
 
     if (this._compact()) {
@@ -1549,8 +1545,9 @@ class HomeConnectBaseCard extends HTMLElement {
       '.empty { display: flex; align-items: center; gap: 10px; color: var(--secondary-text-color); }' +
       // The body starts 8px under the header (the card gap is 10px between body blocks).
       '.header { display: flex; align-items: center; gap: 10px; margin-bottom: -2px; }' +
-      '.logo-link { display: flex; flex: none; }' +
-      '.logo { width: 40px; height: 40px; }' +
+      '.logo { width: 40px; height: 40px; flex: none; border-radius: 50%; display: grid; place-items: center;' +
+        ' color: ' + HC_ACCENT + '; background: color-mix(in srgb, ' + HC_ACCENT + ' 16%, transparent); }' +
+      '.logo ha-icon { --mdc-icon-size: 24px; }' +
       // The title takes the room the pill and the buttons leave (basis 0, so it doesn't squeeze the pill at
       // ordinary widths); it shrinks with an ellipsis but keeps about four characters.
       '.titles { flex: 1 1 0; min-width: 5ch; font-size: 16px; }' +
@@ -1676,6 +1673,7 @@ class HomeConnectBaseCard extends HTMLElement {
       '.zoom:hover { background: color-mix(in srgb, var(--secondary-text-color) 16%, transparent); color: var(--primary-text-color); }' +
       '.zoom:focus-visible { outline: 2px solid var(--primary-color, #03a9f4); outline-offset: 1px; }' +
       'ha-card.mini .logo { width: 32px; height: 32px; }' +
+      'ha-card.mini .logo ha-icon { --mdc-icon-size: 18px; }' +
       // The status pill takes at most half the header and truncates; on a narrow card only its dot shows.
       '.st { display: inline-flex; align-items: center; gap: 4px; flex: 0 1 auto; min-width: 0; max-width: 50%; overflow: hidden; box-sizing: border-box;' +
         ' padding: 1px 8px; border-radius: 12px; font-size: 11px; font-weight: 500;' +
@@ -1713,6 +1711,7 @@ class HomeConnectBaseCard extends HTMLElement {
       '@container (max-width: 230px) {' +
         ' .header { gap: 8px; }' +
         ' .logo, ha-card.mini .logo { width: 28px; height: 28px; }' +
+        ' .logo ha-icon, ha-card.mini .logo ha-icon { --mdc-icon-size: 16px; }' +
         ' .hero { gap: 10px; }' +
         ' .picture { width: 56px; height: 66px; }' +
         ' .big { flex-wrap: wrap; row-gap: 0; }' +
@@ -1722,7 +1721,7 @@ class HomeConnectBaseCard extends HTMLElement {
       ' }' +
       // Very narrow (about 200 px): no logo.
       '@container (max-width: 180px) {' +
-        ' .logo-link { display: none; }' +
+        ' .logo { display: none; }' +
         ' ha-card.mini .picture { width: 44px; height: 52px; }' +
         ' ha-card.mini .content { column-gap: 8px; }' +
       ' }' +
