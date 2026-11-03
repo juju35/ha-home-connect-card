@@ -1475,11 +1475,6 @@ function hcHumanize(value) {
 
 // Header icon: the tinted round icon of the project page on the showcase site, the appliance's own icon in it.
 var HC_ACCENT = '#039be5';
-// Home Connect logo (a blue speech bubble with a white house), as a badge on the header icon.
-var HC_LOGO_BADGE = '<span class="hc-badge"><svg viewBox="0 0 292 292">' +
-  '<defs><linearGradient id="hc-logo-g" x1="0" y1="0" x2="292" y2="292" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#304ae2"/><stop offset="1" stop-color="#5fc9ff"/></linearGradient></defs>' +
-  '<path fill="url(#hc-logo-g)" d="M146 .5A145.5 145.5 0 1 0 215 272L278 285Q288 287 286 277L270 220A145.5 145.5 0 0 0 146 .5Z"/>' +
-  '<path fill="#fff" stroke="#fff" stroke-width="8" stroke-linejoin="round" d="M147.5 64L200 108.5V202H95V108.5Z"/></svg></span>';
 
 // Appliance illustrations (front view). The state color lights the display; when running the
 // washer drum turns and the dishwasher projects its floor light, like the real appliances.
@@ -2188,13 +2183,15 @@ class HomeConnectBaseCard extends HTMLElement {
 
     // Hero: the appliance next to its state (and progress while a program runs).
     var big = '';
-    if (running || state === 'finished') {
+    // Other integrations may give no progress at all (Whirlpool): the state then stands alone, with the finish time.
+    var noPct = this._noPct = running && progress == null && r.platform !== 'home_connect';
+    if ((running && !noPct) || state === 'finished') {
       var pct = state === 'finished' ? 100 : (progress == null ? 0 : progress);
       big = '<div class="big"><span class="pct">' + Math.round(pct) + '<small> %</small></span><span class="state">' + hcEsc(statusText) + '</span></div>' +
         '<div class="bar"><div class="fill" style="width:' + pct + '%"></div></div>' +
         (timeLine ? `<div class="time">${hcEsc(timeLine)}</div>` : '');
     } else {
-      big = `<div class="big"><span class="state-big">${hcEsc(statusText)}</span></div>`;
+      big = `<div class="big"><span class="state-big">${hcEsc(statusText)}</span></div>${timeLine ? `<div class="time">${hcEsc(timeLine)}</div>` : ''}`;
     }
     var art = c.icon
       ? `<div class="badge"><ha-icon icon="${hcEsc(icon)}"></ha-icon></div>`
@@ -2202,13 +2199,13 @@ class HomeConnectBaseCard extends HTMLElement {
     var heroHtml = '<div class="hero">' + hcPicture(art, state, !c.icon, this._lit) +
       '<div class="info">' + big + (chips.length ? `<div class="chips">${chips.join('')}</div>` : '') + '</div></div>';
 
-    var logo = `<div class="logo" aria-hidden="true"><ha-icon icon="${hcEsc(profile.icon)}"></ha-icon>${this._badge(r.platform)}</div>`;
+    var logo = `<div class="logo" aria-hidden="true"><ha-icon icon="${hcEsc(profile.icon)}"></ha-icon>${this._badge()}</div>`;
     var sub = progLabel || this._t(kind);
 
     if (this._compact()) {
       this._rows = hcRows(HC_PX.miniBase + (this._error ? HC_PX.error : 0));
       this.shadowRoot.innerHTML = this._miniHtml({ c, ent, name, color, state, statusText, running, online, powerOn, progress,
-        finish, progLabel, chips: chips.filter((x) => x.indexOf('chip warn') >= 0 || x.indexOf('chip info') >= 0 || !online), art, logo, powerBtn });
+        finish, progLabel, chips: chips.filter((x) => x.indexOf('chip warn') >= 0 || x.indexOf('chip extra') >= 0 || !online), art, logo, powerBtn });
       return;
     }
 
@@ -2234,7 +2231,7 @@ class HomeConnectBaseCard extends HTMLElement {
   // Temperatures (cold appliances always, ovens while cooking) and the hood's fan and light.
   _infoChips(ent, kind, state, deviceName) {
     var chips = [];
-    var chip = (icon, text, title) => `<span class="chip info"${title ? ` title="${hcEsc(title)}"` : ''}><ha-icon icon="${icon}"></ha-icon>${hcEsc(text)}</span>`;
+    var chip = (icon, text, title) => `<span class="chip extra"${title ? ` title="${hcEsc(title)}"` : ''}><ha-icon icon="${icon}"></ha-icon>${hcEsc(text)}</span>`;
     if (HC_COLD.indexOf(kind) >= 0 || (HC_HOT.indexOf(kind) >= 0 && state === 'run')) {
       ent.temps.forEach((id) => {
         var s = this._st(id);
@@ -2258,12 +2255,11 @@ class HomeConnectBaseCard extends HTMLElement {
     return chips;
   }
 
-  // Badge on the header icon: the appliance's brand (initial on the brand's colour), else the Home Connect logo.
+  // Badge on the header icon: the appliance's brand, its initial on the brand's colour; none without a brand.
   // A brand with its logo shows it next to the title instead (_brandLogo): wordmarks don't fit the badge.
-  _badge(platform) {
+  _badge() {
     var b = this._brand;
-    if (b && HC_BRAND_LOGOS[b.key]) return '';
-    if (!b || (b.key === 'other' && platform === 'home_connect')) return HC_LOGO_BADGE;
+    if (!b || HC_BRAND_LOGOS[b.key]) return '';
     var initials = b.key === 'lg' ? 'LG' : b.name.charAt(0).toUpperCase();
     return `<span class="hc-badge brand" style="background:${b.color}" title="${hcEsc(b.name)}">${hcEsc(initials)}</span>`;
   }
@@ -2754,7 +2750,7 @@ var hcMini = (Base) => class extends Base {
     var c = m.c, ent = m.ent, lines = [];
     var mstate = `<div class="line mstate" aria-hidden="true"><span>${hcEsc(m.statusText)}</span></div>`;
     var bar = '';
-    if (m.running || m.state === 'finished') {
+    if ((m.running && !this._noPct) || m.state === 'finished') {
       var pct = m.state === 'finished' ? 100 : (m.progress == null ? 0 : m.progress);
       bar = `<div class="mbar"><div class="bar"><div class="fill" style="width:${pct}%"></div></div><span class="v">${Math.round(pct)} %</span></div>`;
     }

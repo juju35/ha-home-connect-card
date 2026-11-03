@@ -196,7 +196,8 @@ const icons = {
 // Mock devices: entity registry (device_id, integration, translation_key) and states. Home Connect unless listed here.
 const entities = {};
 const states = {};
-const PLATFORMS = { dryer: "miele", wd: "lg_thinq", mw: "lg_thinq", hob: "lg_thinq", fz: "miele", wine: "miele", styler: "lg_thinq" };
+const PLATFORMS = { dryer: "miele", wd: "lg_thinq", mw: "lg_thinq", hob: "lg_thinq", fz: "miele", wine: "miele", styler: "lg_thinq",
+  stwm: "smartthings", wpdry: "whirlpool", kaov: "whirlpool" };
 const add = (device, id, key, state, attributes = {}) => {
   entities[id] = { entity_id: id, device_id: device, translation_key: key, platform: PLATFORMS[device] || "home_connect" };
   states[id] = { entity_id: id, state, attributes: { friendly_name: id, ...attributes } };
@@ -322,6 +323,26 @@ add("styler", "sensor.styler_current_status", "current_state", "refreshing", { o
 add("styler", "sensor.styler_remaining_time", "remain", inMinutes(18), { device_class: "timestamp" });
 add("styler", "sensor.styler_total_time", "total", "40", { unit_of_measurement: "min" });
 add("styler", "switch.styler_power", "operation_power", "on");
+// Washing machine (Samsung, SmartThings): rinsing, start / pause / stop through the operating state select.
+add("stwm", "sensor.samsung_washer_machine_state", "washer_machine_state", "run", { options: ["pause", "run", "stop"] });
+add("stwm", "sensor.samsung_washer_job_state", "washer_job_state", "rinse", { options: ["none", "wash", "rinse", "spin", "finish"] });
+add("stwm", "sensor.samsung_washer_completion_time", "completion_time", inMinutes(34), { device_class: "timestamp" });
+add("stwm", "sensor.samsung_washer_progress", "washer_progress", "68", { unit_of_measurement: "%" });
+add("stwm", "select.samsung_washer", "operating_state", "run", { options: ["run", "pause", "stop"] });
+add("stwm", "binary_sensor.samsung_washer_remote_control", "remote_control", "on");
+add("stwm", "binary_sensor.samsung_washer_door", "door", "off", { device_class: "opening" });
+// Tumble dryer (Maytag, Whirlpool): main cycle running, its end time.
+add("wpdry", "sensor.maytag_dryer_state", "dryer_state", "running_maincycle", { options: ["standby", "running_maincycle", "complete"] });
+add("wpdry", "sensor.maytag_dryer_end_time", "end_time", inMinutes(27), { device_class: "timestamp" });
+add("wpdry", "binary_sensor.maytag_dryer_door", null, "off", { device_class: "door" });
+// Oven (KitchenAid, Whirlpool): convection bake, its cavity temperature, Stop.
+add("kaov", "sensor.kitchenaid_oven_state", "oven_state", "cooking", { options: ["standby", "preheating", "cooking"] });
+add("kaov", "sensor.kitchenaid_oven_temperature", "oven_current_temperature", "190",
+  { device_class: "temperature", unit_of_measurement: "°C", friendly_name: "KitchenAid oven Temperature" });
+add("kaov", "select.kitchenaid_oven_cook_mode", "oven_cook_mode", "convection_bake",
+  { friendly_name: "KitchenAid oven Cook mode", options: ["standby", "bake", "convection_bake", "broil"] });
+add("kaov", "button.kitchenaid_oven_stop", "oven_stop", "unknown");
+add("kaov", "light.kitchenaid_oven_light", "oven_light", "on");
 
 const devices = {
   dw: { id: "dw", name: "Dishwasher", manufacturer: "BOSCH" },
@@ -337,10 +358,18 @@ const devices = {
   fz: { id: "fz", name: "Freezer", manufacturer: "Miele", model: "Freezer" },
   wine: { id: "wine", name: "Wine cabinet", manufacturer: "Miele", model: "Wine cabinet" },
   styler: { id: "styler", name: "Styler", manufacturer: "LGE", model: "S5 (DEVICE_STYLER)" },
+  stwm: { id: "stwm", name: "Washing machine", manufacturer: "Samsung Electronics", model: "WW90T" },
+  wpdry: { id: "wpdry", name: "Dryer", manufacturer: "Whirlpool" },
+  kaov: { id: "kaov", name: "Wall oven", manufacturer: "Whirlpool" },
 };
 // The new appliances: one capture per theme and one GIF of their animation.
 const NEW = [["dryer", "dryer"], ["washer-dryer", "wd"], ["oven", "oven"], ["microwave", "mw"], ["hob", "hob"], ["coffee-machine", "cm"],
-  ["hood", "hood"], ["fridge", "fr"], ["freezer", "fz"], ["wine-cabinet", "wine"], ["styler", "styler"]];
+  ["hood", "hood"], ["fridge", "fr"], ["freezer", "fz"], ["wine-cabinet", "wine"], ["styler", "styler"],
+  // Whirlpool doesn't say the brand: the `brand` option gives it.
+  ["samsung-washer", "stwm"], ["maytag-dryer", "wpdry", { brand: "maytag" }], ["kitchenaid-oven", "kaov", { brand: "kitchenaid" }]];
+// One mini card per brand, light and dark.
+const MINIS = [["bosch", "fr"], ["siemens", "cm"], ["neff", "oven"], ["gaggenau", "hood"], ["miele", "dryer"], ["samsung", "stwm"],
+  ["lg", "styler"], ["whirlpool", "kaov", { brand: "kitchenaid" }]];
 const hass = { states, entities, devices };
 
 // Same dishwasher, switched on and waiting for a program: the options are shown.
@@ -418,8 +447,11 @@ await render(
         await page.mouse.move(0, 0);
       },
     },
-    ...NEW.flatMap(([file, device]) => ["light", "dark"].map((theme) => ({
-      file: theme === "light" ? file : `${file}-dark`, type: "smart-appliance-card", device, theme, width: 460, config: {},
+    ...NEW.flatMap(([file, device, config = {}]) => ["light", "dark"].map((theme) => ({
+      file: theme === "light" ? file : `${file}-dark`, type: "smart-appliance-card", device, theme, width: 460, config,
+    }))),
+    ...MINIS.flatMap(([brand, device, config = {}]) => ["light", "dark"].map((theme) => ({
+      file: `mini-${brand}${theme === "light" ? "" : "-dark"}`, type: "smart-appliance-mini-card", device, theme, width: 380, config,
     }))),
   ],
   { icons, hass }
@@ -440,7 +472,7 @@ const gifs = [
   { file: "washer-paused", type: "smart-appliance-card", device: "wm", theme: "light", width: 460, config: {}, hass: { states: washerPaused } },
   { file: "dishwasher-delayed", type: "smart-appliance-card", device: "dw", theme: "light", width: 460, config: {}, hass: { states: dishwasherDelayed } },
   { file: "washer-delayed", type: "smart-appliance-card", device: "wm", theme: "light", width: 460, config: {}, hass: { states: washerDelayed } },
-  ...NEW.map(([file, device]) => ({ file: `${file}-running`, type: "smart-appliance-card", device, theme: "light", width: 460, config: {} })),
+  ...NEW.map(([file, device, config = {}]) => ({ file: `${file}-running`, type: "smart-appliance-card", device, theme: "light", width: 460, config })),
 ];
 // Every animation is also rendered in the other theme, with the exact same setup: X-dark.gif for a light X.gif,
 // X-light.gif for a dark one.

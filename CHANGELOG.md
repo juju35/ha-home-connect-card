@@ -4,7 +4,7 @@
 
 ### Changes
 - Renamed **ha-smart-appliance-card** (formerly ha-home-connect-card): one card, `smart-appliance-card`, and its mini version `smart-appliance-mini-card`, for every appliance. The file is now `smart-appliance-card.js` (HACS updates it; a resource added by hand must point to the new file). The `home-connect-dishwasher-card`, `home-connect-washer-card` and mini card types still work in existing dashboards.
-- Brand: the logo of Bosch, Siemens, Miele, Samsung, LG and KitchenAid appliances next to the title (on a white tile, readable in both themes); other brands get a badge with their initial on the header icon, and the Home Connect logo stays when the brand isn't known. The main buttons take the brand's colour. Logos are embedded by the build from `logos/`.
+- Brand: the logo of Bosch, Siemens, Miele, Samsung, LG and KitchenAid appliances next to the title (on a white tile, readable in both themes); other brands get a badge with their initial on the header icon. The Home Connect logo is gone: Home Connect appliances show their own brand (Bosch, Siemens…). The main buttons take the brand's colour. Logos are embedded by the build from `logos/`.
 
 ### Features
 - New appliances, each with its own animated illustration: tumble dryer, washer-dryer, oven, microwave, hob, coffee machine, cooker hood, fridge, freezer, wine cabinet and LG Styler.
