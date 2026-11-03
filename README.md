@@ -40,13 +40,33 @@ Pick the appliance: the card works out its type and its brand, and finds all its
 | Integration | Appliances | What the cards show |
 |---|---|---|
 | [Home Connect](https://www.home-assistant.io/integrations/home_connect/) (built in) — Bosch, Siemens, Neff, Gaggenau, Constructa | Dishwashers, washing machines, tumble dryers, washer-dryers, ovens, microwaves, coffee machines, cooker hoods, fridges, freezers, wine cabinets | Status, progress, finish time, program picker with its options, **Start** (remote start enabled), **Pause / Resume**, **Stop**, door, salt and rinse aid alerts, coffee machine alerts, oven temperature, fridge setpoints and super modes, hood fan stage and light |
-| [Miele](https://www.home-assistant.io/integrations/miele/) (built in) | Washing machines, tumble dryers, dishwashers, ovens, coffee machines, cooker hoods, fridges, freezers, wine cabinets | Status and program phase, program, progress and finish time from the elapsed and remaining times, **Start**, **Pause**, **Stop**, power, door, zone temperatures, super cooling and super freezing |
-| [SmartThings](https://www.home-assistant.io/integrations/smartthings/) (built in) — Samsung | Washing machines, tumble dryers, washer-dryers, dishwashers, ovens, cooker hoods, fridges | Machine and job state, progress, finish time, **Start / Pause / Resume / Stop** through the operating state, dishwasher course picker, door, temperatures, rapid cooling and freezing |
+| [Miele](https://www.home-assistant.io/integrations/miele/) (built in) | Washing machines, tumble dryers, washer-dryers, dishwashers, ovens (steam and combi included), microwaves, hobs, coffee machines, cooker hoods, fridges, freezers, wine cabinets | Status and program phase, program, progress and finish time from the elapsed and remaining times, **Start**, **Pause**, **Stop**, power, door, zone temperatures, super cooling and super freezing |
+| [SmartThings](https://www.home-assistant.io/integrations/smartthings/) (built in) — Samsung | Washing machines, tumble dryers, washer-dryers, dishwashers, ovens, cooker hoods, fridges, freezers | Machine and job state, progress, finish time, **Start / Pause / Resume / Stop** through the operating state, dishwasher course picker, door, temperatures, rapid cooling and freezing |
 | [LG ThinQ](https://www.home-assistant.io/integrations/lg_thinq/) (built in) — LG | Washing machines, tumble dryers, WashTower and WashCombo, dishwashers, ovens, microwaves, hobs, cooker hoods, fridges, wine cabinets, Styler | Current state and step, progress and finish time, **Start** and **Stop** through the operation mode, power, remote start, door, temperatures, express modes |
 | [Whirlpool](https://www.home-assistant.io/integrations/whirlpool/) (built in) — Whirlpool, Maytag, KitchenAid, Consul | Washing machines, tumble dryers, ovens, fridges | Washer and dryer state, finish time and door; oven state, temperature and **Stop** (set `brand` for a Maytag, KitchenAid or Consul: the integration doesn't say) |
 | [Matter](https://www.home-assistant.io/integrations/matter/) (built in) | Dishwashers, washing machines, tumble dryers (Matter 1.2+) | Operational state and phase, finish time, **Start / Pause / Resume / Stop**, power, program options (set `kind` when the appliance type can't be told from its entities) |
 
 Air conditioners, purifiers and robot vacuums are left out: they have their own cards.
+
+### Appliance types
+
+Each type is detected by itself; `kind` is the value to set when it can't be (a Matter appliance whose entities don't give it away, for instance).
+
+| Appliance | `kind` | Home Connect | Miele | SmartThings | LG ThinQ | Whirlpool | Matter |
+|---|---|---|---|---|---|---|---|
+| Dishwasher | `dishwasher` | ✅ | ✅ | ✅ | ✅ | — | ✅ |
+| Washing machine | `washer` | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
+| Tumble dryer | `dryer` | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
+| Washer-dryer | `washer_dryer` | ✅ | ✅ | ✅ | ✅ | — | — |
+| Oven | `oven` | ✅ | ✅ | ✅ | ✅ | ✅ | — |
+| Microwave | `microwave` | ✅ | ✅ | — | ✅ | — | — |
+| Hob | `hob` | — | ✅ | — | ✅ | — | — |
+| Coffee machine | `coffee_maker` | ✅ | ✅ | — | — | — | — |
+| Cooker hood | `hood` | ✅ | ✅ | ✅ | ✅ | — | — |
+| Fridge | `fridge` | ✅ | ✅ | ✅ | ✅ | ✅ | — |
+| Freezer | `freezer` | ✅ | ✅ | ✅ | — | — | — |
+| Wine cabinet | `wine_cooler` | ✅ | ✅ | — | ✅ | — | — |
+| LG Styler | `styler` | — | — | — | ✅ | — | — |
 
 ## Prerequisites
 
@@ -233,25 +253,86 @@ Door open — the dishwasher's door lowered on its racks, the washing machine's 
 | Dishwasher | ![dishwasher door open](screenshots/dishwasher-open.png) | ![dishwasher door open dark](screenshots/dishwasher-open-dark.png) |
 | Washing machine | ![washer door open](screenshots/washer-open.png) | ![washer door open dark](screenshots/washer-open-dark.png) |
 
-### Other appliances
+### Every appliance
 
-Each appliance has its own illustration and its own animation. The captures use mock devices of different integrations, so each shows another brand badge.
+Each appliance has its own illustration, animated by what it is doing. The captures use mock devices of different integrations, so each shows another brand badge.
 
-| | Light | Dark | Animation |
-|---|---|---|---|
-| Tumble dryer (Miele): the laundry tumbles in the warm drum while heat rises | ![dryer](screenshots/dryer.png) | ![dryer dark](screenshots/dryer-dark.png) | ![dryer animated](screenshots/dryer-running.gif) |
-| Washer-dryer (LG WashCombo): the drum turns behind a porthole half wash water, half warm air | ![washer-dryer](screenshots/washer-dryer.png) | ![washer-dryer dark](screenshots/washer-dryer-dark.png) | ![washer-dryer animated](screenshots/washer-dryer-running.gif) |
-| Oven (Neff): the cavity glows, the fan turns and heat shimmers over the dish | ![oven](screenshots/oven.png) | ![oven dark](screenshots/oven-dark.png) | ![oven animated](screenshots/oven-running.gif) |
-| Microwave (LG): the inside lights up and the plate turns | ![microwave](screenshots/microwave.png) | ![microwave dark](screenshots/microwave-dark.png) | ![microwave animated](screenshots/microwave-running.gif) |
-| Hob (LG): the cooking zones glow and heat rises from them | ![hob](screenshots/hob.png) | ![hob dark](screenshots/hob-dark.png) | ![hob animated](screenshots/hob-running.gif) |
-| Coffee machine (Siemens): coffee pours into the cup, which fills and steams | ![coffee-machine](screenshots/coffee-machine.png) | ![coffee-machine dark](screenshots/coffee-machine-dark.png) | ![coffee-machine animated](screenshots/coffee-machine-running.gif) |
-| Cooker hood (Gaggenau): air is drawn up the chimney and the lights fall on the hob | ![hood](screenshots/hood.png) | ![hood dark](screenshots/hood-dark.png) | ![hood animated](screenshots/hood-running.gif) |
-| Fridge-freezer (Bosch): in super cooling, frost sparkles and cold air flows under the door | ![fridge](screenshots/fridge.png) | ![fridge dark](screenshots/fridge-dark.png) | ![fridge animated](screenshots/fridge-running.gif) |
-| Freezer (Miele): in super freezing, frost sparkles and cold air flows | ![freezer](screenshots/freezer.png) | ![freezer dark](screenshots/freezer-dark.png) | ![freezer animated](screenshots/freezer-running.gif) |
-| Wine cabinet (Miele): the inside light glows on the bottles while it is on | ![wine-cabinet](screenshots/wine-cabinet.png) | ![wine-cabinet dark](screenshots/wine-cabinet-dark.png) | ![wine-cabinet animated](screenshots/wine-cabinet-running.gif) |
-| LG Styler: the shirt sways in the steam | ![styler](screenshots/styler.png) | ![styler dark](screenshots/styler-dark.png) | ![styler animated](screenshots/styler-running.gif) |
+**Tumble dryer** (Miele): The laundry tumbles in the warm, orange-lit drum, pausing at the top of each turn, while heat rises behind the porthole.
 
-Every animation is also recorded in the other theme (`screenshots/<appliance>-running-dark.gif`).
+| | Light | Dark |
+|---|---|---|
+| Card | ![dryer](screenshots/dryer.png) | ![dryer dark](screenshots/dryer-dark.png) |
+| Animation | ![dryer animated](screenshots/dryer-running.gif) | ![dryer animated dark](screenshots/dryer-running-dark.gif) |
+
+**Washer-dryer** (LG WashCombo): The drum turns behind a porthole that is half wash water, half warm air, with heat rising on the dry side.
+
+| | Light | Dark |
+|---|---|---|
+| Card | ![washer-dryer](screenshots/washer-dryer.png) | ![washer-dryer dark](screenshots/washer-dryer-dark.png) |
+| Animation | ![washer-dryer animated](screenshots/washer-dryer-running.gif) | ![washer-dryer animated dark](screenshots/washer-dryer-running-dark.gif) |
+
+**Oven** (Neff): The cavity glows, the convection fan turns behind the dish and heat shimmers above it; the cavity temperature shows as a chip.
+
+| | Light | Dark |
+|---|---|---|
+| Card | ![oven](screenshots/oven.png) | ![oven dark](screenshots/oven-dark.png) |
+| Animation | ![oven animated](screenshots/oven-running.gif) | ![oven animated dark](screenshots/oven-running-dark.gif) |
+
+**Microwave** (LG): The inside lights up and the plate turns.
+
+| | Light | Dark |
+|---|---|---|
+| Card | ![microwave](screenshots/microwave.png) | ![microwave dark](screenshots/microwave-dark.png) |
+| Animation | ![microwave animated](screenshots/microwave-running.gif) | ![microwave animated dark](screenshots/microwave-running-dark.gif) |
+
+**Hob** (LG): The cooking zones in use glow red and heat rises from them.
+
+| | Light | Dark |
+|---|---|---|
+| Card | ![hob](screenshots/hob.png) | ![hob dark](screenshots/hob-dark.png) |
+| Animation | ![hob animated](screenshots/hob-running.gif) | ![hob animated dark](screenshots/hob-running-dark.gif) |
+
+**Coffee machine** (Siemens): Coffee pours from the spout, the cup fills up and steam curls off it.
+
+| | Light | Dark |
+|---|---|---|
+| Card | ![coffee-machine](screenshots/coffee-machine.png) | ![coffee-machine dark](screenshots/coffee-machine-dark.png) |
+| Animation | ![coffee-machine animated](screenshots/coffee-machine-running.gif) | ![coffee-machine animated dark](screenshots/coffee-machine-running-dark.gif) |
+
+**Cooker hood** (Gaggenau): Air is drawn up the chimney and the lights fall on the hob below; the fan stage and the light show as chips.
+
+| | Light | Dark |
+|---|---|---|
+| Card | ![hood](screenshots/hood.png) | ![hood dark](screenshots/hood-dark.png) |
+| Animation | ![hood animated](screenshots/hood-running.gif) | ![hood animated dark](screenshots/hood-running-dark.gif) |
+
+**Fridge-freezer** (Bosch): In super cooling, frost sparkles on the doors and cold air flows out underneath; both setpoints show as chips.
+
+| | Light | Dark |
+|---|---|---|
+| Card | ![fridge](screenshots/fridge.png) | ![fridge dark](screenshots/fridge-dark.png) |
+| Animation | ![fridge animated](screenshots/fridge-running.gif) | ![fridge animated dark](screenshots/fridge-running-dark.gif) |
+
+**Freezer** (Miele): In super freezing, frost sparkles and cold air flows out underneath.
+
+| | Light | Dark |
+|---|---|---|
+| Card | ![freezer](screenshots/freezer.png) | ![freezer dark](screenshots/freezer-dark.png) |
+| Animation | ![freezer animated](screenshots/freezer-running.gif) | ![freezer animated dark](screenshots/freezer-running-dark.gif) |
+
+**Wine cabinet** (Miele): With its light on, the inside glows softly on the bottles; each zone's temperature shows as a chip.
+
+| | Light | Dark |
+|---|---|---|
+| Card | ![wine-cabinet](screenshots/wine-cabinet.png) | ![wine-cabinet dark](screenshots/wine-cabinet-dark.png) |
+| Animation | ![wine-cabinet animated](screenshots/wine-cabinet-running.gif) | ![wine-cabinet animated dark](screenshots/wine-cabinet-running-dark.gif) |
+
+**LG Styler** (LG): The shirt sways on its hanger in the steam.
+
+| | Light | Dark |
+|---|---|---|
+| Card | ![styler](screenshots/styler.png) | ![styler dark](screenshots/styler-dark.png) |
+| Animation | ![styler animated](screenshots/styler-running.gif) | ![styler animated dark](screenshots/styler-running-dark.gif) |
 
 ## How it works
 
