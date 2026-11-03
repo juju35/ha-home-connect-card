@@ -8,12 +8,12 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
 <p align="center">
-  <img src="logos/bosch.svg" alt="Bosch" height="28">&nbsp;&nbsp;
-  <img src="logos/siemens.svg" alt="Siemens" height="22">&nbsp;&nbsp;
-  <img src="logos/miele.svg" alt="Miele" height="28">&nbsp;&nbsp;
-  <img src="logos/samsung.svg" alt="Samsung" height="22">&nbsp;&nbsp;
-  <img src="logos/lg.svg" alt="LG" height="36">&nbsp;&nbsp;
-  <img src="logos/kitchenaid.svg" alt="KitchenAid" height="20">
+  <img src="logos/bosch.svg" alt="Bosch" height="24">&nbsp;&nbsp;
+  <img src="logos/siemens.svg" alt="Siemens" height="18">&nbsp;&nbsp;
+  <img src="logos/miele.svg" alt="Miele" height="24">&nbsp;&nbsp;
+  <img src="logos/samsung.svg" alt="Samsung" height="18">&nbsp;&nbsp;
+  <img src="logos/lg.svg" alt="LG" height="30">&nbsp;&nbsp;
+  <img src="logos/kitchenaid.svg" alt="KitchenAid" height="16">
 </p>
 
 Animated Lovelace cards for home appliances in Home Assistant: washing machines, tumble dryers, washer-dryers, dishwashers, ovens, microwaves, hobs, coffee machines, cooker hoods, fridges, freezers, wine cabinets and the LG Styler. They work with [Home Connect](https://www.home-assistant.io/integrations/home_connect/), [Miele](https://www.home-assistant.io/integrations/miele/), [SmartThings](https://www.home-assistant.io/integrations/smartthings/), [LG ThinQ](https://www.home-assistant.io/integrations/lg_thinq/), [Whirlpool](https://www.home-assistant.io/integrations/whirlpool/) and [Matter](https://www.home-assistant.io/integrations/matter/).
