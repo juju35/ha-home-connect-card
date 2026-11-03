@@ -8,13 +8,16 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
 <p align="center">
-  <img src="logos/bosch.svg" alt="Bosch" height="24">&nbsp;&nbsp;
-  <img src="logos/siemens.svg" alt="Siemens" height="18">&nbsp;&nbsp;
-  <img src="logos/miele.svg" alt="Miele" height="24">&nbsp;&nbsp;
-  <img src="logos/samsung.svg" alt="Samsung" height="18">&nbsp;&nbsp;
-  <img src="logos/lg.svg" alt="LG" height="30">&nbsp;&nbsp;
-  <img src="logos/whirlpool.svg" alt="Whirlpool" height="22">&nbsp;&nbsp;
-  <img src="logos/kitchenaid.svg" alt="KitchenAid" height="16">
+  <img src="logos/bosch.svg" alt="Bosch" height="20">&nbsp;&nbsp;
+  <img src="logos/siemens.svg" alt="Siemens" height="15">&nbsp;&nbsp;
+  <img src="logos/neff.svg" alt="Neff" height="22">&nbsp;&nbsp;
+  <img src="logos/gaggenau.svg" alt="Gaggenau" height="14">
+  <br><br>
+  <img src="logos/miele.svg" alt="Miele" height="20">&nbsp;&nbsp;
+  <img src="logos/samsung.svg" alt="Samsung" height="15">&nbsp;&nbsp;
+  <img src="logos/lg.svg" alt="LG" height="26">&nbsp;&nbsp;
+  <img src="logos/whirlpool.svg" alt="Whirlpool" height="20">&nbsp;&nbsp;
+  <img src="logos/kitchenaid.svg" alt="KitchenAid" height="13">
 </p>
 
 Animated Lovelace cards for home appliances in Home Assistant: washing machines, tumble dryers, washer-dryers, dishwashers, ovens, microwaves, hobs, coffee machines, cooker hoods, fridges, freezers, wine cabinets and the LG Styler. They work with [Home Connect](https://www.home-assistant.io/integrations/home_connect/), [Miele](https://www.home-assistant.io/integrations/miele/), [SmartThings](https://www.home-assistant.io/integrations/smartthings/), [LG ThinQ](https://www.home-assistant.io/integrations/lg_thinq/), [Whirlpool](https://www.home-assistant.io/integrations/whirlpool/) and [Matter](https://www.home-assistant.io/integrations/matter/).
@@ -34,7 +37,7 @@ Pick the appliance: the card works out its type and its brand, and finds all its
 - One card, `smart-appliance-card`, and its compact version `smart-appliance-mini-card` (a detail button unfolds the full card)
 - 13 appliance types, each with its own illustration animated by what it is doing: drum turning, laundry tumbling, water spraying, oven glowing, coffee pouring, hood drawing air, frost on a fridge in super mode…
 - Type detected from the appliance (its programs, its model or its entities), or set with `kind`
-- The appliance's brand next to its title: its logo (Bosch, Siemens, Miele, Samsung, LG, Whirlpool, KitchenAid), or a badge with its initial on the header icon for the others (Neff, Gaggenau, Whirlpool, Maytag…); main buttons in the brand's colour
+- The appliance's brand next to its title: its logo (Bosch, Siemens, Neff, Gaggenau, Miele, Samsung, LG, Whirlpool, KitchenAid), or a badge with its initial on the header icon for the others (Constructa, Maytag…); main buttons in the brand's colour
 - Status with colour, progress bar, finish time and time left, the program step when the integration reports it (spinning, drying…)
 - Program picker and **Start** (when remote start is enabled), **Pause / Resume**, **Stop** with a confirmation tap, whatever the integration offers
 - Program options before starting, and the settings of appliances without programs (super modes, fan stage…)
@@ -255,9 +258,9 @@ Home Connect: a washing machine ready with its program options, and a coffee mac
 | Washing machine mini card | ![washing machine mini card](screenshots/washer-mini.png) | ![washing machine mini card dark](screenshots/washer-mini-dark.png) |
 | Coffee machine mini card | ![coffee machine mini card](screenshots/mini-siemens.png) | ![coffee machine mini card dark](screenshots/mini-siemens-dark.png) |
 
-### Neff
+### <img src="logos/neff.svg" alt="" height="18"> Neff
 
-Home Connect: an oven on hot air, its cavity temperature as a chip. Neff has no logo file: the badge with its initial stands in.
+Home Connect: an oven on hot air, its cavity temperature as a chip.
 
 | | Light | Dark |
 |---|---|---|
@@ -265,7 +268,7 @@ Home Connect: an oven on hot air, its cavity temperature as a chip. Neff has no 
 | Oven, at work | ![oven, at work](screenshots/oven-running.gif) | ![oven, at work dark](screenshots/oven-running-dark.gif) |
 | Oven mini card | ![oven mini card](screenshots/mini-neff.png) | ![oven mini card dark](screenshots/mini-neff-dark.png) |
 
-### Gaggenau
+### <img src="logos/gaggenau.svg" alt="" height="14"> Gaggenau
 
 Home Connect: a cooker hood venting at stage 2 with its lights on.
 
