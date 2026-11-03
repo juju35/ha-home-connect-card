@@ -195,19 +195,25 @@ Every other `switch` and `select` of the device is shown as a program option (or
 
 ## Screenshots
 
-While a program runs the illustration comes alive, and each appliance animates differently (the card honours `prefers-reduced-motion` and falls back to a still image).
+While an appliance is at work its illustration comes alive, and each one animates differently (the card honours `prefers-reduced-motion` and falls back to a still image). The captures use mock devices of the different integrations, so the header badge shows each appliance's brand.
 
-A dishwasher mid-cycle sprays water across the tub, lets steam curl off the top and glows a pool of light on the floor while its status light blinks and the progress bar fills:
+At work, every appliance has its own animation, while its status light blinks and the progress bar fills:
 
-| Light | Dark |
-|---|---|
-| ![dishwasher running](screenshots/dishwasher-running.gif) | ![dishwasher running dark](screenshots/dishwasher-running-dark.gif) |
-
-A washing machine mid-cycle turns its drum, sloshes the water behind the porthole and lifts a few suds as the whole body gently shakes:
-
-| Light | Dark |
-|---|---|
-| ![washing machine running](screenshots/washer-running.gif) | ![washing machine running dark](screenshots/washer-running-dark.gif) |
+| Appliance | Animation | Light | Dark |
+|---|---|---|---|
+| Dishwasher (Bosch) | It sprays water across the tub, lets steam curl off the top and glows a pool of light on the floor | ![dishwasher running](screenshots/dishwasher-running.gif) | ![dishwasher running dark](screenshots/dishwasher-running-dark.gif) |
+| Washing machine (Siemens) | It turns its drum, sloshes the water behind the porthole and lifts a few suds as the whole body gently shakes | ![washing machine running](screenshots/washer-running.gif) | ![washing machine running dark](screenshots/washer-running-dark.gif) |
+| Tumble dryer (Miele) | It tumbles the laundry in the warm drum, pausing at the top of each turn, while heat rises behind the porthole | ![tumble dryer running](screenshots/dryer-running.gif) | ![tumble dryer running dark](screenshots/dryer-running-dark.gif) |
+| Washer-dryer (LG WashCombo) | It turns its drum behind a porthole half wash water, half warm air, with heat rising on the dry side | ![washer-dryer running](screenshots/washer-dryer-running.gif) | ![washer-dryer running dark](screenshots/washer-dryer-running-dark.gif) |
+| Oven (Neff) | It glows, turns its convection fan behind the dish and lets heat shimmer above it | ![oven running](screenshots/oven-running.gif) | ![oven running dark](screenshots/oven-running-dark.gif) |
+| Microwave (LG) | It lights up inside and turns its plate | ![microwave running](screenshots/microwave-running.gif) | ![microwave running dark](screenshots/microwave-running-dark.gif) |
+| Hob (LG) | It glows red on the zones in use, with heat rising from them | ![hob running](screenshots/hob-running.gif) | ![hob running dark](screenshots/hob-running-dark.gif) |
+| Coffee machine (Siemens) | It pours coffee into the cup, which fills up and steams | ![coffee machine running](screenshots/coffee-machine-running.gif) | ![coffee machine running dark](screenshots/coffee-machine-running-dark.gif) |
+| Cooker hood (Gaggenau) | It draws air up its chimney and lights the hob below | ![cooker hood running](screenshots/hood-running.gif) | ![cooker hood running dark](screenshots/hood-running-dark.gif) |
+| Fridge-freezer (Bosch) | It in super cooling, sparkles with frost and lets cold air flow out underneath | ![fridge-freezer running](screenshots/fridge-running.gif) | ![fridge-freezer running dark](screenshots/fridge-running-dark.gif) |
+| Freezer (Miele) | It in super freezing, sparkles with frost and lets cold air flow out underneath | ![freezer running](screenshots/freezer-running.gif) | ![freezer running dark](screenshots/freezer-running-dark.gif) |
+| Wine cabinet (Miele) | It with its light on, glows softly on the bottles | ![wine cabinet running](screenshots/wine-cabinet-running.gif) | ![wine cabinet running dark](screenshots/wine-cabinet-running-dark.gif) |
+| LG Styler (LG) | It sways the shirt on its hanger in the steam | ![lg styler running](screenshots/styler-running.gif) | ![lg styler running dark](screenshots/styler-running-dark.gif) |
 
 When a cycle finishes the motion stops, a tick is drawn into the badge and sparkles twinkle around the appliance:
 
@@ -216,7 +222,7 @@ When a cycle finishes the motion stops, a tick is drawn into the badge and spark
 | Dishwasher | ![dishwasher finished](screenshots/dishwasher-finished.gif) | ![dishwasher finished dark](screenshots/dishwasher-finished-dark.gif) |
 | Washing machine | ![washer finished](screenshots/washer-finished.gif) | ![washer finished dark](screenshots/washer-finished-dark.gif) |
 
-Paused mid-cycle, the program badge breathes in and out so the pause reads at a glance (the washer offers Resume):
+Paused mid-cycle, the program badge breathes in and out so the pause reads at a glance (Resume replaces Pause):
 
 | | Light | Dark |
 |---|---|---|
@@ -230,21 +236,32 @@ Waiting on a delayed start, the badge becomes a little clock whose hands turn un
 | Dishwasher | ![dishwasher delayed start](screenshots/dishwasher-delayed.gif) | ![dishwasher delayed start dark](screenshots/dishwasher-delayed-dark.gif) |
 | Washing machine | ![washer delayed start](screenshots/washer-delayed.gif) | ![washer delayed start dark](screenshots/washer-delayed-dark.gif) |
 
-Dishwasher:
+The cards, one per appliance:
+
+| Appliance | Light | Dark |
+|---|---|---|
+| Dishwasher (Bosch) | ![dishwasher](screenshots/dishwasher.png) | ![dishwasher dark](screenshots/dishwasher-dark.png) |
+| Washing machine (Siemens) | ![washing machine](screenshots/washer.png) | ![washing machine dark](screenshots/washer-dark.png) |
+| Tumble dryer (Miele) | ![tumble dryer](screenshots/dryer.png) | ![tumble dryer dark](screenshots/dryer-dark.png) |
+| Washer-dryer (LG WashCombo) | ![washer-dryer](screenshots/washer-dryer.png) | ![washer-dryer dark](screenshots/washer-dryer-dark.png) |
+| Oven (Neff) | ![oven](screenshots/oven.png) | ![oven dark](screenshots/oven-dark.png) |
+| Microwave (LG) | ![microwave](screenshots/microwave.png) | ![microwave dark](screenshots/microwave-dark.png) |
+| Hob (LG) | ![hob](screenshots/hob.png) | ![hob dark](screenshots/hob-dark.png) |
+| Coffee machine (Siemens) | ![coffee machine](screenshots/coffee-machine.png) | ![coffee machine dark](screenshots/coffee-machine-dark.png) |
+| Cooker hood (Gaggenau) | ![cooker hood](screenshots/hood.png) | ![cooker hood dark](screenshots/hood-dark.png) |
+| Fridge-freezer (Bosch) | ![fridge-freezer](screenshots/fridge.png) | ![fridge-freezer dark](screenshots/fridge-dark.png) |
+| Freezer (Miele) | ![freezer](screenshots/freezer.png) | ![freezer dark](screenshots/freezer-dark.png) |
+| Wine cabinet (Miele) | ![wine cabinet](screenshots/wine-cabinet.png) | ![wine cabinet dark](screenshots/wine-cabinet-dark.png) |
+| LG Styler (LG) | ![lg styler](screenshots/styler.png) | ![lg styler dark](screenshots/styler-dark.png) |
+
+Program options, mini cards and the mini card unfolded:
 
 | | Light | Dark |
 |---|---|---|
-| Card | ![dishwasher](screenshots/dishwasher.png) | ![dishwasher dark](screenshots/dishwasher-dark.png) |
-| Program options | ![dishwasher with program options](screenshots/dishwasher-options.png) | ![dishwasher with program options dark](screenshots/dishwasher-options-dark.png) |
-| Mini card | ![dishwasher mini card](screenshots/dishwasher-mini.png) | ![dishwasher mini card dark](screenshots/dishwasher-mini-dark.png) |
-
-Washing machine:
-
-| | Light | Dark |
-|---|---|---|
-| Card | ![washer](screenshots/washer.png) | ![washer dark](screenshots/washer-dark.png) |
-| Mini card | ![washer mini card](screenshots/washer-mini.png) | ![washer mini card dark](screenshots/washer-mini-dark.png) |
-| Mini card unfolded | ![washer mini card unfolded](screenshots/washer-mini-zoom.png) | ![washer mini card unfolded dark](screenshots/washer-mini-zoom-dark.png) |
+| Dishwasher program options | ![dishwasher with program options](screenshots/dishwasher-options.png) | ![dishwasher with program options dark](screenshots/dishwasher-options-dark.png) |
+| Dishwasher mini card | ![dishwasher mini card](screenshots/dishwasher-mini.png) | ![dishwasher mini card dark](screenshots/dishwasher-mini-dark.png) |
+| Washing machine mini card | ![washer mini card](screenshots/washer-mini.png) | ![washer mini card dark](screenshots/washer-mini-dark.png) |
+| Washing machine mini card unfolded | ![washer mini card unfolded](screenshots/washer-mini-zoom.png) | ![washer mini card unfolded dark](screenshots/washer-mini-zoom-dark.png) |
 
 Door open — the dishwasher's door lowered on its racks, the washing machine's porthole swung aside:
 
@@ -252,87 +269,6 @@ Door open — the dishwasher's door lowered on its racks, the washing machine's 
 |---|---|---|
 | Dishwasher | ![dishwasher door open](screenshots/dishwasher-open.png) | ![dishwasher door open dark](screenshots/dishwasher-open-dark.png) |
 | Washing machine | ![washer door open](screenshots/washer-open.png) | ![washer door open dark](screenshots/washer-open-dark.png) |
-
-### Every appliance
-
-Each appliance has its own illustration, animated by what it is doing. The captures use mock devices of different integrations, so each shows another brand badge.
-
-**Tumble dryer** (Miele): The laundry tumbles in the warm, orange-lit drum, pausing at the top of each turn, while heat rises behind the porthole.
-
-| | Light | Dark |
-|---|---|---|
-| Card | ![dryer](screenshots/dryer.png) | ![dryer dark](screenshots/dryer-dark.png) |
-| Animation | ![dryer animated](screenshots/dryer-running.gif) | ![dryer animated dark](screenshots/dryer-running-dark.gif) |
-
-**Washer-dryer** (LG WashCombo): The drum turns behind a porthole that is half wash water, half warm air, with heat rising on the dry side.
-
-| | Light | Dark |
-|---|---|---|
-| Card | ![washer-dryer](screenshots/washer-dryer.png) | ![washer-dryer dark](screenshots/washer-dryer-dark.png) |
-| Animation | ![washer-dryer animated](screenshots/washer-dryer-running.gif) | ![washer-dryer animated dark](screenshots/washer-dryer-running-dark.gif) |
-
-**Oven** (Neff): The cavity glows, the convection fan turns behind the dish and heat shimmers above it; the cavity temperature shows as a chip.
-
-| | Light | Dark |
-|---|---|---|
-| Card | ![oven](screenshots/oven.png) | ![oven dark](screenshots/oven-dark.png) |
-| Animation | ![oven animated](screenshots/oven-running.gif) | ![oven animated dark](screenshots/oven-running-dark.gif) |
-
-**Microwave** (LG): The inside lights up and the plate turns.
-
-| | Light | Dark |
-|---|---|---|
-| Card | ![microwave](screenshots/microwave.png) | ![microwave dark](screenshots/microwave-dark.png) |
-| Animation | ![microwave animated](screenshots/microwave-running.gif) | ![microwave animated dark](screenshots/microwave-running-dark.gif) |
-
-**Hob** (LG): The cooking zones in use glow red and heat rises from them.
-
-| | Light | Dark |
-|---|---|---|
-| Card | ![hob](screenshots/hob.png) | ![hob dark](screenshots/hob-dark.png) |
-| Animation | ![hob animated](screenshots/hob-running.gif) | ![hob animated dark](screenshots/hob-running-dark.gif) |
-
-**Coffee machine** (Siemens): Coffee pours from the spout, the cup fills up and steam curls off it.
-
-| | Light | Dark |
-|---|---|---|
-| Card | ![coffee-machine](screenshots/coffee-machine.png) | ![coffee-machine dark](screenshots/coffee-machine-dark.png) |
-| Animation | ![coffee-machine animated](screenshots/coffee-machine-running.gif) | ![coffee-machine animated dark](screenshots/coffee-machine-running-dark.gif) |
-
-**Cooker hood** (Gaggenau): Air is drawn up the chimney and the lights fall on the hob below; the fan stage and the light show as chips.
-
-| | Light | Dark |
-|---|---|---|
-| Card | ![hood](screenshots/hood.png) | ![hood dark](screenshots/hood-dark.png) |
-| Animation | ![hood animated](screenshots/hood-running.gif) | ![hood animated dark](screenshots/hood-running-dark.gif) |
-
-**Fridge-freezer** (Bosch): In super cooling, frost sparkles on the doors and cold air flows out underneath; both setpoints show as chips.
-
-| | Light | Dark |
-|---|---|---|
-| Card | ![fridge](screenshots/fridge.png) | ![fridge dark](screenshots/fridge-dark.png) |
-| Animation | ![fridge animated](screenshots/fridge-running.gif) | ![fridge animated dark](screenshots/fridge-running-dark.gif) |
-
-**Freezer** (Miele): In super freezing, frost sparkles and cold air flows out underneath.
-
-| | Light | Dark |
-|---|---|---|
-| Card | ![freezer](screenshots/freezer.png) | ![freezer dark](screenshots/freezer-dark.png) |
-| Animation | ![freezer animated](screenshots/freezer-running.gif) | ![freezer animated dark](screenshots/freezer-running-dark.gif) |
-
-**Wine cabinet** (Miele): With its light on, the inside glows softly on the bottles; each zone's temperature shows as a chip.
-
-| | Light | Dark |
-|---|---|---|
-| Card | ![wine-cabinet](screenshots/wine-cabinet.png) | ![wine-cabinet dark](screenshots/wine-cabinet-dark.png) |
-| Animation | ![wine-cabinet animated](screenshots/wine-cabinet-running.gif) | ![wine-cabinet animated dark](screenshots/wine-cabinet-running-dark.gif) |
-
-**LG Styler** (LG): The shirt sways on its hanger in the steam.
-
-| | Light | Dark |
-|---|---|---|
-| Card | ![styler](screenshots/styler.png) | ![styler dark](screenshots/styler-dark.png) |
-| Animation | ![styler animated](screenshots/styler-running.gif) | ![styler animated dark](screenshots/styler-running-dark.gif) |
 
 ## How it works
 
