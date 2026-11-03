@@ -7,15 +7,24 @@
 [![Release](https://img.shields.io/github/v/release/juju35/ha-smart-appliance-card)](https://github.com/juju35/ha-smart-appliance-card/releases/latest)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
+<p align="center">
+  <img src="logos/bosch.svg" alt="Bosch" height="28">&nbsp;&nbsp;
+  <img src="logos/siemens.svg" alt="Siemens" height="22">&nbsp;&nbsp;
+  <img src="logos/miele.svg" alt="Miele" height="28">&nbsp;&nbsp;
+  <img src="logos/samsung.svg" alt="Samsung" height="22">&nbsp;&nbsp;
+  <img src="logos/lg.svg" alt="LG" height="36">&nbsp;&nbsp;
+  <img src="logos/kitchenaid.svg" alt="KitchenAid" height="20">
+</p>
+
 Animated Lovelace cards for home appliances in Home Assistant: washing machines, tumble dryers, washer-dryers, dishwashers, ovens, microwaves, hobs, coffee machines, cooker hoods, fridges, freezers, wine cabinets and the LG Styler. They work with [Home Connect](https://www.home-assistant.io/integrations/home_connect/), [Miele](https://www.home-assistant.io/integrations/miele/), [SmartThings](https://www.home-assistant.io/integrations/smartthings/), [LG ThinQ](https://www.home-assistant.io/integrations/lg_thinq/), [Whirlpool](https://www.home-assistant.io/integrations/whirlpool/) and [Matter](https://www.home-assistant.io/integrations/matter/).
 
 Pick the appliance: the card works out its type and its brand, and finds all its entities by itself.
 
 [![Open your Home Assistant instance and open a repository inside the Home Assistant Community Store.](https://my.home-assistant.io/badges/hacs_repository.svg)](https://my.home-assistant.io/redirect/hacs_repository/?owner=juju35&repository=ha-smart-appliance-card&category=plugin)
 
-| Dishwasher | Washing machine | Oven |
+| <img src="logos/bosch.svg" alt="" height="14"> Dishwasher | <img src="logos/siemens.svg" alt="" height="11"> Washing machine | <img src="logos/miele.svg" alt="" height="14"> Tumble dryer |
 |---|---|---|
-| ![Dishwasher card](https://raw.githubusercontent.com/juju35/ha-smart-appliance-card/main/screenshots/dishwasher.png) | ![Washing machine card](https://raw.githubusercontent.com/juju35/ha-smart-appliance-card/main/screenshots/washer.png) | ![Oven card](https://raw.githubusercontent.com/juju35/ha-smart-appliance-card/main/screenshots/oven.png) |
+| ![Dishwasher card](https://raw.githubusercontent.com/juju35/ha-smart-appliance-card/main/screenshots/dishwasher.png) | ![Washing machine card](https://raw.githubusercontent.com/juju35/ha-smart-appliance-card/main/screenshots/washer.png) | ![Tumble dryer card](https://raw.githubusercontent.com/juju35/ha-smart-appliance-card/main/screenshots/dryer.png) |
 
 > Formerly **ha-home-connect-card**. The `home-connect-dishwasher-card`, `home-connect-washer-card` and their mini card types still work in existing dashboards.
 
