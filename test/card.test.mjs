@@ -79,6 +79,7 @@ test("show_power: false hides the power button", () => {
 test("header always shows the appliance icon, and the appliance illustration", () => {
   const html = render(HomeConnectWasherCard, mockHass());
   assert.match(html, /class="logo"[^>]*><ha-icon icon="mdi:washing-machine"/);
+  assert.match(html, /<ha-icon icon="mdi:washing-machine"><\/ha-icon><span class="hc-badge"><svg viewBox="0 0 292 292">/);
   assert.match(render(HomeConnectDishwasherCard, mockHass()), /<ha-icon icon="mdi:dishwasher"/);
   assert.match(html, /class="drum"/);
   assert.match(render(HomeConnectWasherCard, mockHass(), { show_logo: false }), /class="logo"/);

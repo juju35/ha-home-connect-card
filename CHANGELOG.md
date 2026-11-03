@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.12.0 - 2026-11-03
+
+### Features
+- Header: the Home Connect logo is back as a badge on the round appliance icon (dishwasher or washing machine), on the full cards and the mini cards. The logo is embedded.
+
 ## 1.11.9 - 2026-11-02
 
 ### Fixes

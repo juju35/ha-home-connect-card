@@ -999,6 +999,11 @@ function hcHumanize(value) {
 // Header icon: the tinted round icon of the project page on the showcase site, one per appliance.
 var HC_ACCENT = '#039be5';
 var HC_HEADER_ICON = { dishwasher: 'mdi:dishwasher', washer: 'mdi:washing-machine' };
+// Home Connect logo (a blue speech bubble with a white house), as a badge on the header icon.
+var HC_LOGO_BADGE = '<span class="hc-badge"><svg viewBox="0 0 292 292">' +
+  '<defs><linearGradient id="hc-logo-g" x1="0" y1="0" x2="292" y2="292" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#304ae2"/><stop offset="1" stop-color="#5fc9ff"/></linearGradient></defs>' +
+  '<path fill="url(#hc-logo-g)" d="M146 .5A145.5 145.5 0 1 0 215 272L278 285Q288 287 286 277L270 220A145.5 145.5 0 0 0 146 .5Z"/>' +
+  '<path fill="#fff" stroke="#fff" stroke-width="8" stroke-linejoin="round" d="M147.5 64L200 108.5V202H95V108.5Z"/></svg></span>';
 
 // Appliance illustrations (front view). The state color lights the display; when running the
 // washer drum turns and the dishwasher projects its floor light, like the real appliances.
@@ -1490,7 +1495,7 @@ class HomeConnectBaseCard extends HTMLElement {
     var heroHtml = '<div class="hero">' + hcPicture(art, state, !c.icon) +
       '<div class="info">' + big + (chips.length ? `<div class="chips">${chips.join('')}</div>` : '') + '</div></div>';
 
-    var logo = `<div class="logo" aria-hidden="true"><ha-icon icon="${HC_HEADER_ICON[kind] || HC_HEADER_ICON.dishwasher}"></ha-icon></div>`;
+    var logo = `<div class="logo" aria-hidden="true"><ha-icon icon="${HC_HEADER_ICON[kind] || HC_HEADER_ICON.dishwasher}"></ha-icon>${HC_LOGO_BADGE}</div>`;
     var sub = progLabel || this._t(kind);
 
     if (this._compact()) {
@@ -1534,9 +1539,13 @@ class HomeConnectBaseCard extends HTMLElement {
       '.empty { display: flex; align-items: center; gap: 10px; color: var(--secondary-text-color); }' +
       // The body starts 8px under the header (the card gap is 10px between body blocks).
       '.header { display: flex; align-items: center; gap: 10px; margin-bottom: -2px; }' +
-      '.logo { width: 40px; height: 40px; flex: none; border-radius: 50%; display: grid; place-items: center;' +
+      '.logo { position: relative; width: 40px; height: 40px; flex: none; border-radius: 50%; display: grid; place-items: center;' +
         ' color: ' + HC_ACCENT + '; background: color-mix(in srgb, ' + HC_ACCENT + ' 16%, transparent); }' +
       '.logo ha-icon { --mdc-icon-size: 24px; }' +
+      '.hc-badge { position: absolute; right: -4px; bottom: -4px; width: 18px; height: 18px; border-radius: 5px; padding: 1px; box-sizing: border-box;' +
+        ' display: grid; place-items: center; background: #fff;' +
+        ' box-shadow: 0 0 0 1px var(--divider-color, rgba(0,0,0,.12)), 0 0 0 3px var(--card-background-color, #fff); }' +
+      '.hc-badge svg { width: 100%; height: 100%; }' +
       // The title takes the room the pill and the buttons leave (basis 0, so it doesn't squeeze the pill at
       // ordinary widths); it shrinks with an ellipsis but keeps about four characters.
       '.titles { flex: 1 1 0; min-width: 5ch; font-size: 16px; }' +
@@ -1699,6 +1708,7 @@ class HomeConnectBaseCard extends HTMLElement {
         ' .header { gap: 8px; }' +
         ' .logo { width: 28px; height: 28px; }' +
         ' .logo ha-icon { --mdc-icon-size: 16px; }' +
+        ' .hc-badge { width: 13px; height: 13px; right: -3px; bottom: -3px; border-radius: 4px; }' +
         ' .hero { gap: 10px; }' +
         ' .picture { width: 56px; height: 66px; }' +
         ' .big { flex-wrap: wrap; row-gap: 0; }' +

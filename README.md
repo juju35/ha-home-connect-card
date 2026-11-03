@@ -21,6 +21,7 @@ Pick the appliance, the card finds all its entities by itself.
 
 - Two cards: `home-connect-dishwasher-card` and `home-connect-washer-card`, plus their mini versions `home-connect-dishwasher-mini-card` and `home-connect-washer-mini-card` (compact, a detail button unfolds the full card)
 - Automatic entity discovery from the Home Connect device (works with English or French entity IDs), each entity can be overridden
+- Header icon of the appliance (dishwasher or washing machine) with the Home Connect logo as a badge
 - Status with color, progress bar, finish time and time left
 - Program picker and **Start** button (when remote start is enabled on the appliance), **Pause / Resume** for washers, **Stop** with a confirmation tap
 - Program options before starting: temperature, spin speed, Vario Perfect for washers; intensive zone, brilliance dry, speed perfect, hygiene plus for dishwashers… whatever your appliance exposes. Options the selected program doesn't support are greyed out
