@@ -11,7 +11,7 @@ import { writeIfChanged } from "./pixels.mjs";
 const root = fileURLToPath(new URL("..", import.meta.url));
 // Fixed clock and time zone: "Ends at …" in the captures does not depend on when they are taken.
 const NOW = Date.parse("2026-10-24T08:44:00Z");
-const cardJs = readFileSync(`${root}dist/home-connect-card.js`, "utf8");
+const cardJs = readFileSync(`${root}dist/smart-appliance-card.js`, "utf8");
 
 const THEMES = {
   light: {
@@ -87,7 +87,7 @@ async function openCard(browser, s, { icons = {}, hass = {}, extra = "" }) {
                   themes: { darkMode: dark }, callService: async () => {}, callWS: async () => ({}), ...hass };
       document.getElementById("root").appendChild(el);
     },
-    { type: s.type, config: s.config || {}, hass: { ...hass, ...(s.hass || {}) }, dark: s.theme === "dark" }
+    { type: s.type, config: { ...(s.device ? { device_id: s.device } : {}), ...(s.config || {}) }, hass: { ...hass, ...(s.hass || {}) }, dark: s.theme === "dark" }
   );
   return page;
 }
@@ -173,14 +173,32 @@ const icons = {
   "shaker-outline": "M16.88 4L16.88 4L19.03 6.1L13.5 10.5L12.5 9.5L16.87 4L16.88 4M16.88 2C16.3 2 15.73 2.24 15.33 2.72L9.8 9.65L13.34 13.19L20.28 7.67C21.18 6.91 21.25 5.54 20.41 4.7L18.3 2.59C17.9 2.19 17.39 2 16.88 2M9.1 10.36L8.39 11.07C8 11.46 8 12.09 8.39 12.5L10.5 14.6C10.71 14.8 10.96 14.89 11.22 14.89S11.73 14.8 11.93 14.6L12.63 13.9L9.1 10.36M6 15C5.45 15 5 15.45 5 16C5 16.55 5.45 17 6 17C6.55 17 7 16.55 7 16C7 15.45 6.55 15 6 15M9 16C8.45 16 8 16.45 8 17S8.45 18 9 18C9.55 18 10 17.55 10 17S9.55 16 9 16M4 18C3.45 18 3 18.45 3 19S3.45 20 4 20C4.55 20 5 19.55 5 19S4.55 18 4 18M7 19C6.45 19 6 19.45 6 20S6.45 21 7 21C7.55 21 8 20.55 8 20S7.55 19 7 19Z",
   "stop": "M18,18H6V6H18V18Z",
   "washing-machine": "M14.83,11.17C16.39,12.73 16.39,15.27 14.83,16.83C13.27,18.39 10.73,18.39 9.17,16.83L14.83,11.17M6,2H18A2,2 0 0,1 20,4V20A2,2 0 0,1 18,22H6A2,2 0 0,1 4,20V4A2,2 0 0,1 6,2M7,4A1,1 0 0,0 6,5A1,1 0 0,0 7,6A1,1 0 0,0 8,5A1,1 0 0,0 7,4M10,4A1,1 0 0,0 9,5A1,1 0 0,0 10,6A1,1 0 0,0 11,5A1,1 0 0,0 10,4M12,8A6,6 0 0,0 6,14A6,6 0 0,0 12,20A6,6 0 0,0 18,14A6,6 0 0,0 12,8Z",
-  "water-alert-outline": "M10 3.25C10 3.25 4 10 4 14C4 17.31 6.69 20 10 20S16 17.31 16 14C16 10 10 3.25 10 3.25M10 18C7.79 18 6 16.21 6 14C6 12.23 8 8.96 10 6.39C12 8.95 14 12.23 14 14C14 16.21 12.21 18 10 18M20 7V13H18V7H20M18 17H20V15H18V17Z"
+  "water-alert-outline": "M10 3.25C10 3.25 4 10 4 14C4 17.31 6.69 20 10 20S16 17.31 16 14C16 10 10 3.25 10 3.25M10 18C7.79 18 6 16.21 6 14C6 12.23 8 8.96 10 6.39C12 8.95 14 12.23 14 14C14 16.21 12.21 18 10 18M20 7V13H18V7H20M18 17H20V15H18V17Z",
+  "tumble-dryer": "M6,2H18A2,2 0 0,1 20,4V20A2,2 0 0,1 18,22H6A2,2 0 0,1 4,20V4A2,2 0 0,1 6,2M7,4A1,1 0 0,0 6,5A1,1 0 0,0 7,6A1,1 0 0,0 8,5A1,1 0 0,0 7,4M10,4A1,1 0 0,0 9,5A1,1 0 0,0 10,6A1,1 0 0,0 11,5A1,1 0 0,0 10,4M12,8A6,6 0 0,0 6,14A6,6 0 0,0 12,20A6,6 0 0,0 18,14A6,6 0 0,0 12,8M8.11,10.5H10C9.76,11.88 10,12.67 10.58,13.29C11.68,14.36 12.16,15.71 11.89,17.5H10C10.24,16.12 10,15.33 9.42,14.71C8.32,13.64 7.85,12.29 8.11,10.5M12.11,10.5H14C13.76,11.88 14,12.67 14.58,13.29C15.68,14.36 16.16,15.71 15.89,17.5H14C14.24,16.12 14,15.33 13.42,14.71C12.32,13.64 11.85,12.29 12.11,10.5Z",
+  "stove": "M6,14H8L11,17H9L6,14M4,4H5V3A1,1 0 0,1 6,2H10A1,1 0 0,1 11,3V4H13V3A1,1 0 0,1 14,2H18A1,1 0 0,1 19,3V4H20A2,2 0 0,1 22,6V19A2,2 0 0,1 20,21V22H17V21H7V22H4V21A2,2 0 0,1 2,19V6A2,2 0 0,1 4,4M18,7A1,1 0 0,1 19,8A1,1 0 0,1 18,9A1,1 0 0,1 17,8A1,1 0 0,1 18,7M14,7A1,1 0 0,1 15,8A1,1 0 0,1 14,9A1,1 0 0,1 13,8A1,1 0 0,1 14,7M20,6H4V10H20V6M4,19H20V12H4V19M6,7A1,1 0 0,1 7,8A1,1 0 0,1 6,9A1,1 0 0,1 5,8A1,1 0 0,1 6,7M13,14H15L18,17H16L13,14Z",
+  "microwave": "M4,5A2,2 0 0,0 2,7V17A2,2 0 0,0 4,19H20A2,2 0 0,0 22,17V7A2,2 0 0,0 20,5H4M4,7H16V17H4V7M19,7A1,1 0 0,1 20,8A1,1 0 0,1 19,9A1,1 0 0,1 18,8A1,1 0 0,1 19,7M13,9V15H15V9H13M19,11A1,1 0 0,1 20,12A1,1 0 0,1 19,13A1,1 0 0,1 18,12A1,1 0 0,1 19,11Z",
+  "induction": "M23 2C20.75 2 18.75 2.61 17.19 3.33C15.79 2.61 14 2 12 2S8.21 2.61 6.81 3.33C5.25 2.61 3.25 2 1 2V4C2.36 4 3.61 4.27 4.71 4.64C4.03 5.15 3.63 5.54 3.59 5.59C3.21 5.96 3 6.47 3 7V18C3 20.21 4.79 22 7 22S11 20.21 11 18V7C11 6.42 10.75 5.88 10.32 5.5C10.26 5.45 9.8 5.05 9 4.54C9.92 4.22 10.92 4 12 4S14.08 4.22 15 4.54C14.2 5.05 13.74 5.45 13.68 5.5C13.25 5.88 13 6.42 13 7V18C13 20.21 14.79 22 17 22S21 20.21 21 18V7C21 6.47 20.79 5.96 20.41 5.59C20.37 5.54 19.97 5.15 19.29 4.64C20.39 4.27 21.64 4 23 4V2M9 7V18C9 19.11 8.11 20 7 20S5 19.11 5 18V7C5 7 5.7 6.31 6.87 5.58C8.2 6.31 9 7 9 7M19 7V18C19 19.11 18.11 20 17 20S15 19.11 15 18V7C15 7 15.8 6.31 17.13 5.58C18.3 6.31 19 7 19 7Z",
+  "coffee-maker": "M18 6V4H20V2H6C4.9 2 4 2.9 4 4V20C4 21.1 4.9 22 6 22H20V20H15.97C17.2 19.09 18 17.64 18 16V11H8V16C8 17.64 8.81 19.09 10.03 20H6V4H8V6C8 6.55 8.45 7 9 7H17C17.55 7 18 6.55 18 6M13 8C13.55 8 14 8.45 14 9S13.55 10 13 10 12 9.55 12 9 12.45 8 13 8Z",
+  "fan-chevron-up": "M13 19C13 17.59 13.5 16.3 14.3 15.28C14.17 14.97 14.03 14.65 13.86 14.34C14.26 14 14.57 13.59 14.77 13.11C15.26 13.21 15.78 13.39 16.25 13.67C17.07 13.25 18 13 19 13C20.05 13 21.03 13.27 21.89 13.74C21.95 13.37 22 12.96 22 12.5C22 8.92 18.03 8.13 14.33 10.13C14 9.73 13.59 9.42 13.11 9.22C13.3 8.29 13.74 7.24 14.73 6.75C17.09 5.57 17 2 12.5 2C8.93 2 8.14 5.96 10.13 9.65C9.72 9.97 9.4 10.39 9.21 10.87C8.28 10.68 7.23 10.25 6.73 9.26C5.56 6.89 2 7 2 11.5C2 15.07 5.95 15.85 9.64 13.87C9.96 14.27 10.39 14.59 10.88 14.79C10.68 15.71 10.24 16.75 9.26 17.24C6.9 18.42 7 22 11.5 22C12.31 22 13 21.78 13.5 21.41C13.19 20.67 13 19.86 13 19M12 13C11.43 13 11 12.55 11 12S11.43 11 12 11C12.54 11 13 11.45 13 12S12.54 13 12 13M19 17.83L15.83 21L14.41 19.59L19 15L23.59 19.59L22.17 21L19 17.83",
+  "fridge": "M7,2H17A2,2 0 0,1 19,4V9H5V4A2,2 0 0,1 7,2M19,19A2,2 0 0,1 17,21V22H15V21H9V22H7V21A2,2 0 0,1 5,19V10H19V19M8,5V7H10V5H8M8,12V15H10V12H8Z",
+  "snowflake-thermometer": "M14.46 9.41L11 7.38V5.12L12.71 3.41L11.29 2L10 3.29L8.71 2L7.29 3.41L9 5.12V7.38L6.5 8.82L4.5 7.69L3.92 5.36L2 5.88L2.47 7.65L.7 8.12L1.22 10.05L3.55 9.43L5.55 10.56V13.45L3.55 14.58L1.22 13.96L.7 15.89L2.47 16.36L2 18.12L3.93 18.64L4.55 16.31L6.55 15.18L9 16.62V18.88L7.29 20.59L8.71 22L10 20.71L11.29 22L12.7 20.59L11 18.88V16.62L14.46 14.61M7.5 10.56L10 9.11L12.5 10.56V13.44L10 14.89L7.5 13.44M19 5C17.89 5 17 5.89 17 7V13.76C16.36 14.33 16 15.15 16 16C16 17.66 17.34 19 19 19S22 17.66 22 16C22 15.15 21.64 14.33 21 13.77V7C21 5.89 20.11 5 19 5M19 6C19.55 6 20 6.45 20 7V8H18V7C18 6.45 18.45 6 19 6",
+  "bottle-wine": "M10,22A1,1 0 0,1 9,21V11C9,9 10,7.25 11,7V2.5A0.5,0.5 0 0,1 11.5,2H12.5A0.5,0.5 0 0,1 13,2.5V7C14,7.25 15,9 15,11V21A1,1 0 0,1 14,22H10Z",
+  "hanger": "M12 4A3.5 3.5 0 0 0 8.5 7.5H10.5A1.5 1.5 0 0 1 12 6A1.5 1.5 0 0 1 13.5 7.5A1.5 1.5 0 0 1 12 9C11.45 9 11 9.45 11 10V11.75L2.4 18.2A1 1 0 0 0 3 20H21A1 1 0 0 0 21.6 18.2L13 11.75V10.85A3.5 3.5 0 0 0 15.5 7.5A3.5 3.5 0 0 0 12 4M12 13.5L18 18H6Z",
+  "thermometer": "M15 13V5A3 3 0 0 0 9 5V13A5 5 0 1 0 15 13M12 4A1 1 0 0 1 13 5V8H11V5A1 1 0 0 1 12 4Z",
+  "snowflake": "M20.79,13.95L18.46,14.57L16.46,13.44V10.56L18.46,9.43L20.79,10.05L21.31,8.12L19.54,7.65L20,5.88L18.07,5.36L17.45,7.69L15.45,8.82L13,7.38V5.12L14.71,3.41L13.29,2L12,3.29L10.71,2L9.29,3.41L11,5.12V7.38L8.5,8.82L6.5,7.69L5.92,5.36L4,5.88L4.47,7.65L2.7,8.12L3.22,10.05L5.55,9.43L7.55,10.56V13.45L5.55,14.58L3.22,13.96L2.7,15.89L4.47,16.36L4,18.12L5.93,18.64L6.55,16.31L8.55,15.18L11,16.62V18.88L9.29,20.59L10.71,22L12,20.71L13.29,22L14.7,20.59L13,18.88V16.62L15.5,15.17L17.5,16.3L18.12,18.63L20,18.12L19.53,16.35L21.3,15.88L20.79,13.95M9.5,10.56L12,9.11L14.5,10.56V13.44L12,14.89L9.5,13.44V10.56Z",
+  "fan": "M12,11A1,1 0 0,0 11,12A1,1 0 0,0 12,13A1,1 0 0,0 13,12A1,1 0 0,0 12,11M12.5,2C17,2 17.11,5.57 14.75,6.75C13.76,7.24 13.32,8.29 13.13,9.22C13.61,9.42 14.03,9.73 14.35,10.13C18.05,8.13 22.03,8.92 22.03,12.5C22.03,17 18.46,17.1 17.28,14.73C16.78,13.74 15.72,13.3 14.79,13.11C14.59,13.59 14.28,14 13.88,14.34C15.87,18.03 15.08,22 11.5,22C7,22 6.91,18.42 9.27,17.24C10.25,16.75 10.69,15.71 10.89,14.79C10.4,14.59 9.97,14.27 9.65,13.87C5.96,15.85 2,15.07 2,11.5C2,7 5.56,6.89 6.74,9.26C7.24,10.25 8.29,10.68 9.22,10.87C9.41,10.39 9.73,9.97 10.14,9.65C8.15,5.96 8.94,2 12.5,2Z",
+  "lightbulb-on-outline": "M20,11H23V13H20V11M1,11H4V13H1V11M13,1V4H11V1H13M4.92,3.5L7.05,5.64L5.63,7.05L3.5,4.93L4.92,3.5M16.95,5.63L19.07,3.5L20.5,4.93L18.37,7.05L16.95,5.63M12,6A6,6 0 0,1 18,12C18,14.22 16.79,16.16 15,17.2V19A1,1 0 0,1 14,20H10A1,1 0 0,1 9,19V17.2C7.21,16.16 6,14.22 6,12A6,6 0 0,1 12,6M14,21V22A1,1 0 0,1 13,23H11A1,1 0 0,1 10,22V21H14M11,18H13V15.87C14.73,15.43 16,13.86 16,12A4,4 0 0,0 12,8A4,4 0 0,0 8,12C8,13.86 9.27,15.43 11,15.87V18Z",
+  "coffee-off-outline": "M2 3.27L4 5.27V13C4 15.21 5.79 17 8 17H14C14.5 17 15 16.89 15.44 16.71L17.73 19H2V21H19.73L20.72 22L22 20.72L3.27 2L2 3.27M8 15C6.9 15 6 14.1 6 13V7.27L13.73 15H8M20 3H6.81L8.81 5H16V12.19L17.85 14.04C17.94 13.7 18 13.36 18 13V10H20C21.1 10 22 9.1 22 8V5C22 3.9 21.1 3 20 3M20 8H18V5H20V8Z",
+  "cup-water": "M18.32,8H5.67L5.23,4H18.77M12,19A3,3 0 0,1 9,16C9,14 12,10.6 12,10.6C12,10.6 15,14 15,16A3,3 0 0,1 12,19M3,2L5,20.23C5.13,21.23 5.97,22 7,22H17C18,22 18.87,21.23 19,20.23L21,2H3Z",
+  "tray-full": "M18 5H6V7H18M6 9H18V11H6M2 12H4V17H20V12H22V17A2 2 0 0 1 20 19H4A2 2 0 0 1 2 17M18 13H6V15H18Z"
 };
 
-// Mock Home Connect devices: entity registry (device_id + translation_key) and states.
+// Mock devices: entity registry (device_id, integration, translation_key) and states. Home Connect unless listed here.
 const entities = {};
 const states = {};
+const PLATFORMS = { dryer: "miele", wd: "lg_thinq", mw: "lg_thinq", hob: "lg_thinq", fz: "miele", wine: "miele", styler: "lg_thinq" };
 const add = (device, id, key, state, attributes = {}) => {
-  entities[id] = { entity_id: id, device_id: device, translation_key: key };
+  entities[id] = { entity_id: id, device_id: device, translation_key: key, platform: PLATFORMS[device] || "home_connect" };
   states[id] = { entity_id: id, state, attributes: { friendly_name: id, ...attributes } };
 };
 const inMinutes = (m) => new Date(NOW + m * 60000).toISOString();
@@ -224,7 +242,105 @@ add("wm", "button.washer_stop_program", "stop_program", "unknown");
 add("wm", "sensor.washer_program_progress", "program_progress", "unavailable", { unit_of_measurement: "%" });
 add("wm", "sensor.washer_program_finish_time", "program_finish_time", "unavailable", { device_class: "timestamp" });
 
-const devices = { dw: { id: "dw", name: "Dishwasher" }, wm: { id: "wm", name: "Washer" } };
+// The other appliances, each shown at work, across the integrations: their badges show the brand.
+const hot = { options: ["inactive", "ready", "run", "pause", "finished"] };
+// Tumble dryer (Miele): drying, progress from the elapsed and remaining times.
+add("dryer", "sensor.dryer", "status", "in_use", { options: ["off", "on", "programmed", "in_use", "pause", "program_ended"] });
+add("dryer", "sensor.dryer_program", "program_id", "cottons", { friendly_name: "Dryer Program" });
+add("dryer", "sensor.dryer_program_phase", "program_phase", "drying", { friendly_name: "Dryer Program phase" });
+add("dryer", "sensor.dryer_remaining_time", "remaining_time", "38", { unit_of_measurement: "min" });
+add("dryer", "sensor.dryer_elapsed_time", "elapsed_time", "62", { unit_of_measurement: "min" });
+add("dryer", "binary_sensor.dryer_door", null, "off", { device_class: "door" });
+add("dryer", "button.dryer_pause", "pause", "unknown");
+add("dryer", "button.dryer_stop", "stop", "unknown");
+add("dryer", "switch.dryer_power", "power", "on");
+// Washer-dryer (LG WashCombo): drying, finish time and total duration from ThinQ.
+add("wd", "sensor.washcombo_current_status", "current_state", "drying", { options: ["power_off", "initial", "running", "drying", "end"] });
+add("wd", "sensor.washcombo_remaining_time", "remain", inMinutes(25), { device_class: "timestamp" });
+add("wd", "sensor.washcombo_total_time", "total", "120", { unit_of_measurement: "min" });
+add("wd", "select.washcombo_operation", "operation_mode", "start", { options: ["start", "stop", "power_off"] });
+add("wd", "switch.washcombo_power", "operation_power", "on");
+// Oven (Neff, Home Connect): hot air at 180 °C.
+add("oven", "sensor.oven_operation_state", "operation_state", "run", hot);
+add("oven", "sensor.oven_door", "door", "closed", { options: ["open", "closed", "locked"] });
+add("oven", "sensor.oven_program_progress", "program_progress", "55", { unit_of_measurement: "%" });
+add("oven", "sensor.oven_program_finish_time", "program_finish_time", inMinutes(41), { device_class: "timestamp" });
+add("oven", "select.oven_active_program", "active_program", "cooking_oven_program_heating_mode_hot_air",
+  { options: ["cooking_oven_program_heating_mode_hot_air", "cooking_oven_program_heating_mode_top_bottom_heating"] });
+add("oven", "select.oven_selected_program", "selected_program", "cooking_oven_program_heating_mode_hot_air",
+  { options: ["cooking_oven_program_heating_mode_hot_air", "cooking_oven_program_heating_mode_top_bottom_heating"] });
+add("oven", "sensor.oven_current_oven_cavity_temperature", "oven_current_cavity_temperature", "176",
+  { device_class: "temperature", unit_of_measurement: "°C", friendly_name: "Oven Cavity temperature" });
+add("oven", "button.oven_stop_program", "stop_program", "unknown");
+add("oven", "switch.oven_power", "power", "on");
+add("oven", "binary_sensor.oven_connectivity", "connectivity", "on", { device_class: "connectivity" });
+// Microwave (LG ThinQ): cooking.
+add("mw", "sensor.microwave_current_status", "current_state", "cooking_in_progress", { options: ["power_off", "initial", "cooking_in_progress", "end"] });
+add("mw", "sensor.microwave_remaining_time", "remain", inMinutes(3), { device_class: "timestamp" });
+add("mw", "sensor.microwave_total_time", "total", "5", { unit_of_measurement: "min" });
+// Hob (LG ThinQ): two zones on.
+add("hob", "sensor.hob_current_status", "current_state", "cook", { options: ["power_off", "initial", "cook"] });
+add("hob", "binary_sensor.hob_remote_start", "remote_control_enabled", "off");
+// Coffee machine (Siemens, Home Connect): a cappuccino on its way.
+add("cm", "sensor.coffee_machine_operation_state", "operation_state", "run", hot);
+add("cm", "sensor.coffee_machine_program_progress", "program_progress", "60", { unit_of_measurement: "%" });
+add("cm", "select.coffee_machine_active_program", "active_program", "consumer_products_coffee_maker_program_beverage_cappuccino",
+  { options: ["consumer_products_coffee_maker_program_beverage_cappuccino", "consumer_products_coffee_maker_program_beverage_espresso"] });
+add("cm", "select.coffee_machine_selected_program", "selected_program", "consumer_products_coffee_maker_program_beverage_cappuccino",
+  { options: ["consumer_products_coffee_maker_program_beverage_cappuccino", "consumer_products_coffee_maker_program_beverage_espresso"] });
+add("cm", "sensor.coffee_machine_water_tank_empty", "water_tank_empty", "off");
+add("cm", "button.coffee_machine_stop_program", "stop_program", "unknown");
+add("cm", "switch.coffee_machine_power", "power", "on");
+add("cm", "binary_sensor.coffee_machine_connectivity", "connectivity", "on", { device_class: "connectivity" });
+// Cooker hood (Gaggenau, Home Connect): fan stage 2, lights on.
+add("hood", "select.hood_selected_program", "selected_program", "cooking_common_program_hood_venting", { options: ["cooking_common_program_hood_venting"] });
+add("hood", "select.hood_venting_level", "venting_level", "cooking_hood_enum_type_stage_fan_stage_02",
+  { friendly_name: "Hood Fan stage", options: ["cooking_hood_enum_type_stage_fan_off", "cooking_hood_enum_type_stage_fan_stage_01", "cooking_hood_enum_type_stage_fan_stage_02", "cooking_hood_enum_type_stage_fan_stage_03"] });
+add("hood", "light.hood_functional_light", "cooking_lighting", "on");
+add("hood", "switch.hood_power", "power", "on");
+add("hood", "binary_sensor.hood_connectivity", "connectivity", "on", { device_class: "connectivity" });
+// Fridge-freezer (Bosch, Home Connect): setpoints, super cooling on.
+add("fr", "number.fridge_refrigerator_temperature", "refrigerator_setpoint_temperature", "4",
+  { unit_of_measurement: "°C", friendly_name: "Fridge Refrigerator temperature" });
+add("fr", "number.fridge_freezer_temperature", "freezer_setpoint_temperature", "-18", { unit_of_measurement: "°C", friendly_name: "Fridge Freezer temperature" });
+add("fr", "switch.fridge_super_cooling", "refrigerator_super_mode", "on", { friendly_name: "Fridge Super cooling" });
+add("fr", "switch.fridge_eco_mode", "eco_mode", "off", { friendly_name: "Fridge Eco mode" });
+add("fr", "binary_sensor.fridge_door", "refrigerator_door", "off", { device_class: "door" });
+add("fr", "binary_sensor.fridge_connectivity", "connectivity", "on", { device_class: "connectivity" });
+// Freezer (Miele): super freezing, its climate zone.
+add("fz", "sensor.freezer", "status", "superfreezing", { options: ["off", "on", "superfreezing"] });
+add("fz", "climate.freezer", "freezer", "cool", { current_temperature: -21, friendly_name: "Freezer" });
+add("fz", "switch.freezer_superfreezing", "superfreezing", "on", { friendly_name: "Freezer Superfreezing" });
+add("fz", "binary_sensor.freezer_door", null, "off", { device_class: "door" });
+// Wine cabinet (Miele): two zones, its light on.
+add("wine", "sensor.wine_cabinet", "status", "on", { options: ["off", "on"] });
+add("wine", "climate.wine_cabinet_zone_1", "zone_1", "cool", { current_temperature: 12, friendly_name: "Wine cabinet Zone 1" });
+add("wine", "climate.wine_cabinet_zone_2", "zone_2", "cool", { current_temperature: 16, friendly_name: "Wine cabinet Zone 2" });
+add("wine", "light.wine_cabinet_light", "light", "on");
+// LG Styler: refreshing.
+add("styler", "sensor.styler_current_status", "current_state", "refreshing", { options: ["power_off", "initial", "refreshing", "end"] });
+add("styler", "sensor.styler_remaining_time", "remain", inMinutes(18), { device_class: "timestamp" });
+add("styler", "sensor.styler_total_time", "total", "40", { unit_of_measurement: "min" });
+add("styler", "switch.styler_power", "operation_power", "on");
+
+const devices = {
+  dw: { id: "dw", name: "Dishwasher", manufacturer: "BOSCH" },
+  wm: { id: "wm", name: "Washer", manufacturer: "SIEMENS" },
+  dryer: { id: "dryer", name: "Tumble dryer", manufacturer: "Miele", model: "Tumble dryer" },
+  wd: { id: "wd", name: "WashCombo", manufacturer: "LGE", model: "WD-X1 (DEVICE_WASHCOMBO_MAIN)" },
+  oven: { id: "oven", name: "Oven", manufacturer: "NEFF" },
+  mw: { id: "mw", name: "Microwave", manufacturer: "LGE", model: "MW-1 (DEVICE_MICROWAVE_OVEN)" },
+  hob: { id: "hob", name: "Hob", manufacturer: "LGE", model: "CT-1 (DEVICE_COOKTOP)" },
+  cm: { id: "cm", name: "Coffee machine", manufacturer: "SIEMENS" },
+  hood: { id: "hood", name: "Cooker hood", manufacturer: "GAGGENAU" },
+  fr: { id: "fr", name: "Fridge", manufacturer: "BOSCH" },
+  fz: { id: "fz", name: "Freezer", manufacturer: "Miele", model: "Freezer" },
+  wine: { id: "wine", name: "Wine cabinet", manufacturer: "Miele", model: "Wine cabinet" },
+  styler: { id: "styler", name: "Styler", manufacturer: "LGE", model: "S5 (DEVICE_STYLER)" },
+};
+// The new appliances: one capture per theme and one GIF of their animation.
+const NEW = [["dryer", "dryer"], ["washer-dryer", "wd"], ["oven", "oven"], ["microwave", "mw"], ["hob", "hob"], ["coffee-machine", "cm"],
+  ["hood", "hood"], ["fridge", "fr"], ["freezer", "fz"], ["wine-cabinet", "wine"], ["styler", "styler"]];
 const hass = { states, entities, devices };
 
 // Same dishwasher, switched on and waiting for a program: the options are shown.
@@ -274,34 +390,37 @@ washerOpen["sensor.washer_door"].state = "open";
 
 await render(
   [
-    { file: "dishwasher", type: "home-connect-dishwasher-card", theme: "light", width: 460, config: {} },
-    { file: "dishwasher-dark", type: "home-connect-dishwasher-card", theme: "dark", width: 460, config: {} },
-    { file: "dishwasher-options", type: "home-connect-dishwasher-card", theme: "light", width: 460, config: {}, hass: { states: ready } },
-    { file: "dishwasher-options-dark", type: "home-connect-dishwasher-card", theme: "dark", width: 460, config: {}, hass: { states: ready } },
-    { file: "dishwasher-open", type: "home-connect-dishwasher-card", theme: "light", width: 460, config: {}, hass: { states: dishwasherOpen } },
-    { file: "dishwasher-open-dark", type: "home-connect-dishwasher-card", theme: "dark", width: 460, config: {}, hass: { states: dishwasherOpen } },
-    { file: "washer", type: "home-connect-washer-card", theme: "light", width: 460, config: {} },
-    { file: "washer-dark", type: "home-connect-washer-card", theme: "dark", width: 460, config: {} },
-    { file: "washer-open", type: "home-connect-washer-card", theme: "light", width: 460, config: {}, hass: { states: washerOpen } },
-    { file: "washer-open-dark", type: "home-connect-washer-card", theme: "dark", width: 460, config: {}, hass: { states: washerOpen } },
-    { file: "dishwasher-mini", type: "home-connect-dishwasher-mini-card", theme: "light", width: 380, config: {} },
-    { file: "dishwasher-mini-dark", type: "home-connect-dishwasher-mini-card", theme: "dark", width: 380, config: {} },
-    { file: "washer-mini", type: "home-connect-washer-mini-card", theme: "light", width: 380, config: {} },
-    { file: "washer-mini-dark", type: "home-connect-washer-mini-card", theme: "dark", width: 380, config: {} },
+    { file: "dishwasher", type: "smart-appliance-card", device: "dw", theme: "light", width: 460, config: {} },
+    { file: "dishwasher-dark", type: "smart-appliance-card", device: "dw", theme: "dark", width: 460, config: {} },
+    { file: "dishwasher-options", type: "smart-appliance-card", device: "dw", theme: "light", width: 460, config: {}, hass: { states: ready } },
+    { file: "dishwasher-options-dark", type: "smart-appliance-card", device: "dw", theme: "dark", width: 460, config: {}, hass: { states: ready } },
+    { file: "dishwasher-open", type: "smart-appliance-card", device: "dw", theme: "light", width: 460, config: {}, hass: { states: dishwasherOpen } },
+    { file: "dishwasher-open-dark", type: "smart-appliance-card", device: "dw", theme: "dark", width: 460, config: {}, hass: { states: dishwasherOpen } },
+    { file: "washer", type: "smart-appliance-card", device: "wm", theme: "light", width: 460, config: {} },
+    { file: "washer-dark", type: "smart-appliance-card", device: "wm", theme: "dark", width: 460, config: {} },
+    { file: "washer-open", type: "smart-appliance-card", device: "wm", theme: "light", width: 460, config: {}, hass: { states: washerOpen } },
+    { file: "washer-open-dark", type: "smart-appliance-card", device: "wm", theme: "dark", width: 460, config: {}, hass: { states: washerOpen } },
+    { file: "dishwasher-mini", type: "smart-appliance-mini-card", device: "dw", theme: "light", width: 380, config: {} },
+    { file: "dishwasher-mini-dark", type: "smart-appliance-mini-card", device: "dw", theme: "dark", width: 380, config: {} },
+    { file: "washer-mini", type: "smart-appliance-mini-card", device: "wm", theme: "light", width: 380, config: {} },
+    { file: "washer-mini-dark", type: "smart-appliance-mini-card", device: "wm", theme: "dark", width: 380, config: {} },
     {
-      file: "washer-mini-zoom", type: "home-connect-washer-mini-card", theme: "light", width: 460, config: {},
+      file: "washer-mini-zoom", type: "smart-appliance-mini-card", device: "wm", theme: "light", width: 460, config: {},
       after: async (page) => {
-        await page.locator("home-connect-washer-mini-card .zoom").click();
+        await page.locator("smart-appliance-mini-card .zoom").click();
         await page.mouse.move(0, 0);
       },
     },
     {
-      file: "washer-mini-zoom-dark", type: "home-connect-washer-mini-card", theme: "dark", width: 460, config: {},
+      file: "washer-mini-zoom-dark", type: "smart-appliance-mini-card", device: "wm", theme: "dark", width: 460, config: {},
       after: async (page) => {
-        await page.locator("home-connect-washer-mini-card .zoom").click();
+        await page.locator("smart-appliance-mini-card .zoom").click();
         await page.mouse.move(0, 0);
       },
     },
+    ...NEW.flatMap(([file, device]) => ["light", "dark"].map((theme) => ({
+      file: theme === "light" ? file : `${file}-dark`, type: "smart-appliance-card", device, theme, width: 460, config: {},
+    }))),
   ],
   { icons, hass }
 );
@@ -313,14 +432,15 @@ await render(
 // sparkles; the paused badge breathes; the delayed-start badge turns its clock hands. Each
 // reuses openCard through animate(), so no mount is duplicated.
 const gifs = [
-  { file: "dishwasher-running", type: "home-connect-dishwasher-card", theme: "light", width: 460, config: {} },
-  { file: "washer-running", type: "home-connect-washer-card", theme: "light", width: 460, config: {}, hass: { states: washerRunning } },
-  { file: "dishwasher-finished", type: "home-connect-dishwasher-card", theme: "light", width: 460, config: {}, hass: { states: finished } },
-  { file: "washer-finished", type: "home-connect-washer-card", theme: "light", width: 460, config: {}, hass: { states: washerFinished } },
-  { file: "dishwasher-paused", type: "home-connect-dishwasher-card", theme: "light", width: 460, config: {}, hass: { states: dishwasherPaused } },
-  { file: "washer-paused", type: "home-connect-washer-card", theme: "light", width: 460, config: {}, hass: { states: washerPaused } },
-  { file: "dishwasher-delayed", type: "home-connect-dishwasher-card", theme: "light", width: 460, config: {}, hass: { states: dishwasherDelayed } },
-  { file: "washer-delayed", type: "home-connect-washer-card", theme: "light", width: 460, config: {}, hass: { states: washerDelayed } },
+  { file: "dishwasher-running", type: "smart-appliance-card", device: "dw", theme: "light", width: 460, config: {} },
+  { file: "washer-running", type: "smart-appliance-card", device: "wm", theme: "light", width: 460, config: {}, hass: { states: washerRunning } },
+  { file: "dishwasher-finished", type: "smart-appliance-card", device: "dw", theme: "light", width: 460, config: {}, hass: { states: finished } },
+  { file: "washer-finished", type: "smart-appliance-card", device: "wm", theme: "light", width: 460, config: {}, hass: { states: washerFinished } },
+  { file: "dishwasher-paused", type: "smart-appliance-card", device: "dw", theme: "light", width: 460, config: {}, hass: { states: dishwasherPaused } },
+  { file: "washer-paused", type: "smart-appliance-card", device: "wm", theme: "light", width: 460, config: {}, hass: { states: washerPaused } },
+  { file: "dishwasher-delayed", type: "smart-appliance-card", device: "dw", theme: "light", width: 460, config: {}, hass: { states: dishwasherDelayed } },
+  { file: "washer-delayed", type: "smart-appliance-card", device: "wm", theme: "light", width: 460, config: {}, hass: { states: washerDelayed } },
+  ...NEW.map(([file, device]) => ({ file: `${file}-running`, type: "smart-appliance-card", device, theme: "light", width: 460, config: {} })),
 ];
 // Every animation is also rendered in the other theme, with the exact same setup: X-dark.gif for a light X.gif,
 // X-light.gif for a dark one.

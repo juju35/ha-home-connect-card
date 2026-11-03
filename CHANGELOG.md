@@ -1,5 +1,21 @@
 # Changelog
 
+## 2.0.0 - 2026-11-03
+
+### Changes
+- Renamed **ha-smart-appliance-card** (formerly ha-home-connect-card): one card, `smart-appliance-card`, and its mini version `smart-appliance-mini-card`, for every appliance. The file is now `smart-appliance-card.js` (HACS updates it; a resource added by hand must point to the new file). The `home-connect-dishwasher-card`, `home-connect-washer-card` and mini card types still work in existing dashboards.
+- Header badge: the appliance's brand (Bosch, Siemens, Neff, Gaggenau, Miele, Samsung, LG, Whirlpool, Maytag, KitchenAid…) instead of the Home Connect logo, which stays when the brand isn't known. The main buttons take the brand's colour.
+
+### Features
+- New appliances, each with its own animated illustration: tumble dryer, washer-dryer, oven, microwave, hob, coffee machine, cooker hood, fridge, freezer, wine cabinet and LG Styler.
+- New integrations: Miele, SmartThings, LG ThinQ, Whirlpool and Matter, next to Home Connect. Their states are shown like Home Connect's, with the program step when they report it, and Start / Pause / Resume / Stop go through their buttons or operation selects.
+- The appliance type is detected from the device (programs, model, entities); the new `kind` option sets it when it can't be. The new `brand` option sets the brand when the integration doesn't give it (Maytag or KitchenAid through Whirlpool).
+- Progress worked out from the elapsed and remaining times, or the finish time and total duration, for integrations without a percentage.
+- Temperatures on fridges, freezers and wine cabinets, and on ovens while cooking; fan stage and light on cooker hoods; super modes and other settings shown on appliances without programs.
+- Coffee machine alerts: bean container empty, water tank empty, drip tray full.
+- Visual editor: appliances of every supported integration, appliance type and brand fields.
+- Screenshots and animation GIFs of every new appliance, in light and dark themes.
+
 ## 1.12.0 - 2026-11-03
 
 ### Features
