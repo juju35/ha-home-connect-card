@@ -1,5 +1,10 @@
 # Changelog
 
+## 2.0.1 - 2026-11-03
+
+### Fixes
+- Upgrading from ha-home-connect-card: the README says where HACS installs the file after the rename (the former `ha-home-connect-card` folder for an install updated in place) and which resource URL to use, so the card is no longer reported missing (`Custom element doesn't exist`). The releases also carry a `home-connect-card.js` copy for manual installs.
+
 ## 2.0.0 - 2026-11-03
 
 ### Changes

@@ -112,6 +112,15 @@ HACS registers the dashboard resource for you.
    - Type: **JavaScript Module**
 4. Clear your browser cache and refresh
 
+### Upgrading from ha-home-connect-card (1.x)
+
+The repository was renamed from `ha-home-connect-card` to `ha-smart-appliance-card` (GitHub redirects the former address, HACS keeps updating it) and the file from `home-connect-card.js` to `smart-appliance-card.js`. HACS may keep installing into the former folder until the repository is added again under its new name, so after the update check that **Settings → Dashboards → ⋮ → Resources** has exactly one resource for the card, pointing to the file that is really installed:
+
+- `/hacsfiles/ha-home-connect-card/smart-appliance-card.js` for an existing install updated in place,
+- `/hacsfiles/ha-smart-appliance-card/smart-appliance-card.js` for a new install (or after removing the card from HACS and adding `https://github.com/juju35/ha-smart-appliance-card` as a custom repository),
+
+and remove the former `home-connect-card.js` resource. A resource pointing to a file that isn't there shows `Custom element doesn't exist: smart-appliance-card`. For a manual install, replace the file and the resource URL as above; the releases still carry a `home-connect-card.js` copy for the transition. Dashboards using `custom:home-connect-*-card` keep working: the former types stay registered (see [Legacy card types](#legacy-card-types)).
+
 ## Configuration
 
 ### Visual editor

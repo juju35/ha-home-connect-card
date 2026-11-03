@@ -5,6 +5,7 @@ import { mkdirSync, readdirSync, readFileSync, writeFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 
 const FILE = "smart-appliance-card.js";
+const LEGACY = "home-connect-card.js";
 const root = fileURLToPath(new URL("..", import.meta.url));
 const pkg = JSON.parse(readFileSync(`${root}package.json`, "utf8"));
 
@@ -29,4 +30,6 @@ const out = src
 const target = `${root}dist/${FILE}`;
 mkdirSync(`${root}dist`, { recursive: true });
 writeFileSync(target, out);
+// Same file under the 1.x name, attached to the releases for manual installs moving from ha-home-connect-card.
+writeFileSync(`${root}dist/${LEGACY}`, out);
 console.log(`Built dist/${FILE} (${(out.length / 1024).toFixed(1)} KB)`);
