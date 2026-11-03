@@ -13,6 +13,7 @@
   <img src="logos/miele.svg" alt="Miele" height="24">&nbsp;&nbsp;
   <img src="logos/samsung.svg" alt="Samsung" height="18">&nbsp;&nbsp;
   <img src="logos/lg.svg" alt="LG" height="30">&nbsp;&nbsp;
+  <img src="logos/whirlpool.svg" alt="Whirlpool" height="22">&nbsp;&nbsp;
   <img src="logos/kitchenaid.svg" alt="KitchenAid" height="16">
 </p>
 
@@ -33,7 +34,7 @@ Pick the appliance: the card works out its type and its brand, and finds all its
 - One card, `smart-appliance-card`, and its compact version `smart-appliance-mini-card` (a detail button unfolds the full card)
 - 13 appliance types, each with its own illustration animated by what it is doing: drum turning, laundry tumbling, water spraying, oven glowing, coffee pouring, hood drawing air, frost on a fridge in super mode…
 - Type detected from the appliance (its programs, its model or its entities), or set with `kind`
-- The appliance's brand next to its title: its logo (Bosch, Siemens, Miele, Samsung, LG, KitchenAid), or a badge with its initial on the header icon for the others (Neff, Gaggenau, Whirlpool, Maytag…); main buttons in the brand's colour
+- The appliance's brand next to its title: its logo (Bosch, Siemens, Miele, Samsung, LG, Whirlpool, KitchenAid), or a badge with its initial on the header icon for the others (Neff, Gaggenau, Whirlpool, Maytag…); main buttons in the brand's colour
 - Status with colour, progress bar, finish time and time left, the program step when the integration reports it (spinning, drying…)
 - Program picker and **Start** (when remote start is enabled), **Pause / Resume**, **Stop** with a confirmation tap, whatever the integration offers
 - Program options before starting, and the settings of appliances without programs (super modes, fan stage…)
@@ -314,7 +315,7 @@ LG ThinQ: a WashCombo drying (progress from the finish time and total duration),
 | Styler, at work | ![styler, at work](screenshots/styler-running.gif) | ![styler, at work dark](screenshots/styler-running-dark.gif) |
 | Styler mini card | ![styler mini card](screenshots/mini-lg.png) | ![styler mini card dark](screenshots/mini-lg-dark.png) |
 
-### <img src="logos/kitchenaid.svg" alt="" height="14"> Whirlpool, Maytag, KitchenAid
+### <img src="logos/whirlpool.svg" alt="" height="18"> Whirlpool, Maytag, <img src="logos/kitchenaid.svg" alt="" height="14"> KitchenAid
 
 Whirlpool integration, which doesn't say the brand: `brand: maytag` on a dryer, `brand: kitchenaid` on a wall oven baking, Stop through its button. No progress from this integration: the state stands alone with the finish time.
 
