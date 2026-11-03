@@ -24,7 +24,7 @@ Pick the appliance: the card works out its type and its brand, and finds all its
 - One card, `smart-appliance-card`, and its compact version `smart-appliance-mini-card` (a detail button unfolds the full card)
 - 13 appliance types, each with its own illustration animated by what it is doing: drum turning, laundry tumbling, water spraying, oven glowing, coffee pouring, hood drawing air, frost on a fridge in super mode…
 - Type detected from the appliance (its programs, its model or its entities), or set with `kind`
-- Brand badge on the header icon (Bosch, Siemens, Neff, Gaggenau, Miele, Samsung, LG, Whirlpool, Maytag, KitchenAid…) and main buttons in the brand's colour
+- The appliance's brand next to its title: its logo (Bosch, Siemens, Miele, Samsung, LG, KitchenAid), or a badge with its initial on the header icon for the others (Neff, Gaggenau, Whirlpool, Maytag…); main buttons in the brand's colour
 - Status with colour, progress bar, finish time and time left, the program step when the integration reports it (spinning, drying…)
 - Program picker and **Start** (when remote start is enabled), **Pause / Resume**, **Stop** with a confirmation tap, whatever the integration offers
 - Program options before starting, and the settings of appliances without programs (super modes, fan stage…)
@@ -286,10 +286,12 @@ Some appliances can't be turned off remotely: after a first refusal, the card sa
 
 ```bash
 npm install
-npm run build        # stamps the version of package.json into dist/smart-appliance-card.js
+npm run build        # stamps the version of package.json into dist/smart-appliance-card.js and embeds logos/
 npm run check        # builds and checks the card (run in CI)
 npm run screenshots  # renders the cards (and the animation GIFs, needs ffmpeg) with mock devices into screenshots/
 ```
+
+Brand logos live in `logos/`, one `<brand>.svg` or `.png` per key of the `brand` option; the build embeds them in the card, which stays a single file. A brand without a file gets the badge with its initial. The logos are the trademarks of their owners, shown only to identify the appliance's brand.
 
 `dist/` is not committed: `npm run build` creates it locally, CI builds it on every push, and the release workflow attaches the built file to the release, which is where HACS downloads it from.
 

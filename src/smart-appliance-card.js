@@ -1448,6 +1448,9 @@ var HC_BRANDS = {
   whirlpool: { name: 'Whirlpool', color: '#8a6a00' }, maytag: { name: 'Maytag', color: '#002d72' }, kitchenaid: { name: 'KitchenAid', color: '#c8102e' },
   consul: { name: 'Consul', color: '#0067b1' },
 };
+// Brand logos (SVG or PNG files in logos/, named after the HC_BRANDS key), embedded by the build; brands without one keep
+// the initial on their colour.
+var HC_BRAND_LOGOS = {}; // __BRAND_LOGOS__
 function hcBrand(dev, option) {
   var m = String(option || dev?.manufacturer || '').trim();
   if (!m) return null;
@@ -2213,7 +2216,7 @@ class HomeConnectBaseCard extends HTMLElement {
       (controls ? HC_PX.controls : 0) + (controls.indexOf('class="hint"') >= 0 ? HC_PX.hint : 0));
     this.shadowRoot.innerHTML = this._styles(color) + '<ha-card>' +
       '<div class="header">' + logo +
-        '<div class="titles"><div class="name">' + hcEsc(name) + '</div><div class="sub">' + hcEsc(sub) + '</div></div>' +
+        '<div class="titles"><div class="name">' + hcEsc(name) + '</div><div class="sub">' + this._brandLogo() + hcEsc(sub) + '</div></div>' +
         powerBtn + this._zoomButton() +
       '</div>' +
       heroHtml + programHtml + optionsHtml + errorHtml + controls +
@@ -2256,11 +2259,18 @@ class HomeConnectBaseCard extends HTMLElement {
   }
 
   // Badge on the header icon: the appliance's brand (initial on the brand's colour), else the Home Connect logo.
+  // A brand with its logo shows it next to the title instead (_brandLogo): wordmarks don't fit the badge.
   _badge(platform) {
     var b = this._brand;
+    if (b && HC_BRAND_LOGOS[b.key]) return '';
     if (!b || (b.key === 'other' && platform === 'home_connect')) return HC_LOGO_BADGE;
     var initials = b.key === 'lg' ? 'LG' : b.name.charAt(0).toUpperCase();
     return `<span class="hc-badge brand" style="background:${b.color}" title="${hcEsc(b.name)}">${hcEsc(initials)}</span>`;
+  }
+
+  _brandLogo() {
+    var b = this._brand, svg = b && HC_BRAND_LOGOS[b.key];
+    return svg ? `<span class="brand-logo" role="img" aria-label="${hcEsc(b.name)}" title="${hcEsc(b.name)}">${svg}</span>` : '';
   }
 
   _styles(color) {
@@ -2295,6 +2305,11 @@ class HomeConnectBaseCard extends HTMLElement {
         ' display: grid; place-items: center; background: #fff;' +
         ' box-shadow: 0 0 0 1px var(--divider-color, rgba(0,0,0,.12)), 0 0 0 3px var(--card-background-color, #fff); }' +
       '.hc-badge svg { width: 100%; height: 100%; }' +
+      // The brand's logo before the subtitle, at the subtitle's height.
+      // On a white tile, like the Home Connect badge: the brand's own colours stay readable on a dark card.
+      '.brand-logo { display: inline-flex; vertical-align: -3px; box-sizing: content-box; height: 10px; max-width: 64px; padding: 2px 4px;' +
+        ' margin-right: 6px; border-radius: 4px; background: #fff; box-shadow: 0 0 0 1px var(--divider-color, rgba(0,0,0,.12)); }' +
+      '.brand-logo svg, .brand-logo img { height: 100%; width: auto; max-width: 100%; }' +
       '.hc-badge.brand { padding: 0; color: #fff; font: 700 9px/1 var(--ha-font-family-body, system-ui, sans-serif); letter-spacing: -0.02em; }' +
       // The title takes the room the pill and the buttons leave (basis 0, so it doesn't squeeze the pill at
       // ordinary widths); it shrinks with an ellipsis but keeps about four characters.
@@ -2759,7 +2774,7 @@ var hcMini = (Base) => class extends Base {
 
     return this._styles(m.color) + '<ha-card class="mini">' +
       '<div class="header">' + m.logo +
-        '<div class="titles"><div class="name">' + hcEsc(m.name) + '</div></div>' +
+        '<div class="titles"><div class="name">' + hcEsc(m.name) + '</div>' + (this._brandLogo() ? `<div class="sub">${this._brandLogo()}</div>` : '') + '</div>' +
         `<span class="st" title="${hcEsc(m.statusText)}"><span class="dot"></span><span class="stt">${hcEsc(m.statusText)}</span></span>` + this._zoomButton() +
       '</div>' +
       '<div class="content">' + hcPicture(m.art, m.state, !c.icon, this._lit) +
