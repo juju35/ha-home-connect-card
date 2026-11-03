@@ -4,7 +4,7 @@ import assert from "node:assert/strict";
 import { test } from "node:test";
 import { loadCard } from "./load.mjs";
 
-const { HomeConnectWasherCard, customElements } = loadCard("home-connect-card.js", ["HomeConnectWasherCard"]);
+const { HomeConnectWasherCard, customElements } = loadCard("smart-appliance-card.js", ["HomeConnectWasherCard"]);
 
 const css = new HomeConnectWasherCard()._styles();
 
@@ -133,7 +133,7 @@ test("in an inline-block, an auto grid column or a 1fr 1fr grid, direct or in a 
     return t.skip(`Chromium unavailable: ${e.message.split("\n")[0]}`);
   }
   const { readFileSync } = await import("node:fs");
-  const src = readFileSync(new URL("../src/home-connect-card.js", import.meta.url), "utf8");
+  const src = readFileSync(new URL("../src/smart-appliance-card.js", import.meta.url), "utf8");
   const entities = {};
   const states = {};
   const add = (id, key, state, attributes = {}) => {

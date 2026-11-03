@@ -1,6 +1,6 @@
 ---
 name: Feature request
-about: Suggest an idea for the Home Connect Card
+about: Suggest an idea for the Smart Appliance Card
 title: "[Feature] "
 labels: enhancement
 assignees: ""

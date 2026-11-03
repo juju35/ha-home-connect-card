@@ -2,7 +2,7 @@ import assert from "node:assert/strict";
 import { afterEach, beforeEach, mock, test } from "node:test";
 import { loadCard } from "./load.mjs";
 
-const { HomeConnectWasherCard } = loadCard("home-connect-card.js", ["HomeConnectWasherCard"]);
+const { HomeConnectWasherCard } = loadCard("smart-appliance-card.js", ["HomeConnectWasherCard"]);
 
 const st = (state, attributes = {}) => ({ state, attributes });
 const BAD_REQUEST =

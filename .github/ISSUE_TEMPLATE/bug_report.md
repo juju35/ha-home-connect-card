@@ -1,6 +1,6 @@
 ---
 name: Bug report
-about: Report a bug with the Home Connect Card
+about: Report a bug with the Smart Appliance Card
 title: "[Bug] "
 labels: bug
 assignees: ""
@@ -26,6 +26,7 @@ If applicable, add screenshots to help explain your problem.
 - Browser:
 - HACS version:
 - Card version:
+- Integration (Home Connect, Miele, SmartThings, LG ThinQ, Whirlpool, Matter):
 - Appliance (brand and model):
 
 **Card configuration:**

@@ -2,7 +2,7 @@ import assert from "node:assert/strict";
 import { afterEach, beforeEach, mock, test } from "node:test";
 import { loadCard } from "./load.mjs";
 
-const { HomeConnectWasherCard, HC_STATE_COLORS, customElements } = loadCard("home-connect-card.js", ["HomeConnectWasherCard", "HC_STATE_COLORS"]);
+const { HomeConnectWasherCard, HC_STATE_COLORS, customElements } = loadCard("smart-appliance-card.js", ["HomeConnectWasherCard", "HC_STATE_COLORS"]);
 
 const st = (state, attributes = {}) => ({ state, attributes });
 

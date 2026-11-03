@@ -1,7 +1,7 @@
 {
-  "name": "Home Connect Card",
+  "name": "Smart Appliance Card",
   "render_readme": true,
   "content_in_root": false,
-  "filename": "home-connect-card.js",
+  "filename": "smart-appliance-card.js",
   "homeassistant": "2024.8.0"
 }

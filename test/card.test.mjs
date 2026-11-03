@@ -2,7 +2,7 @@ import assert from "node:assert/strict";
 import { test } from "node:test";
 import { loadCard } from "./load.mjs";
 
-const { HomeConnectWasherCard, HomeConnectDishwasherCard, HomeConnectCardEditor, hcFindDevice, hcEsc, customElements } = loadCard("home-connect-card.js", [
+const { HomeConnectWasherCard, HomeConnectDishwasherCard, HomeConnectCardEditor, hcFindDevice, hcEsc, customElements } = loadCard("smart-appliance-card.js", [
   "HomeConnectWasherCard",
   "HomeConnectCardEditor",
   "HomeConnectDishwasherCard",
@@ -167,7 +167,7 @@ test("editor labels follow the language option", () => {
 test("editor labels the device field instead of leaking the raw key", () => {
   assert.equal(editor("washer", {})._form.computeLabel({ name: "device_id" }), "Appliance");
   assert.equal(editor("washer", { language: "fr" })._form.computeLabel({ name: "device_id" }), "Appareil");
-  assert.equal(editor("washer", {})._form.computeHelper({ name: "device_id" }), "Device from the Home Connect integration");
+  assert.equal(editor("washer", {})._form.computeHelper({ name: "device_id" }), "Appliance from Home Connect, Miele, SmartThings, LG ThinQ, Whirlpool or Matter");
 });
 
 test("editor lists the connectivity, salt and rinse aid overrides where they apply", () => {
@@ -184,7 +184,7 @@ test("editor lists the connectivity, salt and rinse aid overrides where they app
 const LANGS = ["fr", "de", "es", "sr", "sr-Latn", "it", "nl", "pt", "pl"];
 
 test("I18N parity: every language has exactly the English keys, array lengths and placeholders, and no empty value", () => {
-  const { HcI18n } = loadCard("home-connect-card.js", ["HcI18n"]);
+  const { HcI18n } = loadCard("smart-appliance-card.js", ["HcI18n"]);
   const ref = Object.keys(HcI18n.en).sort();
   assert.deepEqual(Object.keys(HcI18n).sort(), ["en", ...LANGS].sort(), "dictionaries");
   for (const lang of LANGS) {
@@ -202,8 +202,8 @@ test("I18N parity: every language has exactly the English keys, array lengths an
 });
 
 test("Serbian: sr is all Cyrillic and sr-Latn all Latin, brand names and placeholders aside", () => {
-  const { HcI18n } = loadCard("home-connect-card.js", ["HcI18n"]);
-  const strip = (s) => String(s).replace(/Home Connect|Home Assistant|\{\w+\}/g, "");
+  const { HcI18n } = loadCard("smart-appliance-card.js", ["HcI18n"]);
+  const strip = (s) => String(s).replace(/Home Connect|Home Assistant|Miele|SmartThings|LG ThinQ|Whirlpool|Matter|Maytag|KitchenAid|Styler|\{\w+\}/g, "");
   for (const [k, v] of Object.entries(HcI18n.sr)) assert.doesNotMatch(strip(v), /[A-Za-z]/, `sr.${k}`);
   for (const [k, v] of Object.entries(HcI18n["sr-Latn"])) assert.doesNotMatch(strip(v), /[\u0400-\u04FF]/, `sr-Latn.${k}`);
 });

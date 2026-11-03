@@ -1,10 +1,33 @@
-var HOME_CONNECT_CARD_VERSION = '__VERSION__';
+var SMART_APPLIANCE_CARD_VERSION = '__VERSION__';
 
 // ── i18n ──────────────────────────────────────────────────────────────────────
 var HcI18n = {
   fr: {
     dishwasher: 'Lave-vaisselle',
     washer: 'Lave-linge',
+    dryer: 'Sèche-linge',
+    washer_dryer: 'Lavante-séchante',
+    oven: 'Four',
+    microwave: 'Micro-ondes',
+    hob: 'Plaque de cuisson',
+    coffee_maker: 'Machine à café',
+    hood: 'Hotte',
+    fridge: 'Réfrigérateur',
+    freezer: 'Congélateur',
+    wine_cooler: 'Cave à vin',
+    styler: 'Styler',
+    st_run_hood: 'Ventilation',
+    st_run_hob: 'Cuisson',
+    st_run_fridge: 'Super froid',
+    st_run_freezer: 'Super congélation',
+    light_on: 'Éclairage allumé',
+    bean_container: 'Bac à grains vide',
+    water_tank: 'Réservoir d\'eau vide',
+    drip_tray: 'Bac d\'égouttage plein',
+    ed_kind: 'Type d\'appareil',
+    ed_kind_helper: 'Laisser vide pour le détecter depuis l\'appareil',
+    ed_brand: 'Marque',
+    ed_brand_helper: 'Badge et couleur des boutons, à choisir quand l\'intégration ne donne pas la marque (Maytag ou KitchenAid via Whirlpool)',
     st_inactive: 'Inactif',
     st_ready: 'Prêt',
     st_delayedstart: 'Départ différé',
@@ -46,9 +69,9 @@ var HcI18n = {
     rinse_aid: 'Liquide de rinçage presque vide',
     remote_start_off: 'Démarrage à distance désactivé',
     offline: 'Appareil hors ligne',
-    no_device: 'Aucun appareil Home Connect trouvé',
+    no_device: 'Aucun appareil électroménager trouvé',
     ed_device_id: 'Appareil',
-    ed_device_id_helper: 'Appareil de l\'intégration Home Connect',
+    ed_device_id_helper: 'Appareil de Home Connect, Miele, SmartThings, LG ThinQ, Whirlpool ou Matter',
     ed_name: 'Nom',
     ed_name_helper: 'Laisser vide pour le nom de l\'appareil',
     ed_icon: 'Icône',
@@ -84,6 +107,29 @@ var HcI18n = {
   en: {
     dishwasher: 'Dishwasher',
     washer: 'Washing machine',
+    dryer: 'Tumble dryer',
+    washer_dryer: 'Washer-dryer',
+    oven: 'Oven',
+    microwave: 'Microwave',
+    hob: 'Hob',
+    coffee_maker: 'Coffee machine',
+    hood: 'Cooker hood',
+    fridge: 'Fridge',
+    freezer: 'Freezer',
+    wine_cooler: 'Wine cabinet',
+    styler: 'Styler',
+    st_run_hood: 'Venting',
+    st_run_hob: 'Cooking',
+    st_run_fridge: 'Super cooling',
+    st_run_freezer: 'Super freezing',
+    light_on: 'Light on',
+    bean_container: 'Bean container empty',
+    water_tank: 'Water tank empty',
+    drip_tray: 'Drip tray full',
+    ed_kind: 'Appliance type',
+    ed_kind_helper: 'Leave empty to detect it from the appliance',
+    ed_brand: 'Brand',
+    ed_brand_helper: 'Badge and button colour, for when the integration doesn\'t give the brand (Maytag or KitchenAid through Whirlpool)',
     st_inactive: 'Inactive',
     st_ready: 'Ready',
     st_delayedstart: 'Delayed start',
@@ -125,9 +171,9 @@ var HcI18n = {
     rinse_aid: 'Rinse aid nearly empty',
     remote_start_off: 'Remote start disabled',
     offline: 'Appliance offline',
-    no_device: 'No Home Connect appliance found',
+    no_device: 'No appliance found',
     ed_device_id: 'Appliance',
-    ed_device_id_helper: 'Device from the Home Connect integration',
+    ed_device_id_helper: 'Appliance from Home Connect, Miele, SmartThings, LG ThinQ, Whirlpool or Matter',
     ed_name: 'Name',
     ed_name_helper: 'Leave empty to use the device name',
     ed_icon: 'Icon',
@@ -163,6 +209,29 @@ var HcI18n = {
   de: {
     dishwasher: 'Geschirrspüler',
     washer: 'Waschmaschine',
+    dryer: 'Wäschetrockner',
+    washer_dryer: 'Waschtrockner',
+    oven: 'Backofen',
+    microwave: 'Mikrowelle',
+    hob: 'Kochfeld',
+    coffee_maker: 'Kaffeevollautomat',
+    hood: 'Dunstabzugshaube',
+    fridge: 'Kühlschrank',
+    freezer: 'Gefrierschrank',
+    wine_cooler: 'Weinklimaschrank',
+    styler: 'Styler',
+    st_run_hood: 'Lüftung',
+    st_run_hob: 'Kochen',
+    st_run_fridge: 'Superkühlen',
+    st_run_freezer: 'Supergefrieren',
+    light_on: 'Licht an',
+    bean_container: 'Bohnenbehälter leer',
+    water_tank: 'Wassertank leer',
+    drip_tray: 'Tropfschale voll',
+    ed_kind: 'Gerätetyp',
+    ed_kind_helper: 'Leer lassen, um ihn am Gerät zu erkennen',
+    ed_brand: 'Marke',
+    ed_brand_helper: 'Badge und Tastenfarbe, wenn die Integration die Marke nicht liefert (Maytag oder KitchenAid über Whirlpool)',
     st_inactive: 'Inaktiv',
     st_ready: 'Bereit',
     st_delayedstart: 'Verzögerter Start',
@@ -204,9 +273,9 @@ var HcI18n = {
     rinse_aid: 'Klarspüler fast leer',
     remote_start_off: 'Fernstart deaktiviert',
     offline: 'Gerät offline',
-    no_device: 'Kein Home-Connect-Gerät gefunden',
+    no_device: 'Kein Haushaltsgerät gefunden',
     ed_device_id: 'Gerät',
-    ed_device_id_helper: 'Gerät aus der Home-Connect-Integration',
+    ed_device_id_helper: 'Gerät aus Home Connect, Miele, SmartThings, LG ThinQ, Whirlpool oder Matter',
     ed_name: 'Name',
     ed_name_helper: 'Leer lassen, um den Gerätenamen zu verwenden',
     ed_icon: 'Symbol',
@@ -242,6 +311,29 @@ var HcI18n = {
   es: {
     dishwasher: 'Lavavajillas',
     washer: 'Lavadora',
+    dryer: 'Secadora',
+    washer_dryer: 'Lavadora-secadora',
+    oven: 'Horno',
+    microwave: 'Microondas',
+    hob: 'Placa de cocción',
+    coffee_maker: 'Cafetera',
+    hood: 'Campana extractora',
+    fridge: 'Frigorífico',
+    freezer: 'Congelador',
+    wine_cooler: 'Vinoteca',
+    styler: 'Styler',
+    st_run_hood: 'Extracción',
+    st_run_hob: 'Cocción',
+    st_run_fridge: 'Superrefrigeración',
+    st_run_freezer: 'Supercongelación',
+    light_on: 'Luz encendida',
+    bean_container: 'Depósito de café en grano vacío',
+    water_tank: 'Depósito de agua vacío',
+    drip_tray: 'Bandeja de goteo llena',
+    ed_kind: 'Tipo de aparato',
+    ed_kind_helper: 'Dejar vacío para detectarlo desde el aparato',
+    ed_brand: 'Marca',
+    ed_brand_helper: 'Insignia y color de los botones, cuando la integración no da la marca (Maytag o KitchenAid a través de Whirlpool)',
     st_inactive: 'Inactivo',
     st_ready: 'Listo',
     st_delayedstart: 'Inicio diferido',
@@ -283,9 +375,9 @@ var HcI18n = {
     rinse_aid: 'Abrillantador casi agotado',
     remote_start_off: 'Inicio remoto desactivado',
     offline: 'Aparato sin conexión',
-    no_device: 'No se ha encontrado ningún aparato Home Connect',
+    no_device: 'No se ha encontrado ningún electrodoméstico',
     ed_device_id: 'Aparato',
-    ed_device_id_helper: 'Dispositivo de la integración Home Connect',
+    ed_device_id_helper: 'Aparato de Home Connect, Miele, SmartThings, LG ThinQ, Whirlpool o Matter',
     ed_name: 'Nombre',
     ed_name_helper: 'Déjalo vacío para usar el nombre del dispositivo',
     ed_icon: 'Icono',
@@ -321,6 +413,29 @@ var HcI18n = {
   sr: {
     dishwasher: 'Машина за судове',
     washer: 'Машина за веш',
+    dryer: 'Машина за сушење веша',
+    washer_dryer: 'Машина за прање и сушење',
+    oven: 'Рерна',
+    microwave: 'Микроталасна',
+    hob: 'Плоча за кување',
+    coffee_maker: 'Апарат за кафу',
+    hood: 'Аспиратор',
+    fridge: 'Фрижидер',
+    freezer: 'Замрзивач',
+    wine_cooler: 'Витрина за вино',
+    styler: 'Styler',
+    st_run_hood: 'Вентилација',
+    st_run_hob: 'Кување',
+    st_run_fridge: 'Супер хлађење',
+    st_run_freezer: 'Супер замрзавање',
+    light_on: 'Светло укључено',
+    bean_container: 'Посуда за зрна празна',
+    water_tank: 'Резервоар за воду празан',
+    drip_tray: 'Посуда за капање пуна',
+    ed_kind: 'Врста уређаја',
+    ed_kind_helper: 'Оставите празно да се препозна са уређаја',
+    ed_brand: 'Бренд',
+    ed_brand_helper: 'Ознака и боја дугмади, када интеграција не даје бренд (Maytag или KitchenAid преко Whirlpool)',
     st_inactive: 'Неактивно',
     st_ready: 'Спремно',
     st_delayedstart: 'Одложени старт',
@@ -362,9 +477,9 @@ var HcI18n = {
     rinse_aid: 'Средство за испирање скоро потрошено',
     remote_start_off: 'Даљинско покретање искључено',
     offline: 'Уређај ван мреже',
-    no_device: 'Није пронађен ниједан Home Connect уређај',
+    no_device: 'Није пронађен ниједан кућни апарат',
     ed_device_id: 'Уређај',
-    ed_device_id_helper: 'Уређај из интеграције Home Connect',
+    ed_device_id_helper: 'Уређај из Home Connect, Miele, SmartThings, LG ThinQ, Whirlpool или Matter',
     ed_name: 'Назив',
     ed_name_helper: 'Оставите празно за назив уређаја',
     ed_icon: 'Икона',
@@ -400,6 +515,29 @@ var HcI18n = {
   'sr-Latn': {
     dishwasher: 'Mašina za sudove',
     washer: 'Mašina za veš',
+    dryer: 'Mašina za sušenje veša',
+    washer_dryer: 'Mašina za pranje i sušenje',
+    oven: 'Rerna',
+    microwave: 'Mikrotalasna',
+    hob: 'Ploča za kuvanje',
+    coffee_maker: 'Aparat za kafu',
+    hood: 'Aspirator',
+    fridge: 'Frižider',
+    freezer: 'Zamrzivač',
+    wine_cooler: 'Vitrina za vino',
+    styler: 'Styler',
+    st_run_hood: 'Ventilacija',
+    st_run_hob: 'Kuvanje',
+    st_run_fridge: 'Super hlađenje',
+    st_run_freezer: 'Super zamrzavanje',
+    light_on: 'Svetlo uključeno',
+    bean_container: 'Posuda za zrna prazna',
+    water_tank: 'Rezervoar za vodu prazan',
+    drip_tray: 'Posuda za kapanje puna',
+    ed_kind: 'Vrsta uređaja',
+    ed_kind_helper: 'Ostavite prazno da se prepozna sa uređaja',
+    ed_brand: 'Brend',
+    ed_brand_helper: 'Oznaka i boja dugmadi, kada integracija ne daje brend (Maytag ili KitchenAid preko Whirlpool)',
     st_inactive: 'Neaktivno',
     st_ready: 'Spremno',
     st_delayedstart: 'Odloženi start',
@@ -441,9 +579,9 @@ var HcI18n = {
     rinse_aid: 'Sredstvo za ispiranje skoro potrošeno',
     remote_start_off: 'Daljinsko pokretanje isključeno',
     offline: 'Uređaj van mreže',
-    no_device: 'Nije pronađen nijedan Home Connect uređaj',
+    no_device: 'Nije pronađen nijedan kućni aparat',
     ed_device_id: 'Uređaj',
-    ed_device_id_helper: 'Uređaj iz integracije Home Connect',
+    ed_device_id_helper: 'Uređaj iz Home Connect, Miele, SmartThings, LG ThinQ, Whirlpool ili Matter',
     ed_name: 'Naziv',
     ed_name_helper: 'Ostavite prazno za naziv uređaja',
     ed_icon: 'Ikona',
@@ -479,6 +617,29 @@ var HcI18n = {
   it: {
     dishwasher: 'Lavastoviglie',
     washer: 'Lavatrice',
+    dryer: 'Asciugatrice',
+    washer_dryer: 'Lavasciuga',
+    oven: 'Forno',
+    microwave: 'Microonde',
+    hob: 'Piano cottura',
+    coffee_maker: 'Macchina da caffè',
+    hood: 'Cappa',
+    fridge: 'Frigorifero',
+    freezer: 'Congelatore',
+    wine_cooler: 'Cantinetta',
+    styler: 'Styler',
+    st_run_hood: 'Aspirazione',
+    st_run_hob: 'Cottura',
+    st_run_fridge: 'Super raffreddamento',
+    st_run_freezer: 'Super congelamento',
+    light_on: 'Luce accesa',
+    bean_container: 'Contenitore caffè in grani vuoto',
+    water_tank: 'Serbatoio dell\'acqua vuoto',
+    drip_tray: 'Vaschetta raccogligocce piena',
+    ed_kind: 'Tipo di apparecchio',
+    ed_kind_helper: 'Lasciare vuoto per rilevarlo dall\'apparecchio',
+    ed_brand: 'Marca',
+    ed_brand_helper: 'Badge e colore dei pulsanti, quando l\'integrazione non indica la marca (Maytag o KitchenAid tramite Whirlpool)',
     st_inactive: 'Inattivo',
     st_ready: 'Pronto',
     st_delayedstart: 'Avvio ritardato',
@@ -520,9 +681,9 @@ var HcI18n = {
     rinse_aid: 'Brillantante quasi esaurito',
     remote_start_off: 'Avvio remoto disattivato',
     offline: 'Apparecchio offline',
-    no_device: 'Nessun apparecchio Home Connect trovato',
+    no_device: 'Nessun elettrodomestico trovato',
     ed_device_id: 'Apparecchio',
-    ed_device_id_helper: 'Dispositivo dell\'integrazione Home Connect',
+    ed_device_id_helper: 'Apparecchio di Home Connect, Miele, SmartThings, LG ThinQ, Whirlpool o Matter',
     ed_name: 'Nome',
     ed_name_helper: 'Lascia vuoto per usare il nome del dispositivo',
     ed_icon: 'Icona',
@@ -558,6 +719,29 @@ var HcI18n = {
   nl: {
     dishwasher: 'Vaatwasser',
     washer: 'Wasmachine',
+    dryer: 'Wasdroger',
+    washer_dryer: 'Was-droogcombinatie',
+    oven: 'Oven',
+    microwave: 'Magnetron',
+    hob: 'Kookplaat',
+    coffee_maker: 'Koffiemachine',
+    hood: 'Afzuigkap',
+    fridge: 'Koelkast',
+    freezer: 'Vriezer',
+    wine_cooler: 'Wijnklimaatkast',
+    styler: 'Styler',
+    st_run_hood: 'Afzuigen',
+    st_run_hob: 'Koken',
+    st_run_fridge: 'Supercool',
+    st_run_freezer: 'Supervries',
+    light_on: 'Licht aan',
+    bean_container: 'Bonenreservoir leeg',
+    water_tank: 'Waterreservoir leeg',
+    drip_tray: 'Lekbak vol',
+    ed_kind: 'Apparaattype',
+    ed_kind_helper: 'Leeg laten om het van het apparaat af te leiden',
+    ed_brand: 'Merk',
+    ed_brand_helper: 'Badge en knopkleur, als de integratie het merk niet geeft (Maytag of KitchenAid via Whirlpool)',
     st_inactive: 'Inactief',
     st_ready: 'Gereed',
     st_delayedstart: 'Uitgestelde start',
@@ -599,9 +783,9 @@ var HcI18n = {
     rinse_aid: 'Glansspoelmiddel bijna op',
     remote_start_off: 'Afstandsstart uitgeschakeld',
     offline: 'Apparaat offline',
-    no_device: 'Geen Home Connect-apparaat gevonden',
+    no_device: 'Geen huishoudapparaat gevonden',
     ed_device_id: 'Apparaat',
-    ed_device_id_helper: 'Apparaat uit de Home Connect-integratie',
+    ed_device_id_helper: 'Apparaat uit Home Connect, Miele, SmartThings, LG ThinQ, Whirlpool of Matter',
     ed_name: 'Naam',
     ed_name_helper: 'Leeg laten om de apparaatnaam te gebruiken',
     ed_icon: 'Pictogram',
@@ -637,6 +821,29 @@ var HcI18n = {
   pt: {
     dishwasher: 'Máquina de lavar loiça',
     washer: 'Máquina de lavar roupa',
+    dryer: 'Máquina de secar roupa',
+    washer_dryer: 'Máquina de lavar e secar',
+    oven: 'Forno',
+    microwave: 'Micro-ondas',
+    hob: 'Placa',
+    coffee_maker: 'Máquina de café',
+    hood: 'Exaustor',
+    fridge: 'Frigorífico',
+    freezer: 'Congelador',
+    wine_cooler: 'Garrafeira',
+    styler: 'Styler',
+    st_run_hood: 'Exaustão',
+    st_run_hob: 'A cozinhar',
+    st_run_fridge: 'Super refrigeração',
+    st_run_freezer: 'Super congelação',
+    light_on: 'Luz acesa',
+    bean_container: 'Depósito de grãos vazio',
+    water_tank: 'Depósito de água vazio',
+    drip_tray: 'Tabuleiro de pingos cheio',
+    ed_kind: 'Tipo de aparelho',
+    ed_kind_helper: 'Deixar vazio para o detetar a partir do aparelho',
+    ed_brand: 'Marca',
+    ed_brand_helper: 'Emblema e cor dos botões, quando a integração não indica a marca (Maytag ou KitchenAid através da Whirlpool)',
     st_inactive: 'Inativo',
     st_ready: 'Pronto',
     st_delayedstart: 'Início diferido',
@@ -678,9 +885,9 @@ var HcI18n = {
     rinse_aid: 'Abrilhantador quase esgotado',
     remote_start_off: 'Início remoto desativado',
     offline: 'Aparelho offline',
-    no_device: 'Nenhum aparelho Home Connect encontrado',
+    no_device: 'Nenhum eletrodoméstico encontrado',
     ed_device_id: 'Aparelho',
-    ed_device_id_helper: 'Dispositivo da integração Home Connect',
+    ed_device_id_helper: 'Aparelho do Home Connect, Miele, SmartThings, LG ThinQ, Whirlpool ou Matter',
     ed_name: 'Nome',
     ed_name_helper: 'Deixe vazio para usar o nome do dispositivo',
     ed_icon: 'Ícone',
@@ -716,6 +923,29 @@ var HcI18n = {
   pl: {
     dishwasher: 'Zmywarka',
     washer: 'Pralka',
+    dryer: 'Suszarka',
+    washer_dryer: 'Pralko-suszarka',
+    oven: 'Piekarnik',
+    microwave: 'Kuchenka mikrofalowa',
+    hob: 'Płyta grzewcza',
+    coffee_maker: 'Ekspres do kawy',
+    hood: 'Okap',
+    fridge: 'Lodówka',
+    freezer: 'Zamrażarka',
+    wine_cooler: 'Chłodziarka do wina',
+    styler: 'Styler',
+    st_run_hood: 'Wentylacja',
+    st_run_hob: 'Gotowanie',
+    st_run_fridge: 'Super chłodzenie',
+    st_run_freezer: 'Super zamrażanie',
+    light_on: 'Światło włączone',
+    bean_container: 'Pojemnik na ziarna pusty',
+    water_tank: 'Zbiornik na wodę pusty',
+    drip_tray: 'Tacka ociekowa pełna',
+    ed_kind: 'Typ urządzenia',
+    ed_kind_helper: 'Pozostaw puste, aby wykryć go z urządzenia',
+    ed_brand: 'Marka',
+    ed_brand_helper: 'Odznaka i kolor przycisków, gdy integracja nie podaje marki (Maytag lub KitchenAid przez Whirlpool)',
     st_inactive: 'Nieaktywne',
     st_ready: 'Gotowe',
     st_delayedstart: 'Opóźniony start',
@@ -757,9 +987,9 @@ var HcI18n = {
     rinse_aid: 'Nabłyszczacz prawie się skończył',
     remote_start_off: 'Zdalny start wyłączony',
     offline: 'Urządzenie offline',
-    no_device: 'Nie znaleziono urządzenia Home Connect',
+    no_device: 'Nie znaleziono urządzenia AGD',
     ed_device_id: 'Urządzenie',
-    ed_device_id_helper: 'Urządzenie z integracji Home Connect',
+    ed_device_id_helper: 'Urządzenie z Home Connect, Miele, SmartThings, LG ThinQ, Whirlpool lub Matter',
     ed_name: 'Nazwa',
     ed_name_helper: 'Pozostaw puste, aby użyć nazwy urządzenia',
     ed_icon: 'Ikona',
@@ -854,18 +1084,29 @@ var HC_STATE_COLORS = {
   aborting: 'var(--error-color, #db4437)',
 };
 
+// One profile per appliance type. `prefix`: the Home Connect program prefix the type is recognised by
+// (washer-dryer before washer, whose prefix is a part of it). `simple`: no program to run (hob, hood,
+// cold appliances): the card shows what the appliance is doing and its settings instead of a program.
 var HC_PROFILES = {
-  dishwasher: {
-    type: 'home-connect-dishwasher-card',
-    icon: 'mdi:dishwasher',
-    program_prefix: 'dishcare_dishwasher_program_',
-  },
-  washer: {
-    type: 'home-connect-washer-card',
-    icon: 'mdi:washing-machine',
-    program_prefix: 'laundry_care_washer_program_',
-  },
+  washer_dryer: { icon: 'mdi:washing-machine', prefix: 'laundry_care_washer_dryer_program_' },
+  dishwasher: { icon: 'mdi:dishwasher', prefix: 'dishcare_dishwasher_program_' },
+  washer: { icon: 'mdi:washing-machine', prefix: 'laundry_care_washer_program_' },
+  dryer: { icon: 'mdi:tumble-dryer', prefix: 'laundry_care_dryer_program_' },
+  microwave: { icon: 'mdi:microwave', prefix: 'cooking_oven_program_microwave_' },
+  oven: { icon: 'mdi:stove', prefix: 'cooking_oven_program_' },
+  coffee_maker: { icon: 'mdi:coffee-maker', prefix: 'consumer_products_coffee_maker_program_' },
+  hood: { icon: 'mdi:fan-chevron-up', prefix: 'cooking_common_program_hood_', simple: true },
+  hob: { icon: 'mdi:induction', simple: true },
+  fridge: { icon: 'mdi:fridge', simple: true },
+  freezer: { icon: 'mdi:snowflake-thermometer', simple: true },
+  wine_cooler: { icon: 'mdi:bottle-wine', simple: true },
+  styler: { icon: 'mdi:hanger' },
 };
+var HC_KINDS = ['dishwasher', 'washer', 'dryer', 'washer_dryer', 'oven', 'microwave', 'hob', 'coffee_maker', 'hood', 'fridge',
+  'freezer', 'wine_cooler', 'styler'];
+// Temperatures are shown on these: always for the cold ones, while cooking for the others.
+var HC_COLD = ['fridge', 'freezer', 'wine_cooler'];
+var HC_HOT = ['oven', 'microwave'];
 
 // Roles the card looks for on the device. Each matcher tries the entity registry
 // translation_key first, then the entity_id suffix (French and English slugs),
@@ -893,8 +1134,148 @@ var HC_ROLES = {
   rinse_aid: { domain: 'sensor', keys: ['rinse_aid_nearly_empty'], id: /(rinse_aid_nearly_empty|liquide_de_rincage_presque_vide)$/ },
 };
 
+// Coffee machine alerts (Home Connect events: `present` or `confirmed` while they last).
+HC_ROLES.bean_container = { domain: 'sensor', keys: ['bean_container_empty'] };
+HC_ROLES.water_tank = { domain: 'sensor', keys: ['water_tank_empty'] };
+HC_ROLES.drip_tray = { domain: 'sensor', keys: ['drip_tray_full'] };
+
+// Roles found the same way whatever the integration: the hood fan and its lights, the super modes of cold
+// appliances (and anything else that shows the appliance at work without a program).
+var hcIsDoor = (s) => s.attributes.device_class === 'door' || s.attributes.device_class === 'opening';
+var hcIsTimestamp = (s) => s.attributes.device_class === 'timestamp';
+var HC_COMMON_ROLES = {
+  boost: { domain: 'switch', keys: ['refrigerator_super_mode', 'freezer_super_mode', 'supercooling', 'superfreezing', 'power_cool',
+    'power_freeze', 'rapid_freeze', 'express_mode', 'express_fridge'] },
+  fan: { domain: 'fan', keys: ['fan', 'hood', 'fan_speed'], test: () => true },
+  venting: { domain: 'select', keys: ['venting_level'] },
+  light: { domain: 'light', keys: ['cooking_lighting', 'light', 'oven_light'], test: () => true },
+};
+
+// The other integrations, role by role. They name things differently and some have no translation key at
+// all (doors, a few temperatures), so attributes do the rest. The registry the frontend gets has no
+// unique_id, so the entity_id suffix is the last resort.
+var HC_PLATFORM_ROLES = {
+  home_connect: HC_ROLES,
+  miele: {
+    operation_state: { domain: 'sensor', keys: ['status'], test: (s) => (s.attributes.options || []).indexOf('in_use') >= 0 },
+    program: { domain: 'sensor', keys: ['program_id'] },
+    phase: { domain: 'sensor', keys: ['program_phase'] },
+    remaining: { domain: 'sensor', keys: ['remaining_time'] },
+    elapsed: { domain: 'sensor', keys: ['elapsed_time'] },
+    finish_time: { domain: 'sensor', keys: ['finish'], test: hcIsTimestamp },
+    door: { domain: 'binary_sensor', keys: [], test: hcIsDoor },
+    start: { domain: 'button', keys: ['start'] },
+    stop: { domain: 'button', keys: ['stop'] },
+    pause: { domain: 'button', keys: ['pause'] },
+    power: { domain: 'switch', keys: ['power'] },
+    remote_start: { domain: 'binary_sensor', keys: ['mobile_start'] },
+    remote_control: { domain: 'binary_sensor', keys: ['remote_control'] },
+  },
+  smartthings: {
+    operation_state: { domain: 'sensor', keys: ['washer_machine_state', 'dryer_machine_state', 'dishwasher_machine_state',
+      'oven_machine_state', 'oven_machine_state_cavity_01'] },
+    phase: { domain: 'sensor', keys: ['washer_job_state', 'dryer_job_state', 'dishwasher_job_state', 'oven_job_state',
+      'oven_job_state_cavity_01'] },
+    progress: { domain: 'sensor', keys: ['washer_progress', 'dryer_progress'] },
+    finish_time: { domain: 'sensor', keys: ['completion_time', 'oven_completion_time_cavity_01'], test: hcIsTimestamp },
+    operation: { domain: 'select', keys: ['operating_state'] },
+    selected_program: { domain: 'select', keys: ['dishwasher_washing_course'] },
+    start: { domain: 'button', keys: ['start'] },
+    pause: { domain: 'button', keys: ['pause'] },
+    resume: { domain: 'button', keys: ['resume'] },
+    stop: { domain: 'button', keys: ['cancel', 'stop'] },
+    remote_start: { domain: 'binary_sensor', keys: ['remote_control'] },
+    door: { domain: 'binary_sensor', keys: ['door'], test: hcIsDoor },
+  },
+  lg_thinq: {
+    operation_state: { domain: 'sensor', keys: ['current_state', 'current_state_for_location'] },
+    program: { domain: 'sensor', keys: ['current_dish_washing_course'] },
+    finish_time: { domain: 'sensor', keys: ['remain'], test: hcIsTimestamp },
+    total: { domain: 'sensor', keys: ['total'] },
+    operation: { domain: 'select', keys: ['operation_mode', 'operation_mode_for_location'] },
+    power: { domain: 'switch', keys: ['operation_power'] },
+    remote_start: { domain: 'binary_sensor', keys: ['remote_control_enabled', 'remote_control_enabled_for_location'] },
+    door: { domain: 'binary_sensor', keys: [], id: /_door(_state)?$/, test: hcIsDoor },
+  },
+  whirlpool: {
+    operation_state: { domain: 'sensor', keys: ['washer_state', 'dryer_state', 'oven_state', 'oven_state_upper'] },
+    finish_time: { domain: 'sensor', keys: ['end_time'], test: hcIsTimestamp },
+    operation: { domain: 'select', keys: ['oven_cook_mode', 'oven_cook_mode_upper'] },
+    stop: { domain: 'button', keys: ['oven_stop', 'oven_stop_upper'] },
+    door: { domain: 'binary_sensor', keys: [], test: hcIsDoor },
+  },
+  matter: {
+    operation_state: { domain: 'sensor', keys: ['operational_state'] },
+    phase: { domain: 'sensor', keys: ['current_phase'] },
+    finish_time: { domain: 'sensor', keys: ['estimated_end_time'], test: hcIsTimestamp },
+    start: { domain: 'button', keys: ['start'] },
+    stop: { domain: 'button', keys: ['stop'] },
+    pause: { domain: 'button', keys: ['pause'] },
+    resume: { domain: 'button', keys: ['resume'] },
+    power: { domain: 'switch', keys: ['power'] },
+    door: { domain: 'binary_sensor', keys: ['alarm_door'] },
+  },
+};
+var HC_PLATFORMS = Object.keys(HC_PLATFORM_ROLES);
+
+// Commands sent as an option of the appliance's operation select, where an integration has no buttons.
+var HC_OPERATION_OPTIONS = {
+  smartthings: { start: ['run'], pause: ['pause'], resume: ['run'], stop: ['stop'] },
+  lg_thinq: { start: ['start'], stop: ['stop', 'cancel'] },
+  whirlpool: { stop: ['standby'] },
+};
+
+// Each integration's states, folded into the Home Connect ones the card is drawn from (inactive, ready,
+// delayedstart, run, pause, actionrequired, finished, error, aborting), plus `off` and `unavailable`.
+// `phase` is the detailed job state some integrations report next to the machine state.
+var HC_STATE_MAPS = {
+  miele: {
+    off: 'off', on: 'ready', idle: 'ready', programmed: 'ready', reserved: 'ready', waiting_to_start: 'delayedstart',
+    in_use: 'run', autocleaning: 'run', superheating: 'run', supercooling: 'run', superfreezing: 'run', supercooling_superfreezing: 'run',
+    pause: 'pause', rinse_hold: 'actionrequired', service: 'actionrequired', program_ended: 'finished',
+    program_interrupted: 'aborting', failure: 'error', not_connected: 'unavailable',
+  },
+  lg_thinq: {
+    power_off: 'off', sleep: 'off', initial: 'ready', standby: 'ready', power_on: 'ready', initializing: 'ready', preference: 'ready',
+    reserved: 'delayedstart', reservation: 'delayedstart', pause: 'pause', paused: 'pause', rinse_hold: 'actionrequired',
+    end: 'finished', complete: 'finished', done: 'finished', cook_complete: 'finished', running_end: 'finished', cleaning_is_done: 'finished',
+    preheat_complete: 'run', preheating_is_done: 'run', error: 'error', power_fail: 'error', cancel: 'aborting',
+  },
+  whirlpool: {
+    standby: 'ready', setting: 'ready', system_initialize: 'ready', cancelled: 'ready', delay_countdown: 'delayedstart',
+    smart_delay: 'delayedstart', delay_paused: 'pause', smart_grid_pause: 'pause', pause: 'pause', complete: 'finished',
+    exception: 'error', power_failure: 'error', hard_stop_or_error: 'error', service_diagnostic_mode: 'actionrequired',
+    factory_diagnostic_mode: 'actionrequired', life_test: 'actionrequired', customer_focus_mode: 'actionrequired', demo_mode: 'actionrequired',
+  },
+  matter: { stopped: 'ready', running: 'run', paused: 'pause', error: 'error' },
+};
+// Unknown values of these integrations are steps of a running program (LG "spinning", Whirlpool "cycle_rinsing"…).
+var HC_STATE_DEFAULT = { lg_thinq: 'run', whirlpool: 'run', matter: 'run', miele: 'ready' };
+
+function hcNormState(platform, raw, phase) {
+  if (raw === undefined || raw === 'unavailable' || raw === 'unknown') return undefined;
+  if (platform === 'smartthings') {
+    // Machine state (run / pause / stop, or the oven's ready / running / paused) and the job it is on.
+    if (raw === 'run' || raw === 'running') return phase === 'delay_wash' || phase === 'scheduled_start' ? 'delayedstart' : 'run';
+    if (raw === 'pause' || raw === 'paused') return 'pause';
+    return phase === 'finish' || phase === 'finished' ? 'finished' : 'ready';
+  }
+  var map = HC_STATE_MAPS[platform];
+  if (!map) return raw;
+  return map[raw] || HC_STATE_DEFAULT[platform] || raw;
+}
+
+// The integration a device belongs to, read from its entities.
+function hcPlatform(list) {
+  var e = list.find((x) => HC_PLATFORMS.indexOf(x.platform) >= 0);
+  return e ? e.platform : 'home_connect';
+}
+
 var HC_OVERRIDABLE = ['operation_state', 'door', 'progress', 'finish_time', 'selected_program',
   'active_program', 'power', 'stop', 'pause', 'resume', 'remote_start', 'remote_control', 'connectivity', 'salt', 'rinse_aid'];
+// Every role, overridable or not.
+var HC_ALL_ROLES = HC_OVERRIDABLE.concat(['bean_container', 'water_tank', 'drip_tray', 'program', 'phase', 'remaining', 'elapsed',
+  'total', 'operation', 'start'], Object.keys(HC_COMMON_ROLES));
 
 // Registry entries grouped by device, built once per `hass.entities` object (it only changes with the registry).
 var hcRegistryIndex = new WeakMap();
@@ -921,7 +1302,7 @@ function hcDeviceEntities(hass, deviceId) {
 // the result only depends on the registry and on which entities have a state yet (hence the
 // count guard), not on the states themselves, so it isn't redone on every state change.
 var hcRoleIndex = new WeakMap();
-var HC_NO_ROLES = { count: 0, roles: {}, switches: [], selects: [] };
+var HC_NO_ROLES = { count: 0, platform: 'home_connect', roles: {}, switches: [], selects: [] };
 function hcDeviceRoles(hass, deviceId) {
   if (!hass?.entities || !deviceId) return HC_NO_ROLES;
   var byDevice = hcRoleIndex.get(hass.entities);
@@ -929,21 +1310,26 @@ function hcDeviceRoles(hass, deviceId) {
   var list = hcDeviceEntities(hass, deviceId);
   var cached = byDevice.get(deviceId);
   if (cached && cached.count === list.length) return cached;
+  var platform = hcPlatform(list);
+  var table = Object.assign({}, HC_COMMON_ROLES, HC_PLATFORM_ROLES[platform]);
   var roles = {};
-  Object.keys(HC_ROLES).forEach((role) => { roles[role] = hcFindRole(hass, list, role); });
-  var ids = list.map((e) => e.entity_id);
+  Object.keys(table).forEach((role) => { roles[role] = hcFindRole(hass, list, table[role]); });
+  // Home Connect lists every switch and select as a program option; elsewhere diagnostics are left out.
+  var opts = platform === 'home_connect' ? list : list.filter((e) => e.entity_category !== 'diagnostic');
+  var ids = opts.map((e) => e.entity_id);
   cached = {
     count: list.length,
+    platform: platform,
     roles: roles,
     switches: ids.filter((id) => id.indexOf('switch.') === 0),
     selects: ids.filter((id) => id.indexOf('select.') === 0),
+    temps: hcTempIds(hass, list),
   };
   byDevice.set(deviceId, cached);
   return cached;
 }
 
-function hcFindRole(hass, list, role) {
-  var m = HC_ROLES[role];
+function hcFindRole(hass, list, m) {
   var inDomain = list.filter((e) => e.entity_id.split('.')[0] === m.domain);
   var hit = inDomain.find((e) => m.keys.indexOf(e.translation_key) >= 0);
   if (!hit && m.id) hit = inDomain.find((e) => m.id.test(e.entity_id));
@@ -951,34 +1337,122 @@ function hcFindRole(hass, list, role) {
   return hit ? hit.entity_id : undefined;
 }
 
-function hcProgramKind(hass, deviceId) {
+// Temperatures worth a chip: measured ones (sensors, climate entities) first, then setpoints (numbers).
+function hcTempIds(hass, list) {
+  var unit = (s) => /°[CF]/.test(s.attributes.unit_of_measurement || '');
+  var pick = (domain, test) => list.filter((e) => e.entity_id.split('.')[0] === domain && e.entity_category !== 'diagnostic' &&
+    test(hass.states[e.entity_id])).map((e) => e.entity_id);
+  return pick('climate', (s) => s.attributes.current_temperature != null)
+    .concat(pick('sensor', (s) => s.attributes.device_class === 'temperature' || unit(s)))
+    .concat(pick('number', unit)).slice(0, 3);
+}
+
+// Appliance type, from the device itself where the integration says it (Miele's model, LG's device type), else
+// from what its entities are: the Home Connect programs, then the keys only one kind of appliance has.
+var HC_MIELE_MODELS = [
+  [/washer dryer/i, 'washer_dryer'], [/washing machine/i, 'washer'], [/tumble dryer|dryer/i, 'dryer'], [/dishwasher/i, 'dishwasher'],
+  [/^microwave/i, 'microwave'], [/oven|steam/i, 'oven'], [/coffee/i, 'coffee_maker'], [/hood/i, 'hood'], [/hob/i, 'hob'],
+  [/wine/i, 'wine_cooler'], [/fridge|refrigerator/i, 'fridge'], [/freezer/i, 'freezer'],
+];
+var HC_LG_TYPES = {
+  WASHER: 'washer', DRYER: 'dryer', WASHTOWER: 'washer_dryer', WASHTOWER_WASHER: 'washer', WASHTOWER_DRYER: 'dryer',
+  WASHCOMBO_MAIN: 'washer_dryer', WASHCOMBO_MINI: 'washer', DISH_WASHER: 'dishwasher', OVEN: 'oven', MICROWAVE_OVEN: 'microwave',
+  COOKTOP: 'hob', HOOD: 'hood', REFRIGERATOR: 'fridge', KIMCHI_REFRIGERATOR: 'fridge', WINE_CELLAR: 'wine_cooler', STYLER: 'styler',
+};
+// [kind, translation keys any one of which gives it away], in order.
+var HC_KEY_KINDS = [
+  ['washer_dryer', (k) => k.washer_machine_state && k.dryer_machine_state],
+  ['washer', ['washer_machine_state', 'washer_state', 'laundry_washer_spin_speed', 'laundry_washer_number_of_rinses']],
+  ['dryer', ['dryer_machine_state', 'dryer_state', 'drying_target']],
+  ['dishwasher', ['dishwasher_machine_state', 'dishwasher_alarm_inflow', 'salt_nearly_empty', 'rinse_aid_nearly_empty']],
+  ['microwave', ['power_level', 'cook_time']],
+  ['oven', ['oven_machine_state', 'oven_machine_state_cavity_01', 'oven_state', 'oven_state_upper', 'oven_current_cavity_temperature']],
+  ['coffee_maker', ['bean_container_empty', 'coffee_counter']],
+  ['hood', ['venting_level', 'hood', 'hood_fan_speed', 'hood_filter_usage']],
+  ['wine_cooler', ['wine_compartment_setpoint_temperature']],
+  ['fridge', ['refrigerator_setpoint_temperature', 'refrigerator_super_mode', 'cooler_temperature', 'power_cool',
+    'refrigerator_temperature_level', 'refrigerator_door']],
+  ['freezer', ['freezer_setpoint_temperature', 'freezer_super_mode', 'freezer_temperature', 'power_freeze']],
+];
+
+var hcKindIndex = new WeakMap();
+function hcKindOf(hass, deviceId) {
   var list = hcDeviceEntities(hass, deviceId);
-  for (var i = 0; i < list.length; i++) {
-    if (list[i].entity_id.indexOf('select.') !== 0) continue;
-    var st = hass.states[list[i].entity_id];
-    var opts = ((st?.attributes.options) || []).join(' ');
-    if (opts.indexOf('dishcare_dishwasher_program') >= 0) return 'dishwasher';
-    if (opts.indexOf('laundry_care_washer_program') >= 0) return 'washer';
+  if (!list.length) return null;
+  var byDevice = hcKindIndex.get(hass.entities);
+  if (!byDevice) hcKindIndex.set(hass.entities, (byDevice = new Map()));
+  var cached = byDevice.get(deviceId);
+  // Program options can show up after the first look: a miss is looked at again on the next update.
+  if (cached && cached.count === list.length && cached.kind) return cached.kind;
+  var kind = hcDetectKind(hass, deviceId, list);
+  byDevice.set(deviceId, { count: list.length, kind: kind });
+  return kind;
+}
+
+function hcDetectKind(hass, deviceId, list) {
+  var platform = hcPlatform(list);
+  if (platform !== 'home_connect' && !list.some((e) => e.platform === platform)) return null;
+  var dev = hass.devices?.[deviceId] || {};
+  if (platform === 'miele') {
+    var hit = HC_MIELE_MODELS.find((m) => m[0].test(dev.model || ''));
+    if (hit) return hit[1];
   }
+  if (platform === 'lg_thinq') {
+    var t = String(dev.model || '').match(/\((?:DEVICE_)?([A-Z_]+)\)\s*$/);
+    if (t && HC_LG_TYPES[t[1]]) return HC_LG_TYPES[t[1]];
+  }
+  // Home Connect programs.
+  var progs = list.filter((e) => e.entity_id.indexOf('select.') === 0)
+    .map((e) => ((hass.states[e.entity_id]?.attributes.options) || []).join(' ')).join(' ');
+  if (progs) {
+    // The microwave's programs are oven programs whose names say microwave; the oven has some of those too.
+    var p = Object.keys(HC_PROFILES).find((k) => HC_PROFILES[k].prefix && progs.indexOf(HC_PROFILES[k].prefix) >= 0);
+    if (p === 'microwave' && progs.replace(/cooking_oven_program_microwave_/g, '').indexOf('cooking_oven_program_') >= 0) p = 'oven';
+    if (p) return p;
+  }
+  var keys = {};
+  list.forEach((e) => { if (e.translation_key) keys[e.translation_key] = true; });
+  var k = HC_KEY_KINDS.find((x) => (typeof x[1] === 'function' ? x[1](keys) : x[1].some((n) => keys[n])));
+  if (k) return k[0];
   return null;
 }
 
 // The device found for a kind — or the miss — is remembered per `hass.devices` object, so a card
 // without an appliance doesn't rescan every device on each state change. A miss is still retried
-// every 30 s: the select options a kind is detected from may simply not be loaded yet.
+// every 30 s: the select options a kind is detected from may simply not be loaded yet. Without a
+// kind (the single card picking any appliance), the first device of a supported type is taken.
 var hcFoundDevices = new WeakMap();
 var HC_MISS_RETRY = 30000;
 function hcFindDevice(hass, kind) {
   if (!hass?.devices) return undefined;
   var found = hcFoundDevices.get(hass.devices);
   if (!found) hcFoundDevices.set(hass.devices, (found = {}));
-  var id = found[kind];
-  if (id && hass.devices[id] && hcProgramKind(hass, id) === kind) return id;
-  if (id === null && Date.now() < found[`retry_${kind}`]) return undefined;
-  id = Object.keys(hass.devices).find((d) => hcProgramKind(hass, d) === kind);
-  found[kind] = id || null;
-  if (!id) found[`retry_${kind}`] = Date.now() + HC_MISS_RETRY;
+  var key = kind || 'any';
+  var ok = (d) => (kind ? hcKindOf(hass, d) === kind : !!hcKindOf(hass, d));
+  var id = found[key];
+  if (id && hass.devices[id] && ok(id)) return id;
+  if (id === null && Date.now() < found[`retry_${key}`]) return undefined;
+  id = Object.keys(hass.devices).find(ok);
+  found[key] = id || null;
+  if (!id) found[`retry_${key}`] = Date.now() + HC_MISS_RETRY;
   return id;
+}
+
+// Brand of the appliance, for its badge and the colour of its main buttons: the device's manufacturer
+// (Home Connect gives the brand, SmartThings and LG the maker), or the `brand` option (Whirlpool always
+// says Whirlpool, even for a Maytag).
+var HC_BRANDS = {
+  bosch: { name: 'Bosch', color: '#e20015' }, siemens: { name: 'Siemens', color: '#009999' }, neff: { name: 'Neff', color: '#b3123a' },
+  gaggenau: { name: 'Gaggenau', color: '#3a3a3a' }, constructa: { name: 'Constructa', color: '#00589b' }, miele: { name: 'Miele', color: '#8c0014' },
+  samsung: { name: 'Samsung', color: '#1428a0', match: /samsung/i }, lg: { name: 'LG', color: '#a50034', match: /^(lg|lge|lg electronics)$/i },
+  whirlpool: { name: 'Whirlpool', color: '#8a6a00' }, maytag: { name: 'Maytag', color: '#002d72' }, kitchenaid: { name: 'KitchenAid', color: '#c8102e' },
+  consul: { name: 'Consul', color: '#0067b1' },
+};
+function hcBrand(dev, option) {
+  var m = String(option || dev?.manufacturer || '').trim();
+  if (!m) return null;
+  var key = Object.keys(HC_BRANDS).find((k) => (HC_BRANDS[k].match ? HC_BRANDS[k].match.test(m) : m.toLowerCase().replace(/[\s-]/g, '') === k));
+  return key ? Object.assign({ key: key }, HC_BRANDS[key]) : { key: 'other', name: m, color: '#55606d' };
 }
 
 // Fallback label for a Home Connect enum value when HA has no translation for it:
@@ -996,9 +1470,8 @@ function hcHumanize(value) {
   return v.charAt(0).toUpperCase() + v.slice(1);
 }
 
-// Header icon: the tinted round icon of the project page on the showcase site, one per appliance.
+// Header icon: the tinted round icon of the project page on the showcase site, the appliance's own icon in it.
 var HC_ACCENT = '#039be5';
-var HC_HEADER_ICON = { dishwasher: 'mdi:dishwasher', washer: 'mdi:washing-machine' };
 // Home Connect logo (a blue speech bubble with a white house), as a badge on the header icon.
 var HC_LOGO_BADGE = '<span class="hc-badge"><svg viewBox="0 0 292 292">' +
   '<defs><linearGradient id="hc-logo-g" x1="0" y1="0" x2="292" y2="292" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#304ae2"/><stop offset="1" stop-color="#5fc9ff"/></linearGradient></defs>' +
@@ -1068,6 +1541,185 @@ var HC_ART = {
     '<g class="drops" fill="#64b5f6"><circle cx="24" cy="50" r="1.4"/><circle cx="40" cy="44" r="1.4"/><circle cx="56" cy="50" r="1.4"/>' +
       '<circle cx="32" cy="62" r="1.2"/><circle cx="48" cy="62" r="1.2"/></g>' +
     '<rect x="4.6" y="80" width="70.8" height="7.4" rx="0" fill="#c3cad2" opacity=".6"/></svg>',
+  // Tumble dryer: the laundry tumbles in the warm drum while heat rises.
+  dryer: '<svg viewBox="0 0 80 94" aria-hidden="true"><defs><linearGradient id="hc-yb" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffffff"/>' +
+    '<stop offset="1" stop-color="#e2e6eb"/></linearGradient><linearGradient id="hc-yr" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#dfe4ea"/>' +
+    '<stop offset="1" stop-color="#97a2ae"/></linearGradient><radialGradient id="hc-yg" cx=".4" cy=".32" r=".8"><stop offset="0" stop-color="#ffe0b2"/>' +
+    '<stop offset=".55" stop-color="#ff9e40"/><stop offset="1" stop-color="#a24b0c"/></radialGradient><clipPath id="hc-yc"><circle cx="40" cy="55" r="17"/>' +
+    '</clipPath></defs><g class="shake"><rect x="10" y="88" width="9" height="4" rx="1.5" fill="#8f9aa6"/>' +
+    '<rect x="61" y="88" width="9" height="4" rx="1.5" fill="#8f9aa6"/>' +
+    '<rect x="4" y="2" width="72" height="87" rx="9" fill="url(#hc-yb)" stroke="#c3cad2" stroke-width="1.2"/>' +
+    '<path d="M4.6 21H75.4" stroke="#c3cad2" stroke-width="1.2"/><circle cx="16" cy="12" r="5.2" fill="#fff" stroke="#aeb7c2" stroke-width="1.2"/>' +
+    '<path d="M16 12l2.6-2.2" stroke="#7d8894" stroke-width="1.4" stroke-linecap="round"/>' +
+    '<rect x="30" y="8.5" width="20" height="7" rx="2" fill="#1d2632"/><rect class="led" x="32.5" y="11" width="10" height="2" rx="1"/>' +
+    '<circle cx="58" cy="12" r="1.8" fill="#aeb7c2"/><circle cx="65" cy="12" r="1.8" fill="#aeb7c2"/><circle cx="72" cy="12" r="1.8" fill="#aeb7c2"/>' +
+    '<circle cx="40" cy="55" r="25" fill="url(#hc-yr)"/><circle cx="40" cy="55" r="21" fill="#eef2f6"/><circle cx="40" cy="55" r="17" fill="url(#hc-yg)"/>' +
+    '<g clip-path="url(#hc-yc)"><g class="tumble">' +
+    '<rect x="28" y="56" width="12" height="7" rx="3.5" fill="#ff8a65" opacity=".9" transform="rotate(-18 34 59)"/>' +
+    '<rect x="40" y="58" width="11" height="6" rx="3" fill="#fff59d" opacity=".9" transform="rotate(14 45 61)"/>' +
+    '<rect x="34" y="46" width="10" height="6" rx="3" fill="#80cbc4" opacity=".9" transform="rotate(8 39 49)"/></g>' +
+    '<g class="heat" fill="none" stroke="#fff3e0" stroke-width="1.4" stroke-linecap="round" opacity=".8"><path d="M33 66q-2-3 0-6t0-6"/>' +
+    '<path d="M40 66q-2-3 0-6t0-6"/><path d="M47 66q-2-3 0-6t0-6"/></g></g>' +
+    '<path d="M28 44a16 16 0 0 1 12-6" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" opacity=".7"/>' +
+    '<rect x="62.5" y="50" width="3" height="10" rx="1.5" fill="#aeb7c2"/><rect x="26" y="83" width="28" height="3" rx="1.5" fill="#d5dbe2"/></g></svg>',
+  // Washer-dryer: half wash water, half warm air in the porthole.
+  washer_dryer: '<svg viewBox="0 0 80 94" aria-hidden="true"><defs><linearGradient id="hc-xb" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffffff"/>' +
+    '<stop offset="1" stop-color="#e2e6eb"/></linearGradient><linearGradient id="hc-xr" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#dfe4ea"/>' +
+    '<stop offset="1" stop-color="#97a2ae"/></linearGradient><linearGradient id="hc-xg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#9edbff"/>' +
+    '<stop offset=".48" stop-color="#3b8fe0"/><stop offset=".52" stop-color="#e8873a"/><stop offset="1" stop-color="#a24b0c"/></linearGradient>' +
+    '<clipPath id="hc-xc"><circle cx="40" cy="55" r="17"/></clipPath></defs><g class="shake">' +
+    '<rect x="10" y="88" width="9" height="4" rx="1.5" fill="#8f9aa6"/><rect x="61" y="88" width="9" height="4" rx="1.5" fill="#8f9aa6"/>' +
+    '<rect x="4" y="2" width="72" height="87" rx="9" fill="url(#hc-xb)" stroke="#c3cad2" stroke-width="1.2"/>' +
+    '<path d="M4.6 21H75.4" stroke="#c3cad2" stroke-width="1.2"/><circle cx="16" cy="12" r="5.2" fill="#fff" stroke="#aeb7c2" stroke-width="1.2"/>' +
+    '<path d="M16 12l2.6-2.2" stroke="#7d8894" stroke-width="1.4" stroke-linecap="round"/>' +
+    '<rect x="30" y="8.5" width="20" height="7" rx="2" fill="#1d2632"/><rect class="led" x="32.5" y="11" width="10" height="2" rx="1"/>' +
+    '<circle cx="58" cy="12" r="1.8" fill="#aeb7c2"/><circle cx="65" cy="12" r="1.8" fill="#aeb7c2"/><circle cx="72" cy="12" r="1.8" fill="#aeb7c2"/>' +
+    '<path d="M53 9.5l2 3h-4Z M59 9.5q2 2 0 4" fill="none" stroke="#7d8894" stroke-width=".9"/><circle cx="40" cy="55" r="25" fill="url(#hc-xr)"/>' +
+    '<circle cx="40" cy="55" r="21" fill="#eef2f6"/><circle cx="40" cy="55" r="17" fill="url(#hc-xg)"/><g clip-path="url(#hc-xc)"><g class="drum">' +
+    '<circle cx="33" cy="61" r="5.5" fill="#ff8a65" opacity=".9"/><circle cx="46" cy="63" r="4.5" fill="#fff59d" opacity=".9"/>' +
+    '<circle cx="31" cy="50" r="3" fill="#80cbc4" opacity=".9"/>' +
+    '<circle cx="40" cy="55" r="12" fill="none" stroke="#fff" stroke-opacity=".25" stroke-dasharray="2 4"/></g>' +
+    '<g class="heat" fill="none" stroke="#fff3e0" stroke-width="1.4" stroke-linecap="round" opacity=".8"><path d="M36 66q-2-3 0-6t0-6"/>' +
+    '<path d="M43 66q-2-3 0-6t0-6"/><path d="M50 66q-2-3 0-6t0-6"/></g></g>' +
+    '<path d="M28 44a16 16 0 0 1 12-6" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" opacity=".7"/>' +
+    '<rect x="62.5" y="50" width="3" height="10" rx="1.5" fill="#aeb7c2"/></g></svg>',
+  // Oven: the cavity glows, the fan turns and heat shimmers over the dish.
+  oven: '<svg viewBox="0 0 80 94" aria-hidden="true"><defs><linearGradient id="hc-ob" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#f7f8fa"/>' +
+    '<stop offset=".6" stop-color="#e3e7ec"/><stop offset="1" stop-color="#cfd5dc"/></linearGradient>' +
+    '<linearGradient id="hc-op" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#36404d"/><stop offset="1" stop-color="#1b222b"/></linearGradient>' +
+    '<linearGradient id="hc-ow" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2a323c"/><stop offset="1" stop-color="#11161c"/></linearGradient>' +
+    '<radialGradient id="hc-og" cx=".5" cy=".55" r=".65"><stop offset="0" stop-color="#ffcc80"/><stop offset=".6" stop-color="#ff8f00" stop-opacity=".75"/>' +
+    '<stop offset="1" stop-color="#ff6f00" stop-opacity="0"/></radialGradient><clipPath id="hc-oc"><rect x="12" y="34" width="56" height="44" rx="4"/>' +
+    '</clipPath></defs><rect x="4" y="4" width="72" height="84" rx="7" fill="url(#hc-ob)" stroke="#bac2cb" stroke-width="1.2"/>' +
+    '<path d="M11 4h58a7 7 0 0 1 7 7v9H4v-9a7 7 0 0 1 7-7Z" fill="url(#hc-op)"/>' +
+    '<circle cx="14" cy="12" r="3.6" fill="#55606d" stroke="#9aa5b1" stroke-width=".8"/>' +
+    '<circle cx="66" cy="12" r="3.6" fill="#55606d" stroke="#9aa5b1" stroke-width=".8"/><rect x="29" y="8.5" width="22" height="7" rx="2" fill="#0d1218"/>' +
+    '<rect class="led" x="31.5" y="11" width="12" height="2" rx="1"/>' +
+    '<rect x="14" y="24" width="52" height="4.5" rx="2.25" fill="#d5dbe2" stroke="#9aa5b1" stroke-width=".8"/>' +
+    '<rect x="12" y="34" width="56" height="44" rx="4" fill="url(#hc-ow)"/><g clip-path="url(#hc-oc)">' +
+    '<rect class="ovglow" x="12" y="34" width="56" height="44" fill="url(#hc-og)"/><g class="fan" opacity=".35" fill="#cfd6de">' +
+    '<path d="M40 52l-2-7a2 2 0 0 1 4 0Z"/><path d="M40 52l7 2a2 2 0 0 1 0 4Z" transform="rotate(-90 40 56)"/><path d="M40 56l2 7a2 2 0 0 1-4 0Z"/>' +
+    '<path d="M40 56l-7-2a2 2 0 0 1 0-4Z" transform="rotate(-90 40 52)"/></g><path d="M14 64h52" stroke="#7d8894" stroke-width="1"/>' +
+    '<ellipse cx="40" cy="62" rx="12" ry="3" fill="#8d6e63"/><path d="M30 62q10-9 20 0" fill="#bf8a5a"/>' +
+    '<g class="heat" fill="none" stroke="#fff3e0" stroke-width="1.4" stroke-linecap="round" opacity=".8"><path d="M33 58q-2-3 0-6t0-6"/>' +
+    '<path d="M40 58q-2-3 0-6t0-6"/><path d="M47 58q-2-3 0-6t0-6"/></g></g>' +
+    '<path d="M15 38l9 12" stroke="#fff" stroke-width="3" stroke-opacity=".12" stroke-linecap="round"/>' +
+    '<rect x="8" y="82" width="64" height="3" rx="1.5" fill="#c3cad2" opacity=".7"/></svg>',
+  // Coffee machine: coffee pours from the spout into the cup, which fills and steams.
+  coffee_maker: '<svg viewBox="0 0 80 94" aria-hidden="true"><defs><linearGradient id="hc-cb" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#3a4350"/>' +
+    '<stop offset=".5" stop-color="#4b5563"/><stop offset="1" stop-color="#2a313b"/></linearGradient>' +
+    '<linearGradient id="hc-cs" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#cfd6de"/><stop offset=".5" stop-color="#f4f6f8"/>' +
+    '<stop offset="1" stop-color="#aab4bf"/></linearGradient></defs>' +
+    '<g class="steam" fill="none" stroke="#b0bec5" stroke-width="1.8" stroke-linecap="round"><path d="M35 62q-2-3 0-6t0-6"/><path d="M40 62q-2-3 0-6t0-6"/>' +
+    '<path d="M45 62q-2-3 0-6t0-6"/></g><rect x="12" y="4" width="56" height="84" rx="9" fill="url(#hc-cb)" stroke="#232a33" stroke-width="1"/>' +
+    '<rect x="18" y="10" width="44" height="16" rx="3" fill="#0d1218"/><rect class="led" x="22" y="16" width="16" height="2.4" rx="1.2"/>' +
+    '<circle cx="48" cy="18" r="2" fill="#7d8894"/><circle cx="55" cy="18" r="2" fill="#7d8894"/>' +
+    '<rect x="18" y="30" width="44" height="46" rx="4" fill="#1b222b"/><rect x="30" y="32" width="20" height="8" rx="2" fill="url(#hc-cs)"/>' +
+    '<rect x="34" y="40" width="3" height="4" rx="1" fill="#aab4bf"/><rect x="43" y="40" width="3" height="4" rx="1" fill="#aab4bf"/>' +
+    '<g class="pour" stroke="#8d5a3b" stroke-width="1.6" stroke-linecap="round"><path d="M35.5 44V66"/><path d="M44.5 44V66"/></g>' +
+    '<path d="M29 63h22l-2 11a3 3 0 0 1-3 2.5H34a3 3 0 0 1-3-2.5Z" fill="#fff" stroke="#cfd6de"/>' +
+    '<path d="M51 66h2.5a3 3 0 0 1 0 6H50" fill="none" stroke="#fff" stroke-width="1.6"/>' +
+    '<rect class="cupfill" x="32" y="73" width="16" height="3" rx="1" fill="#6d4c41"/><rect x="20" y="77" width="40" height="4" rx="2" fill="url(#hc-cs)"/>' +
+    '<path d="M22 6h8" stroke="#fff" stroke-opacity=".25" stroke-width="2" stroke-linecap="round"/></svg>',
+  // Cooker hood: air is drawn up the chimney and the lights fall on the hob.
+  hood: '<svg viewBox="0 0 80 94" aria-hidden="true"><defs><linearGradient id="hc-hb" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#aab4bf"/>' +
+    '<stop offset=".45" stop-color="#f4f6f8"/><stop offset="1" stop-color="#9aa5b1"/></linearGradient>' +
+    '<linearGradient id="hc-hl" x1="0" y1="0" x2="0" y2="1"><stop offset="0" class="floor-c" stop-opacity=".5"/>' +
+    '<stop offset="1" class="floor-c" stop-opacity="0"/></linearGradient></defs>' +
+    '<g class="air" fill="none" stroke="#b0bec5" stroke-width="1.8" stroke-linecap="round"><path d="M33 34v-10"/><path d="M40 36v-12"/>' +
+    '<path d="M47 34v-10"/></g><rect x="29" y="2" width="22" height="36" rx="1.5" fill="url(#hc-hb)" stroke="#9aa5b1" stroke-width="1"/>' +
+    '<path d="M29 38h22l23 16H6Z" fill="url(#hc-hb)" stroke="#9aa5b1" stroke-width="1" stroke-linejoin="round"/>' +
+    '<rect x="6" y="54" width="68" height="5" rx="1" fill="#cfd6de" stroke="#9aa5b1" stroke-width="1"/>' +
+    '<rect x="12" y="55.5" width="6" height="2" rx="1" fill="#1d2632"/><rect class="led" x="13" y="56" width="4" height="1" rx=".5"/>' +
+    '<circle cx="62" cy="56.5" r="1.1" fill="#7d8894"/><circle cx="67" cy="56.5" r="1.1" fill="#7d8894"/>' +
+    '<path class="beam" d="M16 59h48l8 24H8Z" fill="url(#hc-hl)"/><rect x="4" y="84" width="72" height="5" rx="1.5" fill="#55606d"/><g fill="#1b222b">' +
+    '<ellipse cx="22" cy="84" rx="9" ry="1.4"/><ellipse cx="58" cy="84" rx="9" ry="1.4"/></g>' +
+    '<path d="M24 82q-2-3 0-5M56 82q-2-3 0-5" class="smoke" fill="none" stroke="#b0bec5" stroke-width="1.2" stroke-linecap="round"/></svg>',
+  // Fridge-freezer: frost sparkles and cold air flows under the door while super mode runs.
+  fridge: '<svg viewBox="0 0 80 94" aria-hidden="true"><defs><linearGradient id="hc-fb" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#e3e7ec"/>' +
+    '<stop offset=".5" stop-color="#ffffff"/><stop offset="1" stop-color="#d5dbe2"/></linearGradient></defs>' +
+    '<g class="cold" fill="none" stroke="#81d4fa" stroke-width="1.6" stroke-linecap="round"><path d="M18 91q4-3 8 0t8 0"/><path d="M38 91q4-3 8 0t8 0"/>' +
+    '</g><rect x="14" y="2" width="52" height="86" rx="6" fill="url(#hc-fb)" stroke="#bac2cb" stroke-width="1.2"/>' +
+    '<path d="M14.6 54H65.4" stroke="#bac2cb" stroke-width="1.2"/><rect x="20" y="16" width="3" height="28" rx="1.5" fill="#aab4bf"/>' +
+    '<rect x="20" y="60" width="3" height="20" rx="1.5" fill="#aab4bf"/><rect x="36" y="10" width="20" height="10" rx="2.5" fill="#1d2632"/>' +
+    '<rect class="led" x="39" y="14" width="10" height="2" rx="1"/><g class="frost" fill="#4fc3f7">' +
+    '<path d="M46 34l.9 2.2 2.2.9-2.2.9-.9 2.2-.9-2.2-2.2-.9 2.2-.9Z"/><path d="M56 42l.7 1.7 1.7.7-1.7.7-.7 1.7-.7-1.7-1.7-.7 1.7-.7Z"/>' +
+    '<path d="M50 68l.9 2.2 2.2.9-2.2.9-.9 2.2-.9-2.2-2.2-.9 2.2-.9Z"/></g>' +
+    '<path d="M28 6v42" stroke="#fff" stroke-width="4" stroke-opacity=".6" stroke-linecap="round"/>' +
+    '<rect x="17" y="88" width="7" height="3" rx="1.2" fill="#8f9aa6"/><rect x="56" y="88" width="7" height="3" rx="1.2" fill="#8f9aa6"/></svg>',
+  // Hob: two cooking zones glow and heat rises from them.
+  hob: '<svg viewBox="0 0 80 94" aria-hidden="true"><defs><linearGradient id="hc-kb" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2a323c"/>' +
+    '<stop offset="1" stop-color="#11161c"/></linearGradient><radialGradient id="hc-kz" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#ff7043"/>' +
+    '<stop offset=".7" stop-color="#e64a19" stop-opacity=".7"/><stop offset="1" stop-color="#bf360c" stop-opacity="0"/></radialGradient></defs>' +
+    '<rect x="6" y="64" width="68" height="20" rx="3" fill="#cfd6de" stroke="#9aa5b1"/><rect x="10" y="84" width="60" height="6" fill="#aab4bf"/>' +
+    '<path d="M14 30h52l10 34H4Z" fill="url(#hc-kb)" stroke="#55606d" stroke-width="1" stroke-linejoin="round"/>' +
+    '<g fill="none" stroke="#55606d" stroke-width="1.2"><ellipse cx="25" cy="39" rx="8" ry="3.6"/><ellipse cx="53" cy="39" rx="8" ry="3.6"/>' +
+    '<ellipse cx="22" cy="54" rx="11" ry="5"/><ellipse cx="57" cy="54" rx="10" ry="4.6"/></g><g class="zones">' +
+    '<ellipse cx="22" cy="54" rx="11" ry="5" fill="url(#hc-kz)"/><ellipse cx="53" cy="39" rx="8" ry="3.6" fill="url(#hc-kz)"/></g>' +
+    '<path d="M30 60h20" stroke="#7d8894" stroke-width="1.4" stroke-linecap="round"/><rect class="led" x="36" y="59" width="8" height="2" rx="1"/>' +
+    '<g class="heat" fill="none" stroke="#ffccbc" stroke-width="1.3" stroke-linecap="round" opacity=".8"><path d="M18 48q-2-3 0-6t0-6"/>' +
+    '<path d="M24 48q-2-3 0-6t0-6"/><path d="M53 34q-2-3 0-6t0-6"/></g>' +
+    '<path d="M16 32h20" stroke="#fff" stroke-opacity=".18" stroke-width="2" stroke-linecap="round"/></svg>',
+  // Microwave: the inside lights up and the plate turns.
+  microwave: '<svg viewBox="0 0 80 94" aria-hidden="true"><defs><linearGradient id="hc-mb" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#f7f8fa"/>' +
+    '<stop offset="1" stop-color="#cfd5dc"/></linearGradient><radialGradient id="hc-mg" cx=".5" cy=".5" r=".7"><stop offset="0" stop-color="#fff3c4"/>' +
+    '<stop offset="1" stop-color="#ffb74d" stop-opacity=".35"/></radialGradient></defs>' +
+    '<rect x="4" y="22" width="72" height="50" rx="6" fill="url(#hc-mb)" stroke="#bac2cb" stroke-width="1.2"/>' +
+    '<rect x="9" y="27" width="46" height="40" rx="3" fill="#1b222b"/><rect class="mwlight" x="9" y="27" width="46" height="40" rx="3" fill="url(#hc-mg)"/>' +
+    '<g class="plate"><ellipse cx="32" cy="58" rx="16" ry="3.4" fill="#e3e7ec" opacity=".85"/>' +
+    '<rect x="25" y="50" width="14" height="8" rx="3" fill="#ffffff"/><path d="M26 51h12" stroke="#ff8a65" stroke-width="2"/></g>' +
+    '<rect x="60" y="28" width="11" height="6" rx="1.5" fill="#1d2632"/><rect class="led" x="61.5" y="30" width="6" height="2" rx="1"/>' +
+    '<circle cx="65.5" cy="44" r="4" fill="#fff" stroke="#aeb7c2" stroke-width="1.2"/><g fill="#aeb7c2"><circle cx="62" cy="54" r="1.4"/>' +
+    '<circle cx="66" cy="54" r="1.4"/><circle cx="70" cy="54" r="1.4"/><circle cx="62" cy="59" r="1.4"/><circle cx="66" cy="59" r="1.4"/>' +
+    '<circle cx="70" cy="59" r="1.4"/></g><path d="M13 30l10 14" stroke="#fff" stroke-opacity=".14" stroke-width="3" stroke-linecap="round"/>' +
+    '<rect x="10" y="72" width="8" height="3" rx="1" fill="#8f9aa6"/><rect x="62" y="72" width="8" height="3" rx="1" fill="#8f9aa6"/></svg>',
+  // Freezer: frost sparkles and cold air flows while super freeze runs.
+  freezer: '<svg viewBox="0 0 80 94" aria-hidden="true"><defs><linearGradient id="hc-zb" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#e3e7ec"/>' +
+    '<stop offset=".5" stop-color="#ffffff"/><stop offset="1" stop-color="#d5dbe2"/></linearGradient></defs>' +
+    '<g class="cold" fill="none" stroke="#81d4fa" stroke-width="1.6" stroke-linecap="round"><path d="M18 91q4-3 8 0t8 0"/><path d="M38 91q4-3 8 0t8 0"/>' +
+    '</g><rect x="14" y="2" width="52" height="86" rx="6" fill="url(#hc-zb)" stroke="#bac2cb" stroke-width="1.2"/>' +
+    '<rect x="20" y="20" width="3" height="40" rx="1.5" fill="#aab4bf"/><rect x="36" y="10" width="20" height="10" rx="2.5" fill="#1d2632"/>' +
+    '<rect class="led" x="39" y="14" width="10" height="2" rx="1"/><g fill="#4fc3f7">' +
+    '<path d="M46 28v12M40 34h12M42 30l8 8M50 30l-8 8" stroke="#4fc3f7" stroke-width="1.4" stroke-linecap="round" opacity=".55"/></g>' +
+    '<g class="frost" fill="#4fc3f7"><path d="M56 48l.8 2 2 .8-2 .8-.8 2-.8-2-2-.8 2-.8Z"/>' +
+    '<path d="M40 60l.9 2.2 2.2.9-2.2.9-.9 2.2-.9-2.2-2.2-.9 2.2-.9Z"/><path d="M54 72l.7 1.7 1.7.7-1.7.7-.7 1.7-.7-1.7-1.7-.7 1.7-.7Z"/></g>' +
+    '<path d="M28 6v78" stroke="#fff" stroke-width="4" stroke-opacity=".6" stroke-linecap="round"/>' +
+    '<rect x="17" y="88" width="7" height="3" rx="1.2" fill="#8f9aa6"/><rect x="56" y="88" width="7" height="3" rx="1.2" fill="#8f9aa6"/></svg>',
+  // Wine cabinet: the soft inside light, tinted by the state.
+  wine_cooler: '<svg viewBox="0 0 80 94" aria-hidden="true"><defs><linearGradient id="hc-vb" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#2a313b"/>' +
+    '<stop offset=".5" stop-color="#3a4350"/><stop offset="1" stop-color="#232a33"/></linearGradient>' +
+    '<linearGradient id="hc-vl" x1="0" y1="0" x2="0" y2="1"><stop offset="0" class="floor-c" stop-opacity=".45"/>' +
+    '<stop offset="1" class="floor-c" stop-opacity=".05"/></linearGradient></defs>' +
+    '<rect x="14" y="2" width="52" height="86" rx="6" fill="url(#hc-vb)" stroke="#1b222b"/>' +
+    '<rect x="19" y="8" width="42" height="74" rx="3" fill="#11161c" stroke="#7d8894" stroke-width="1.2"/>' +
+    '<rect class="beam" x="19" y="8" width="42" height="74" rx="3" fill="url(#hc-vl)"/><g stroke="#55606d" stroke-width="1">' +
+    '<path d="M20 26h40M20 44h40M20 62h40"/></g><g fill="#7b1f2b"><circle cx="25" cy="20" r="3"/><circle cx="33" cy="20" r="3"/>' +
+    '<circle cx="41" cy="20" r="3"/><circle cx="49" cy="20" r="3"/><circle cx="55" cy="20" r="3"/><circle cx="25" cy="38" r="3"/>' +
+    '<circle cx="33" cy="38" r="3"/><circle cx="41" cy="38" r="3"/><circle cx="49" cy="38" r="3"/><circle cx="55" cy="38" r="3"/>' +
+    '<circle cx="25" cy="56" r="3"/><circle cx="33" cy="56" r="3"/><circle cx="41" cy="56" r="3"/><circle cx="49" cy="56" r="3"/>' +
+    '<circle cx="55" cy="56" r="3"/><circle cx="25" cy="74" r="3"/><circle cx="33" cy="74" r="3"/><circle cx="41" cy="74" r="3"/>' +
+    '<circle cx="49" cy="74" r="3"/><circle cx="55" cy="74" r="3"/></g><g fill="#c9a227" opacity=".9"><circle cx="25" cy="20" r="1"/>' +
+    '<circle cx="33" cy="20" r="1"/><circle cx="41" cy="20" r="1"/><circle cx="49" cy="20" r="1"/><circle cx="55" cy="20" r="1"/>' +
+    '<circle cx="25" cy="38" r="1"/><circle cx="33" cy="38" r="1"/><circle cx="41" cy="38" r="1"/><circle cx="49" cy="38" r="1"/>' +
+    '<circle cx="55" cy="38" r="1"/><circle cx="25" cy="56" r="1"/><circle cx="33" cy="56" r="1"/><circle cx="41" cy="56" r="1"/>' +
+    '<circle cx="49" cy="56" r="1"/><circle cx="55" cy="56" r="1"/><circle cx="25" cy="74" r="1"/><circle cx="33" cy="74" r="1"/>' +
+    '<circle cx="41" cy="74" r="1"/><circle cx="49" cy="74" r="1"/><circle cx="55" cy="74" r="1"/></g>' +
+    '<rect class="led" x="34" y="84" width="12" height="1.6" rx=".8"/>' +
+    '<path d="M24 10l12 70" stroke="#fff" stroke-opacity=".08" stroke-width="5" stroke-linecap="round"/>' +
+    '<rect x="17" y="88" width="7" height="3" rx="1.2" fill="#55606d"/><rect x="56" y="88" width="7" height="3" rx="1.2" fill="#55606d"/></svg>',
+  // LG Styler: the shirt sways in the steam.
+  styler: '<svg viewBox="0 0 80 94" aria-hidden="true"><defs><linearGradient id="hc-sb" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#3a4350"/>' +
+    '<stop offset=".5" stop-color="#55606d"/><stop offset="1" stop-color="#2a313b"/></linearGradient>' +
+    '<linearGradient id="hc-sg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#1b222b" stop-opacity=".55"/>' +
+    '<stop offset="1" stop-color="#11161c" stop-opacity=".75"/></linearGradient></defs>' +
+    '<rect x="18" y="2" width="44" height="88" rx="5" fill="url(#hc-sb)" stroke="#1b222b"/>' +
+    '<rect x="22" y="6" width="36" height="78" rx="3" fill="#cfd6de"/><g class="sway">' +
+    '<path d="M40 14v4" stroke="#7d8894" stroke-width="1.4" stroke-linecap="round"/>' +
+    '<path d="M29 24l11-6 11 6" fill="none" stroke="#7d8894" stroke-width="1.6" stroke-linejoin="round"/>' +
+    '<path d="M30 24l-4 10 5 2v32h18V36l5-2-4-10-6 3q-4 4-8 0Z" fill="#5c8fd6"/><path d="M40 27v41" stroke="#3f6fb3" stroke-width=".8"/></g>' +
+    '<g class="steam" fill="none" stroke="#ffffff" stroke-width="1.8" stroke-linecap="round"><path d="M32 82q-2-3 0-6t0-6"/><path d="M40 82q-2-3 0-6t0-6"/>' +
+    '<path d="M48 82q-2-3 0-6t0-6"/></g><rect x="22" y="6" width="36" height="78" rx="3" fill="url(#hc-sg)"/>' +
+    '<rect x="34" y="86" width="12" height="2" rx="1" fill="#11161c"/><rect class="led" x="36" y="86.4" width="8" height="1.2" rx=".6"/></svg>',
 };
 
 // Door open: the washer's porthole swung aside on the empty drum, the dishwasher's door lowered on its racks.
@@ -1108,6 +1760,9 @@ var HC_ART_OPEN = {
     '<path d="M9 67h62l2.4 15H6.6Z" fill="#dfe4ea" stroke="#fff" stroke-opacity=".8"/>' +
     '<rect x="14" y="86.5" width="52" height="4" rx="2" fill="#aab4bf"/></svg>',
 };
+// Dryers open on the same empty drum as the washer.
+HC_ART_OPEN.dryer = HC_ART_OPEN.washer;
+HC_ART_OPEN.washer_dryer = HC_ART_OPEN.washer;
 
 // State badge over the illustration: paused, waiting for a delayed start, or done.
 var HC_STATE_BADGE = {
@@ -1123,10 +1778,11 @@ var HC_SPARKLES = '<svg class="sparkles" viewBox="0 0 80 94" aria-hidden="true">
   '<path d="M68 2l1 2.4 2.4 1-2.4 1L68 8.8l-1-2.4-2.4-1 2.4-1Z"/></svg>';
 
 // The illustration with its state: animated while running, a badge when paused, delayed or done.
-var hcPicture = (art, state, illustrated) => {
+// `lit`: animated without running (a wine cabinet with its light on).
+var hcPicture = (art, state, illustrated, lit) => {
   var badge = illustrated && HC_STATE_BADGE[state]
     ? `<span class="pbadge">${HC_STATE_BADGE[state]}</span>${state === 'finished' ? HC_SPARKLES : ''}` : '';
-  return `<div class="picture st-${hcEsc(state)}${state === 'run' ? ' running' : ''}">${art}${badge}</div>`;
+  return `<div class="picture st-${hcEsc(state)}${state === 'run' || lit ? ' running' : ''}">${art}${badge}</div>`;
 };
 
 // ── Base card ────────────────────────────────────────────────────────────────
@@ -1134,7 +1790,7 @@ class HomeConnectBaseCard extends HTMLElement {
   static get kind() { return 'dishwasher'; }
 
   static getConfigElement() {
-    var el = document.createElement('home-connect-card-editor');
+    var el = document.createElement('smart-appliance-card-editor');
     // biome-ignore lint/complexity/noThisInStatic: subclasses override static kind
     el.kind = this.kind;
     return el;
@@ -1216,7 +1872,7 @@ class HomeConnectBaseCard extends HTMLElement {
     var hass = this._hass, c = this._config;
     if (c.device_id) return c.device_id;
     if (c.entity && hass.entities?.[c.entity]) return hass.entities[c.entity].device_id;
-    return hcFindDevice(hass, this.constructor.kind);
+    return hcFindDevice(hass, c.kind || this.constructor.kind);
   }
 
   _resolve() {
@@ -1224,14 +1880,16 @@ class HomeConnectBaseCard extends HTMLElement {
     var found = hcDeviceRoles(this._hass, deviceId);
     var over = this._config.entities || {};
     var ent = {};
-    Object.keys(HC_ROLES).forEach((role) => {
+    HC_ALL_ROLES.forEach((role) => {
       ent[role] = over[role] || found.roles[role];
     });
-    var used = Object.values(ent);
+    // Super modes and the hood's fan level stay settings the card offers.
+    var used = HC_ALL_ROLES.filter((role) => role !== 'boost' && role !== 'venting').map((role) => ent[role]);
     // Everything else the integration exposes as a switch or select is a program option.
     ent.option_switches = found.switches.filter((id) => used.indexOf(id) < 0);
     ent.option_selects = found.selects.filter((id) => used.indexOf(id) < 0);
-    return { deviceId: deviceId, ent: ent };
+    ent.temps = found.temps || [];
+    return { deviceId: deviceId, ent: ent, platform: found.platform };
   }
 
   _st(id) { return id && this._hass.states[id]; }
@@ -1262,13 +1920,12 @@ class HomeConnectBaseCard extends HTMLElement {
   _update() {
     if (!this._config || !this._hass || !this.shadowRoot) return;
     var r = this._resolve();
-    var ids = [r.ent.operation_state, r.ent.door, r.ent.progress, r.ent.finish_time, r.ent.selected_program,
-      r.ent.active_program, r.ent.power, r.ent.remote_start, r.ent.remote_control, r.ent.connectivity, r.ent.salt, r.ent.rinse_aid,
-      r.ent.stop, r.ent.pause, r.ent.resume].concat(r.ent.option_switches, r.ent.option_selects);
+    var ids = HC_ALL_ROLES.map((role) => r.ent[role]).concat(r.ent.option_switches, r.ent.option_selects, r.ent.temps);
     var hass = this._hass;
     var states = JSON.stringify(ids.map((id) => {
       var s = id && hass.states[id];
-      return s ? [id, s.state, s.attributes.options] : null;
+      // Climate temperatures and the fan's speed live in attributes.
+      return s ? [id, s.state, s.attributes.options, s.attributes.current_temperature, s.attributes.percentage] : null;
     }));
     // An error message goes away as soon as the appliance's state changes.
     if (this._error) {
@@ -1330,30 +1987,47 @@ class HomeConnectBaseCard extends HTMLElement {
     };
     var btns = [];
     var remoteOk = !ent.remote_start || this._val(ent.remote_start) === 'on';
-    if (!running && ent.active_program && this._avail(ent.selected_program)) {
+    if (!running && this._cmd('start')) {
       btns.push(btn('start', 'mdi:play', this._starting ? 'starting' : 'start', true,
         !remoteOk || this._starting || this._reloading, remoteOk ? '' : this._t('remote_start_off')));
     }
-    // A button entity stays `unknown` until first pressed: only `unavailable` hides it.
-    var pauseVal = this._val(ent.pause);
-    if (state === 'run' && ent.pause && pauseVal !== undefined && pauseVal !== 'unavailable') {
-      btns.push(btn('pause', 'mdi:pause', 'pause', false, false, ''));
-    }
-    if (state === 'pause' && ent.resume && this._val(ent.resume) !== 'unavailable') {
-      btns.push(btn('resume', 'mdi:play', 'resume', true, false, ''));
-    }
+    if (state === 'run' && this._cmd('pause')) btns.push(btn('pause', 'mdi:pause', 'pause', false, false, ''));
+    if (state === 'pause' && this._cmd('resume')) btns.push(btn('resume', 'mdi:play', 'resume', true, false, ''));
     return { btns: btns, remoteOk: remoteOk };
+  }
+
+  // How an action reaches the appliance: a button to press, an option of its operation select, or, for a Home
+  // Connect start, the selected program put on the active program select. Null when the appliance can't.
+  _cmd(action) {
+    var r = this._r, ent = r.ent;
+    if (action === 'start' && r.platform === 'home_connect') {
+      return ent.active_program && this._avail(ent.selected_program)
+        ? { domain: 'select', service: 'select_option', data: { entity_id: ent.active_program, option: this._val(ent.selected_program) } } : null;
+    }
+    // Miele resumes with its Start button.
+    var btnId = ent[action] || (action === 'resume' && r.platform === 'miele' ? ent.start : undefined);
+    // A button entity stays `unknown` until first pressed: only `unavailable` (or no state at all) rules it out.
+    var v = this._val(btnId);
+    if (btnId && v !== undefined && v !== 'unavailable') return { domain: 'button', service: 'press', data: { entity_id: btnId } };
+    var sel = this._st(ent.operation), want = HC_OPERATION_OPTIONS[r.platform]?.[action];
+    if (sel && want && this._avail(ent.operation)) {
+      var opt = want.find((o) => (sel.attributes.options || []).indexOf(o) >= 0);
+      if (opt) return { domain: 'select', service: 'select_option', data: { entity_id: ent.operation, option: opt } };
+    }
+    return null;
   }
 
   _render(r) {
     var c = this._config, ent = r.ent, hass = this._hass;
-    // The appliance's own programs decide the look, whichever card type was picked for it.
-    var kind = (r.deviceId && hcProgramKind(hass, r.deviceId)) || this.constructor.kind;
+    // The appliance itself decides the look (its programs, its type), then the `kind` option, then the card type.
+    var kind = (r.deviceId && hcKindOf(hass, r.deviceId)) || c.kind || this.constructor.kind || 'dishwasher';
+    if (!HC_PROFILES[kind]) kind = 'dishwasher';
     var profile = HC_PROFILES[kind];
     var dev = r.deviceId && hass.devices ? hass.devices[r.deviceId] : null;
     var deviceName = dev ? String(dev.name_by_user || dev.name || '').trim() : '';
     var name = c.name || deviceName || this._t(kind);
     var icon = c.icon || profile.icon;
+    this._brand = hcBrand(dev, c.brand);
     this._ticking = false;
 
     if (!r.deviceId && !c.entities) {
@@ -1362,38 +2036,68 @@ class HomeConnectBaseCard extends HTMLElement {
       return;
     }
 
-    var opState = this._val(ent.operation_state);
-    var online = ent.connectivity ? this._val(ent.connectivity) === 'on' : this._avail(ent.operation_state);
-    var powerOn = ent.power ? this._val(ent.power) === 'on' : (opState && opState !== 'inactive');
-    var state = !online ? 'unavailable' : (!powerOn && (!opState || opState === 'inactive') ? 'off' : (opState || 'off'));
-    var running = state === 'run' || state === 'pause' || state === 'delayedstart' || state === 'actionrequired';
+    var raw = this._val(ent.operation_state);
+    var opState = hcNormState(r.platform, raw, this._val(ent.phase));
+    // Without a state sensor (a fridge, a hood) the appliance is online while any of its entities is.
+    var online = ent.connectivity ? this._val(ent.connectivity) === 'on'
+      : (ent.operation_state ? this._avail(ent.operation_state) && opState !== 'unavailable'
+        : HC_ALL_ROLES.concat(['temps']).some((role) => [].concat(ent[role] || []).some((id) => this._avail(id))));
+    var powerOn = ent.power ? this._val(ent.power) === 'on' : (opState ? opState !== 'inactive' && opState !== 'off' : !!profile.simple);
+    var state = !online ? 'unavailable'
+      : (!powerOn && (!opState || opState === 'inactive' || opState === 'off') ? 'off' : (opState || (profile.simple ? 'ready' : 'off')));
+    // Appliances without a program are at work while a super mode, the hood's fan or a hob zone is on.
+    if (profile.simple && online && state === 'ready' && this._busy(ent)) state = 'run';
+    var running = !profile.simple && (state === 'run' || state === 'pause' || state === 'delayedstart' || state === 'actionrequired');
     var color = HC_STATE_COLORS[state] || 'var(--disabled-text-color, #9e9e9e)';
+    // A wine cabinet's inside light glows in the illustration while it is on.
+    this._lit = kind === 'wine_cooler' && online && this._val(ent.light) === 'on';
 
-    // Program shown: the running one if any, else the selected one.
+    // Program shown: the running one if any, else the selected one, else the program the integration reports.
     var progId = this._avail(ent.active_program) ? ent.active_program : ent.selected_program;
     var progLabel = this._avail(progId) ? this._fmt(progId) : '';
+    var progVal = this._val(ent.program);
+    if (!progLabel && this._avail(ent.program) && progVal !== 'no_program') progLabel = this._fmt(ent.program);
 
-    // Progress and finish time.
-    var progress = this._avail(ent.progress) ? Math.max(0, Math.min(100, Number(this._val(ent.progress)))) : null;
+    // Progress and finish time: given by the integration, or worked out from the time left, elapsed or in total.
+    var num = (id) => (this._avail(id) && !Number.isNaN(Number(this._val(id))) ? Number(this._val(id)) : null);
+    var progress = num(ent.progress);
     var finish = this._avail(ent.finish_time) ? new Date(this._val(ent.finish_time)) : null;
     if (finish && Number.isNaN(finish.getTime())) finish = null;
+    var left = num(ent.remaining), elapsed = num(ent.elapsed), total = num(ent.total);
+    if (!finish && running && left != null && left > 0) finish = new Date(Date.now() + left * 60000);
+    if (progress == null && running) {
+      if (left != null && elapsed != null && left + elapsed > 0) progress = (100 * elapsed) / (left + elapsed);
+      else if (finish && total) progress = 100 * (1 - (finish.getTime() - Date.now()) / 60000 / total);
+    }
+    if (progress != null) progress = Math.max(0, Math.min(100, progress));
     var timeLine = running && finish ? this._timeLine(finish) : '';
     this._ticking = !!(running && finish);
 
+    // While a program runs, integrations that report its step say more than "Running" (spinning, drying…).
     var statusText = this._t(`st_${state}`);
+    var runKey = `st_run_${kind}`;
+    if (state === 'run' && profile.simple && this._t(runKey) !== runKey) statusText = this._t(runKey);
+    else if (state === 'run' && r.platform !== 'home_connect') {
+      var detail = this._avail(ent.phase) && ['none', 'not_running'].indexOf(this._val(ent.phase)) < 0 ? ent.phase : ent.operation_state;
+      if (this._avail(detail) && hcNormState(r.platform, this._val(detail)) !== this._val(detail)) statusText = this._fmt(detail);
+    }
     if (statusText === `st_${state}`) statusText = this._fmt(ent.operation_state);
 
     // Header chips: door + alerts.
     var chips = [];
     var door = this._val(ent.door);
+    // Doors other integrations report as binary sensors: on is open.
+    if (ent.door && ent.door.indexOf('binary_sensor.') === 0) door = door === 'on' ? 'open' : (door === 'off' ? 'closed' : undefined);
     if (online && door && ['open', 'closed', 'locked'].indexOf(door) >= 0) {
       var dIcon = door === 'open' ? 'mdi:door-open' : (door === 'locked' ? 'mdi:door-closed-lock' : 'mdi:door-closed');
       chips.push(`<span class="chip${door === 'open' ? ' warn' : ''}"><ha-icon icon="${dIcon}"></ha-icon>${this._t(`door_${door}`)}</span>`);
     }
+    if (online) chips = chips.concat(this._infoChips(ent, kind, state, deviceName));
     if (c.show_alerts) {
-      [['salt', 'mdi:shaker-outline'], ['rinse_aid', 'mdi:water-alert-outline']].forEach((a) => {
+      [['salt', 'mdi:shaker-outline'], ['rinse_aid', 'mdi:water-alert-outline'], ['bean_container', 'mdi:coffee-off-outline'],
+        ['water_tank', 'mdi:cup-water'], ['drip_tray', 'mdi:tray-full']].forEach((a) => {
         var v = this._val(ent[a[0]]);
-        if (v === 'present' || v === 'on') chips.push(`<span class="chip warn"><ha-icon icon="${a[1]}"></ha-icon>${this._t(a[0])}</span>`);
+        if (v === 'present' || v === 'confirmed' || v === 'on') chips.push(`<span class="chip warn"><ha-icon icon="${a[1]}"></ha-icon>${this._t(a[0])}</span>`);
       });
     }
     if (!online) chips.push(`<span class="chip"><ha-icon icon="mdi:cloud-off-outline"></ha-icon>${this._t('offline')}</span>`);
@@ -1460,7 +2164,7 @@ class HomeConnectBaseCard extends HTMLElement {
     if (c.show_controls && online && powerOn) {
       var ab = this._actionButtons(ent, state, running, false);
       var btns = ab.btns;
-      if (running && ent.stop && this._val(ent.stop) !== 'unavailable') {
+      if (running && this._cmd('stop')) {
         var confirming = this._confirming === 'stop';
         btns.push(`<button class="btn danger${confirming ? ' armed' : ''}" data-action="stop"><ha-icon icon="mdi:stop"></ha-icon>${this._t(confirming ? 'confirm' : 'stop')}</button>`);
       }
@@ -1492,16 +2196,16 @@ class HomeConnectBaseCard extends HTMLElement {
     var art = c.icon
       ? `<div class="badge"><ha-icon icon="${hcEsc(icon)}"></ha-icon></div>`
       : ((door === 'open' && HC_ART_OPEN[kind]) || HC_ART[kind] || HC_ART.dishwasher);
-    var heroHtml = '<div class="hero">' + hcPicture(art, state, !c.icon) +
+    var heroHtml = '<div class="hero">' + hcPicture(art, state, !c.icon, this._lit) +
       '<div class="info">' + big + (chips.length ? `<div class="chips">${chips.join('')}</div>` : '') + '</div></div>';
 
-    var logo = `<div class="logo" aria-hidden="true"><ha-icon icon="${HC_HEADER_ICON[kind] || HC_HEADER_ICON.dishwasher}"></ha-icon>${HC_LOGO_BADGE}</div>`;
+    var logo = `<div class="logo" aria-hidden="true"><ha-icon icon="${hcEsc(profile.icon)}"></ha-icon>${this._badge(r.platform)}</div>`;
     var sub = progLabel || this._t(kind);
 
     if (this._compact()) {
       this._rows = hcRows(HC_PX.miniBase + (this._error ? HC_PX.error : 0));
       this.shadowRoot.innerHTML = this._miniHtml({ c, ent, name, color, state, statusText, running, online, powerOn, progress,
-        finish, progLabel, chips: chips.filter((x) => x.indexOf('chip warn') >= 0 || !online), art, logo, powerBtn });
+        finish, progLabel, chips: chips.filter((x) => x.indexOf('chip warn') >= 0 || x.indexOf('chip info') >= 0 || !online), art, logo, powerBtn });
       return;
     }
 
@@ -1516,11 +2220,56 @@ class HomeConnectBaseCard extends HTMLElement {
     '</ha-card>';
   }
 
+  // A program-less appliance at work: a super mode on, the hood's fan turning or venting, its light aside.
+  _busy(ent) {
+    if (this._val(ent.boost) === 'on') return true;
+    if (this._val(ent.fan) === 'on') return true;
+    var v = this._val(ent.venting);
+    return !!(v && this._avail(ent.venting) && !/fan_off$|_off$/.test(v));
+  }
+
+  // Temperatures (cold appliances always, ovens while cooking) and the hood's fan and light.
+  _infoChips(ent, kind, state, deviceName) {
+    var chips = [];
+    var chip = (icon, text, title) => `<span class="chip info"${title ? ` title="${hcEsc(title)}"` : ''}><ha-icon icon="${icon}"></ha-icon>${hcEsc(text)}</span>`;
+    if (HC_COLD.indexOf(kind) >= 0 || (HC_HOT.indexOf(kind) >= 0 && state === 'run')) {
+      ent.temps.forEach((id) => {
+        var s = this._st(id);
+        if (!s) return;
+        var label = this._entityLabel(id, deviceName);
+        var value;
+        if (id.indexOf('climate.') === 0) {
+          value = `${Math.round(Number(s.attributes.current_temperature) * 10) / 10} °`;
+        } else if (this._avail(id)) {
+          value = this._hass.formatEntityState ? this._hass.formatEntityState(s) : `${s.state} ${s.attributes.unit_of_measurement || ''}`.trim();
+        }
+        if (value) chips.push(chip(/freez|congel|gefrier|congela|vries|zamra/i.test(`${id} ${label}`) ? 'mdi:snowflake' : 'mdi:thermometer', value, label));
+      });
+    }
+    if (kind === 'hood') {
+      var fan = this._st(ent.fan);
+      if (fan && fan.state === 'on' && fan.attributes.percentage != null) chips.push(chip('mdi:fan', `${Math.round(fan.attributes.percentage)} %`));
+      else if (this._avail(ent.venting) && this._busy({ venting: ent.venting })) chips.push(chip('mdi:fan', this._fmt(ent.venting)));
+      if (this._val(ent.light) === 'on') chips.push(chip('mdi:lightbulb-on-outline', this._t('light_on')));
+    }
+    return chips;
+  }
+
+  // Badge on the header icon: the appliance's brand (initial on the brand's colour), else the Home Connect logo.
+  _badge(platform) {
+    var b = this._brand;
+    if (!b || (b.key === 'other' && platform === 'home_connect')) return HC_LOGO_BADGE;
+    var initials = b.key === 'lg' ? 'LG' : b.name.charAt(0).toUpperCase();
+    return `<span class="hc-badge brand" style="background:${b.color}" title="${hcEsc(b.name)}">${hcEsc(initials)}</span>`;
+  }
+
   _styles(color) {
     return '<style>' +
       // min-width 0: the natural width below is only a preferred size; in a `1fr 1fr` grid or a flex row the
       // card must still shrink to its track instead of overflowing it.
       ':host { display: block; height: 100%; min-width: 0; --hc-color: ' + (color || 'var(--disabled-text-color, #9e9e9e)') + ';' +
+        // Main buttons in the brand's colour (Bosch red, Miele burgundy…), the theme's primary colour otherwise.
+        (this._brand && this._brand.key !== 'other' ? ` --primary-color: ${this._brand.color};` : '') +
       // State, warning, error and primary colours stay on dots, bars, tints and the illustration; texts get them
       // mixed with the theme's text colour so they read at 4.5:1 or more on light and dark cards alike.
         ' --hc-text: color-mix(in srgb, var(--hc-color) 45%, var(--primary-text-color));' +
@@ -1546,6 +2295,7 @@ class HomeConnectBaseCard extends HTMLElement {
         ' display: grid; place-items: center; background: #fff;' +
         ' box-shadow: 0 0 0 1px var(--divider-color, rgba(0,0,0,.12)), 0 0 0 3px var(--card-background-color, #fff); }' +
       '.hc-badge svg { width: 100%; height: 100%; }' +
+      '.hc-badge.brand { padding: 0; color: #fff; font: 700 9px/1 var(--ha-font-family-body, system-ui, sans-serif); letter-spacing: -0.02em; }' +
       // The title takes the room the pill and the buttons leave (basis 0, so it doesn't squeeze the pill at
       // ordinary widths); it shrinks with an ellipsis but keeps about four characters.
       '.titles { flex: 1 1 0; min-width: 5ch; font-size: 16px; }' +
@@ -1599,6 +2349,37 @@ class HomeConnectBaseCard extends HTMLElement {
       '@keyframes hc-glow { from { opacity: 0.45; } to { opacity: 1; } }' +
       '@keyframes hc-steam { 0% { opacity: 0; transform: translateY(2px); } 30% { opacity: 0.7; } 100% { opacity: 0; transform: translateY(-10px); } }' +
       '@keyframes hc-spray { 0%, 100% { opacity: 0; transform: translateY(6px); } 40% { opacity: 0.85; } 70% { opacity: 0.5; transform: translateY(-4px); } }' +
+      // New appliances: tumbling laundry, heat, oven glow and fan, coffee pour, hood air and light, frost and cold air,
+      // glowing hob zones, microwave light and plate, the Styler's swaying shirt.
+      '.picture .tumble, .picture .heat, .picture .fan, .picture .air, .picture .pour, .picture .frost path, .picture .cold, .picture .smoke { transform-box: view-box; }' +
+      '.picture .tumble { transform-origin: 40px 55px; } .picture .fan { transform-origin: 40px 54px; transform-box: view-box; }' +
+      '.picture .heat path, .picture .air path, .picture .cold, .picture .pour, .picture .smoke { opacity: 0; }' +
+      '.picture .ovglow { opacity: .15; transition: opacity .6s; } .picture .beam { opacity: 0; transition: opacity .6s; }' +
+      '.picture .frost path { opacity: .35; transform-box: fill-box; transform-origin: center; } .picture .cupfill { transform-box: fill-box; transform-origin: bottom; transform: scaleY(.4); }' +
+      '.picture.running .tumble { animation: hc-tumble 2.4s cubic-bezier(.45,0,.55,1) infinite; }' +
+      '.picture.running .heat path { animation: hc-steam 1.8s ease-out infinite; }' +
+      '.picture.running .heat path:nth-child(2) { animation-delay: .6s; } .picture.running .heat path:nth-child(3) { animation-delay: 1.2s; }' +
+      '.picture.running .ovglow { animation: hc-glow 1.8s ease-in-out infinite alternate; opacity: 1; }' +
+      '.picture.running .fan { animation: hc-spin 1.4s linear infinite; }' +
+      '.picture.running .pour { animation: hc-pour 1.2s ease-in-out infinite; } .picture.running .cupfill { animation: hc-fill 4s ease-in-out infinite; }' +
+      '.picture.running .air path { animation: hc-rise 1.4s ease-in infinite; }' +
+      '.picture.running .air path:nth-child(2) { animation-delay: .45s; } .picture.running .air path:nth-child(3) { animation-delay: .9s; }' +
+      '.picture.running .smoke { animation: hc-rise 1.6s ease-in infinite; }' +
+      '.picture.running .beam { opacity: 1; animation: hc-glow 2.2s ease-in-out infinite alternate; }' +
+      '.picture.running .frost path { animation: hc-twinkle 2s ease-in-out infinite; }' +
+      '.picture.running .frost path:nth-child(2) { animation-delay: .7s; } .picture.running .frost path:nth-child(3) { animation-delay: 1.4s; }' +
+      '.picture.running .cold { animation: hc-wave 1.6s ease-in-out infinite alternate, hc-glow 1.6s ease-in-out infinite alternate; opacity: .8; }' +
+      '@keyframes hc-tumble { 0% { transform: rotate(0); } 45% { transform: rotate(200deg); } 55% { transform: rotate(180deg); } 100% { transform: rotate(360deg); } }' +
+      '@keyframes hc-pour { 0%, 100% { opacity: 0; } 20%, 80% { opacity: 1; } }' +
+      '@keyframes hc-fill { 0% { transform: scaleY(.4); } 70%, 100% { transform: scaleY(3.4); } }' +
+      '.picture .zones { opacity: 0; transition: opacity .6s; } .picture .mwlight { opacity: 0; transition: opacity .6s; }' +
+      '.picture .plate, .picture .sway { transform-box: view-box; } .picture .plate { transform-origin: 32px 58px; } .picture .sway { transform-origin: 40px 16px; }' +
+      '.picture.running .zones { opacity: 1; animation: hc-glow 1.6s ease-in-out infinite alternate; }' +
+      '.picture.running .mwlight { opacity: 1; animation: hc-glow 2s ease-in-out infinite alternate; }' +
+      '.picture.running .plate { animation: hc-turn 3s ease-in-out infinite; }' +
+      '.picture.running .sway { animation: hc-sway 2.4s ease-in-out infinite; }' +
+      '@keyframes hc-turn { 0%, 100% { transform: scaleX(1); } 50% { transform: scaleX(-1); } }' +
+      '@keyframes hc-sway { 0%, 100% { transform: rotate(-3deg); } 50% { transform: rotate(3deg); } }' +
       '@media (prefers-reduced-motion: reduce) { .picture.running *, .pbadge, .pbadge *, .sparkles path { animation: none !important; } .sparkles path { opacity: 1; } .picture.running .floor { opacity: 1; } }' +
       '.badge { width: 56px; height: 56px; border-radius: 50%; display: flex; align-items: center; justify-content: center;' +
         ' background: color-mix(in srgb, var(--hc-color) 15%, transparent); color: var(--hc-color); }' +
@@ -1728,7 +2509,6 @@ class HomeConnectBaseCard extends HTMLElement {
   _onClick(ev) {
     var btn = ev.composedPath().find((n) => n.dataset && (n.dataset.action || n.dataset.toggle));
     if (!btn || btn.disabled) return;
-    var ent = this._r.ent;
     if (btn.dataset.toggle) {
       this._option('switch', 'toggle', { entity_id: btn.dataset.toggle });
       return;
@@ -1747,10 +2527,8 @@ class HomeConnectBaseCard extends HTMLElement {
         this._reloadOptions();
         break;
       case 'pause':
-        this._press(ent.pause);
-        break;
       case 'resume':
-        this._press(ent.resume);
+        this._send(btn.dataset.action);
         break;
       case 'stop':
         if (this._confirming !== 'stop') {
@@ -1760,7 +2538,7 @@ class HomeConnectBaseCard extends HTMLElement {
         } else {
           this._confirming = null;
           clearTimeout(this._confirmTimer);
-          this._press(ent.stop);
+          this._send('stop');
         }
         this._update();
         break;
@@ -1799,9 +2577,11 @@ class HomeConnectBaseCard extends HTMLElement {
 
   // Pause / resume / stop and the option controls go through the same retry and in-card message
   // as Start: appliances reject them just as readily for a moment (WrongOperationState).
-  async _press(id) {
+  async _send(action) {
+    var cmd = this._cmd(action);
+    if (!cmd) return;
     try {
-      await this._callRetry('button', 'press', { entity_id: id });
+      await this._callRetry(cmd.domain, cmd.service, cmd.data);
     } catch (err) {
       this._showError('command_failed', err);
       this._update();
@@ -1819,14 +2599,13 @@ class HomeConnectBaseCard extends HTMLElement {
 
   // Selecting an option on the "active program" select starts it.
   async _start() {
-    var ent = this._r.ent;
-    if (this._starting || this._reloading) return;
-    var data = { entity_id: ent.active_program, option: this._val(ent.selected_program) };
+    var cmd = this._cmd('start');
+    if (this._starting || this._reloading || !cmd) return;
     this._starting = true;
     this._clearError();
     this._update();
     try {
-      await this._callRetry('select', 'select_option', data);
+      await this._callRetry(cmd.domain, cmd.service, cmd.data);
     } catch (err) {
       this._showError(HC_RETRYABLE.test(hcErrText(err)) ? 'start_rejected' : 'start_failed', err);
     } finally {
@@ -1896,6 +2675,11 @@ class HomeConnectDishwasherCard extends HomeConnectBaseCard {
 
 class HomeConnectWasherCard extends HomeConnectBaseCard {
   static get kind() { return 'washer'; }
+}
+
+// The card for any appliance: its type comes from the device picked (or the `kind` option).
+class SmartApplianceCard extends HomeConnectBaseCard {
+  static get kind() { return null; }
 }
 
 // ── Mini cards ───────────────────────────────────────────────────────────────
@@ -1978,7 +2762,7 @@ var hcMini = (Base) => class extends Base {
         '<div class="titles"><div class="name">' + hcEsc(m.name) + '</div></div>' +
         `<span class="st" title="${hcEsc(m.statusText)}"><span class="dot"></span><span class="stt">${hcEsc(m.statusText)}</span></span>` + this._zoomButton() +
       '</div>' +
-      '<div class="content">' + hcPicture(m.art, m.state, !c.icon) +
+      '<div class="content">' + hcPicture(m.art, m.state, !c.icon, this._lit) +
         '<div class="info">' + mstate + bar + lines.join('') + '</div>' +
         (btns.length ? `<div class="mcontrols">${btns.join('')}</div>` : '') +
       '</div>' + errorHtml +
@@ -1990,7 +2774,9 @@ class HomeConnectDishwasherMiniCard extends hcMini(HomeConnectDishwasherCard) {}
 
 class HomeConnectWasherMiniCard extends hcMini(HomeConnectWasherCard) {}
 
-// ── home-connect-card-editor (visual editor, built on HA's ha-form) ──────────
+class SmartApplianceMiniCard extends hcMini(SmartApplianceCard) {}
+
+// ── smart-appliance-card-editor (visual editor, built on HA's ha-form) ──────────
 var HC_EDITOR_DEFAULTS = { show_program: true, show_controls: true, show_options: true, show_alerts: true, show_power: true, zoom: true };
 
 class HomeConnectCardEditor extends HTMLElement {
@@ -2015,16 +2801,25 @@ class HomeConnectCardEditor extends HTMLElement {
 
   _schema() {
     var t = (k) => hcT(this._lang(), k);
-    var kind = this.kind || (/-washer-/.test(this._config.type || '') ? 'washer' : 'dishwasher');
+    // The former per-appliance card types fix the kind; the single card follows the appliance picked.
+    var kind = this.kind || this._config.kind || HC_KINDS.find((k) => new RegExp(`-${k.replace(/_/g, '-')}-(mini-)?card$`).test(this._config.type || '')) || null;
     var domains = { operation_state: 'sensor', door: 'sensor', progress: 'sensor', finish_time: 'sensor',
       selected_program: 'select', active_program: 'select', power: 'switch', stop: 'button',
       pause: 'button', resume: 'button', remote_start: 'binary_sensor', remote_control: 'binary_sensor', connectivity: 'binary_sensor',
       salt: 'sensor', rinse_aid: 'sensor' };
     // Pause / resume only exist on washers, salt / rinse aid only on dishwashers.
     var only = { pause: 'washer', resume: 'washer', salt: 'dishwasher', rinse_aid: 'dishwasher' };
-    var roles = HC_OVERRIDABLE.filter((r) => !only[r] || only[r] === kind);
+    var roles = HC_OVERRIDABLE.filter((r) => !only[r] || !kind || only[r] === kind);
+    var kinds = HC_KINDS.map((k) => ({ value: k, label: t(k) }));
+    var brands = Object.keys(HC_BRANDS).map((k) => ({ value: k, label: HC_BRANDS[k].name }));
     return [
-      { name: 'device_id', selector: { device: { integration: 'home_connect' } } },
+      { name: 'device_id', selector: { device: { filter: HC_PLATFORMS.map((i) => ({ integration: i })) } } },
+      {
+        type: 'grid', name: '', schema: [
+          { name: 'kind', selector: { select: { mode: 'dropdown', options: kinds } } },
+          { name: 'brand', selector: { select: { mode: 'dropdown', options: brands } } },
+        ],
+      },
       {
         type: 'grid', name: '', schema: [
           { name: 'name', selector: { text: {} } },
@@ -2097,39 +2892,29 @@ class HomeConnectCardEditor extends HTMLElement {
   }
 }
 
-if (!customElements.get('home-connect-card-editor')) {
-  customElements.define('home-connect-card-editor', HomeConnectCardEditor);
+if (!customElements.get('smart-appliance-card-editor')) {
+  customElements.define('smart-appliance-card-editor', HomeConnectCardEditor);
 }
 
 window.customCards = window.customCards || [];
-if (!customElements.get('home-connect-dishwasher-card')) {
-  customElements.define('home-connect-dishwasher-card', HomeConnectDishwasherCard);
-  window.customCards.push({
-    type: 'home-connect-dishwasher-card',
-    name: 'Home Connect Dishwasher Card',
-    description: 'Dishwasher card for the Home Connect integration (Bosch, Siemens, Neff, Gaggenau)',
-    preview: true,
-    documentationURL: 'https://github.com/juju35/ha-home-connect-card',
-  });
-}
-if (!customElements.get('home-connect-washer-card')) {
-  customElements.define('home-connect-washer-card', HomeConnectWasherCard);
-  window.customCards.push({
-    type: 'home-connect-washer-card',
-    name: 'Home Connect Washer Card',
-    description: 'Washing machine card for the Home Connect integration (Bosch, Siemens, Neff, Gaggenau)',
-    preview: true,
-    documentationURL: 'https://github.com/juju35/ha-home-connect-card',
-  });
-}
-
+var HC_DOCS = 'https://github.com/juju35/ha-smart-appliance-card';
 [
-  ['home-connect-dishwasher-mini-card', HomeConnectDishwasherMiniCard, 'Home Connect Dishwasher Mini Card', 'Compact dishwasher card that unfolds into the full card'],
-  ['home-connect-washer-mini-card', HomeConnectWasherMiniCard, 'Home Connect Washer Mini Card', 'Compact washing machine card that unfolds into the full card'],
+  ['smart-appliance-card', SmartApplianceCard, 'Smart Appliance Card',
+    'Animated card for washers, dryers, dishwashers, ovens, coffee machines, hoods, fridges… (Home Connect, Miele, SmartThings, LG ThinQ, Whirlpool, Matter)'],
+  ['smart-appliance-mini-card', SmartApplianceMiniCard, 'Smart Appliance Mini Card', 'Compact appliance card that unfolds into the full card'],
 ].forEach(([type, cls, name, description]) => {
   if (customElements.get(type)) return;
   customElements.define(type, cls);
-  window.customCards.push({ type, name, description, preview: true, documentationURL: 'https://github.com/juju35/ha-home-connect-card' });
+  window.customCards.push({ type, name, description, preview: true, documentationURL: HC_DOCS });
+});
+// The former Home Connect card types keep working in existing dashboards; they are no longer offered in the card picker.
+[
+  ['home-connect-dishwasher-card', HomeConnectDishwasherCard],
+  ['home-connect-washer-card', HomeConnectWasherCard],
+  ['home-connect-dishwasher-mini-card', HomeConnectDishwasherMiniCard],
+  ['home-connect-washer-mini-card', HomeConnectWasherMiniCard],
+].forEach(([type, cls]) => {
+  if (!customElements.get(type)) customElements.define(type, cls);
 });
 
-console.info(`%c HOME-CONNECT-CARD %c v${HOME_CONNECT_CARD_VERSION} `, 'color:#fff;background:#1e88e5;font-weight:700', 'color:#1e88e5;background:#fff');
+console.info(`%c SMART-APPLIANCE-CARD %c v${SMART_APPLIANCE_CARD_VERSION} `, 'color:#fff;background:#1e88e5;font-weight:700', 'color:#1e88e5;background:#fff');
