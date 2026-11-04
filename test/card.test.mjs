@@ -185,7 +185,8 @@ test("editor lists the connectivity, salt and rinse aid overrides where they app
   assert.ok(!roles("washer").includes("salt"));
 });
 
-const LANGS = ["fr", "de", "es", "sr", "sr-Latn", "it", "nl", "pt", "pl"];
+const NEW_LANGS = ["ro", "da", "sv", "bg", "ru", "uk", "hu", "ga", "sk", "cs", "sl", "mt", "lv", "el"];
+const LANGS = ["fr", "de", "es", "sr", "sr-Latn", "it", "nl", "pt", "pl", ...NEW_LANGS];
 
 test("I18N parity: every language has exactly the English keys, array lengths and placeholders, and no empty value", () => {
   const { HcI18n } = loadCard("smart-appliance-card.js", ["HcI18n"]);
@@ -212,6 +213,16 @@ test("Serbian: sr is all Cyrillic and sr-Latn all Latin, brand names and placeho
   for (const [k, v] of Object.entries(HcI18n["sr-Latn"])) assert.doesNotMatch(strip(v), /[\u0400-\u04FF]/, `sr-Latn.${k}`);
 });
 
+test("Bulgarian, Russian and Ukrainian are all Cyrillic, Greek all Greek, brand names and placeholders aside", () => {
+  const { HcI18n } = loadCard("smart-appliance-card.js", ["HcI18n"]);
+  const strip = (s) => String(s).replace(/Home Connect|Home Assistant|Miele|SmartThings|LG ThinQ|Whirlpool|Matter|Maytag|KitchenAid|Styler|\{\w+\}/g, "");
+  for (const lang of ["bg", "ru", "uk", "el"]) {
+    for (const [k, v] of Object.entries(HcI18n[lang])) assert.doesNotMatch(strip(v), /[A-Za-z]/, `${lang}.${k}`);
+  }
+  for (const lang of ["bg", "ru", "uk"]) assert.match(HcI18n[lang].washer, /^[\u0400-\u04FF ]+$/, `${lang}.washer`);
+  assert.match(HcI18n.el.washer, /^[\u0370-\u03FF\u1F00-\u1FFF ]+$/, "el.washer");
+});
+
 test("language resolution: full code if translated, else the base language, else English", () => {
   const lang = (code) => {
     const card = new HomeConnectWasherCard();
@@ -227,6 +238,11 @@ test("language resolution: full code if translated, else the base language, else
   // No Brazilian dictionary: pt-BR falls back to European Portuguese on purpose.
   assert.equal(lang("pt-BR"), "pt");
   assert.equal(lang("pl-PL"), "pl");
+  for (const code of NEW_LANGS) assert.equal(lang(code), code);
+  assert.equal(lang("ro-RO"), "ro");
+  assert.equal(lang("sv-SE"), "sv");
+  assert.equal(lang("cs-CZ"), "cs");
+  assert.equal(lang("el-GR"), "el");
   assert.equal(lang("ja"), "en");
   // Without a language option the card follows Home Assistant, sr-Latn included.
   const card = new HomeConnectWasherCard();
@@ -239,9 +255,11 @@ test("language resolution: full code if translated, else the base language, else
   assert.equal(editor("washer", { language: "sr" }, "fr")._lang(), "sr");
   assert.equal(editor("washer", {}, "pt-BR")._lang(), "pt");
   assert.equal(editor("washer", {}, "pl-PL")._lang(), "pl");
+  assert.equal(editor("washer", {}, "uk-UA")._lang(), "uk");
+  assert.equal(editor("washer", {}, "hu")._lang(), "hu");
 });
 
-test("editor offers every language, Italiano, Nederlands, Português (Portugal) and Polski last, and follows them", () => {
+test("editor offers every language, from Français to Ελληνικά, and follows them", () => {
   const options = editor("washer", {})._schema().find((s) => s.name === "language").selector.select.options;
   assert.deepEqual(JSON.parse(JSON.stringify(options)), [
     { value: "fr", label: "Français" },
@@ -254,16 +272,50 @@ test("editor offers every language, Italiano, Nederlands, Português (Portugal) 
     { value: "nl", label: "Nederlands" },
     { value: "pt", label: "Português (Portugal)" },
     { value: "pl", label: "Polski" },
+    { value: "ro", label: "Română" },
+    { value: "da", label: "Dansk" },
+    { value: "sv", label: "Svenska" },
+    { value: "bg", label: "Български" },
+    { value: "ru", label: "Русский" },
+    { value: "uk", label: "Українська" },
+    { value: "hu", label: "Magyar" },
+    { value: "ga", label: "Gaeilge" },
+    { value: "sk", label: "Slovenčina" },
+    { value: "cs", label: "Čeština" },
+    { value: "sl", label: "Slovenščina" },
+    { value: "mt", label: "Malti" },
+    { value: "lv", label: "Latviešu" },
+    { value: "el", label: "Ελληνικά" },
   ]);
   const label = (language) => editor("washer", { language })._form.computeLabel({ name: "language" });
   assert.equal(label("it"), "Lingua");
   assert.equal(label("nl"), "Taal");
   assert.equal(label("pt"), "Idioma");
   assert.equal(label("pl"), "Język");
+  assert.equal(label("ro"), "Limbă");
+  assert.equal(label("da"), "Sprog");
+  assert.equal(label("sv"), "Språk");
+  assert.equal(label("bg"), "Език");
+  assert.equal(label("ru"), "Язык");
+  assert.equal(label("uk"), "Мова");
+  assert.equal(label("hu"), "Nyelv");
+  assert.equal(label("ga"), "Teanga");
+  assert.equal(label("sk"), "Jazyk");
+  assert.equal(label("cs"), "Jazyk");
+  assert.equal(label("sl"), "Jezik");
+  assert.equal(label("mt"), "Lingwa");
+  assert.equal(label("lv"), "Valoda");
+  assert.equal(label("el"), "Γλώσσα");
   const card = new HomeConnectWasherCard();
   card.setConfig({});
   card.hass = { ...mockHass(), language: "pl" };
   assert.match(card.shadowRoot.innerHTML, /Pralka|Pracuje/);
+  for (const [language, re] of [["ru", /Стиральная машина|Работает/], ["el", /Πλυντήριο ρούχων|Σε λειτουργία/], ["cs", /Pračka|V provozu/]]) {
+    const c = new HomeConnectWasherCard();
+    c.setConfig({});
+    c.hass = { ...mockHass(), language };
+    assert.match(c.shadowRoot.innerHTML, re, language);
+  }
 });
 
 test("editor offers Српски and Srpski (latinica) and follows them", () => {

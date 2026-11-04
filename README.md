@@ -44,7 +44,7 @@ Pick the appliance: the card works out its type and its brand, and finds all its
 - Temperatures of fridges, freezers and wine cabinets, and of ovens while cooking
 - Door state, salt and rinse aid alerts, coffee machine bean container, water tank and drip tray alerts
 - Visual editor in the dashboard UI (no YAML needed)
-- English, French, German, Spanish, Serbian (Cyrillic and Latin), Italian, Dutch, European Portuguese and Polish, follows the Home Assistant language
+- English, French, German, Spanish, Serbian (Cyrillic and Latin), Italian, Dutch, European Portuguese, Polish, Romanian, Danish, Swedish, Bulgarian, Russian, Ukrainian, Hungarian, Irish, Slovak, Czech, Slovenian, Maltese, Latvian and Greek, follows the Home Assistant language
 - Light and dark theme compatible
 - Single file, no dependencies, HACS-ready
 
@@ -186,7 +186,7 @@ entities:
 | `show_alerts` | ❌ | `true` | Show salt, rinse aid and coffee machine alerts |
 | `show_power` | ❌ | `true` | Show the power button (turn off for appliances that can't be switched on / off remotely) |
 | `zoom` | ❌ | `true` | Mini cards only: detail button at the top right that unfolds the full card (a click elsewhere folds it back) |
-| `language` | ❌ | Auto | Force language: `fr`, `en`, `de`, `es`, `sr`, `sr-Latn`, `it`, `nl`, `pt` or `pl` (auto-detects from HA settings) |
+| `language` | ❌ | Auto | Force language: `fr`, `en`, `de`, `es`, `sr`, `sr-Latn`, `it`, `nl`, `pt`, `pl`, `ro`, `da`, `sv`, `bg`, `ru`, `uk`, `hu`, `ga`, `sk`, `cs`, `sl`, `mt`, `lv` or `el` (auto-detects from HA settings) |
 | `entities` | ❌ | Auto | Override detected entities (see below) |
 
 ### Entity overrides
@@ -386,6 +386,20 @@ The card auto-detects the language from your Home Assistant settings. Currently 
 | Nederlands | `nl` |
 | Português (Portugal), also used for `pt-BR` | `pt` |
 | Polski | `pl` |
+| Română | `ro` |
+| Dansk | `da` |
+| Svenska | `sv` |
+| Български | `bg` |
+| Русский | `ru` |
+| Українська | `uk` |
+| Magyar | `hu` |
+| Gaeilge | `ga` |
+| Slovenčina | `sk` |
+| Čeština | `cs` |
+| Slovenščina | `sl` |
+| Malti | `mt` |
+| Latviešu | `lv` |
+| Ελληνικά | `el` |
 
 Contributions for additional languages are welcome!
 
