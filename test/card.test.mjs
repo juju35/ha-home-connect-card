@@ -306,7 +306,7 @@ test("editor offers every language, from Français to Ελληνικά, and foll
   card.setConfig({});
   card.hass = { ...mockHass(), language: "pl" };
   assert.match(card.shadowRoot.innerHTML, /Pralka|Pracuje/);
-  for (const [language, re] of [["ru", /Стиральная машина|Работает/], ["el", /Πλυντήριο ρούχων|Σε λειτουργία/], ["cs", /Pračka|V provozu/]]) {
+  for (const [language, re] of [["ru", /Стиральная машина|Работает/], ["el", /Πλυντήριο ρούχων|Λειτουργεί/], ["cs", /Pračka|V provozu/]]) {
     const c = new HomeConnectWasherCard();
     c.setConfig({});
     c.hass = { ...mockHass(), language };
