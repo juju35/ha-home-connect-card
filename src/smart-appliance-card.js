@@ -2882,19 +2882,31 @@ var HC_ART = {
     '<g class="heat" fill="none" stroke="#ffccbc" stroke-width="1.3" stroke-linecap="round" opacity=".8"><path d="M18 48q-2-3 0-6t0-6"/>' +
     '<path d="M24 48q-2-3 0-6t0-6"/><path d="M53 34q-2-3 0-6t0-6"/></g>' +
     '<path d="M16 32h20" stroke="#fff" stroke-opacity=".18" stroke-width="2" stroke-linecap="round"/></svg>',
-  // Microwave: the inside lights up and the plate turns.
+  // Microwave: the inside lights up warm, the bowl turns on the plate and steams.
   microwave: '<svg viewBox="0 0 80 94" aria-hidden="true"><defs><linearGradient id="hc-mb" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#f7f8fa"/>' +
-    '<stop offset="1" stop-color="#cfd5dc"/></linearGradient><radialGradient id="hc-mg" cx=".5" cy=".5" r=".7"><stop offset="0" stop-color="#fff3c4"/>' +
-    '<stop offset="1" stop-color="#ffb74d" stop-opacity=".35"/></radialGradient></defs>' +
+    '<stop offset="1" stop-color="#cfd5dc"/></linearGradient><radialGradient id="hc-mg" cx=".5" cy=".62" r=".75"><stop offset="0" stop-color="#fffbea"/>' +
+    '<stop offset=".55" stop-color="#fff0c2"/><stop offset="1" stop-color="#ffd27a"/></radialGradient>' +
+    '<pattern id="hc-mm" width="3" height="3" patternUnits="userSpaceOnUse"><circle cx="1.5" cy="1.5" r=".45" fill="#8a6a2a" opacity=".12"/></pattern>' +
+    '<clipPath id="hc-mc"><rect x="9" y="27" width="46" height="40" rx="3"/></clipPath></defs>' +
     '<rect x="4" y="22" width="72" height="50" rx="6" fill="url(#hc-mb)" stroke="#bac2cb" stroke-width="1.2"/>' +
-    '<rect x="9" y="27" width="46" height="40" rx="3" fill="#1b222b"/><rect class="mwlight" x="9" y="27" width="46" height="40" rx="3" fill="url(#hc-mg)"/>' +
-    '<g class="plate"><ellipse cx="32" cy="58" rx="16" ry="3.4" fill="#e3e7ec" opacity=".85"/>' +
-    '<rect x="25" y="50" width="14" height="8" rx="3" fill="#ffffff"/><path d="M26 51h12" stroke="#ff8a65" stroke-width="2"/></g>' +
+    '<rect x="9" y="27" width="46" height="40" rx="3" fill="#1b222b"/><g clip-path="url(#hc-mc)">' +
+    '<rect class="mwlight" x="9" y="27" width="46" height="40" fill="url(#hc-mg)"/>' +
+    '<g class="waves" fill="none" stroke="#e0a83a" stroke-width="1" stroke-linecap="round"><path d="M14 34q2 2 0 4t0 4"/><path d="M50 34q2 2 0 4t0 4"/></g>' +
+    '<ellipse cx="32" cy="61" rx="17" ry="3.6" fill="#e9edf1" stroke="#c4ccd5" stroke-width=".8"/>' +
+    '<ellipse class="mark" cx="32" cy="61" rx="2" ry=".7" fill="#aab4bf"/><g class="food">' +
+    '<path d="M24 53.5h16q-.6 6.5-8 6.5t-8-6.5z" fill="#fff" stroke="#d3d9e0" stroke-width=".6"/>' +
+    '<ellipse cx="32" cy="53.5" rx="8" ry="1.7" fill="#ff8a65"/>' +
+    '<path d="M26.5 56.5q5.5 1.6 11 0" stroke="#4fc3f7" stroke-width="1.1" fill="none" stroke-linecap="round"/></g>' +
+    '<g class="heat" fill="none" stroke="#d9a441" stroke-width="1.2" stroke-linecap="round"><path d="M29 49q-1.6-2.2 0-4.4t0-4.4"/>' +
+    '<path d="M32.5 48q-1.6-2.2 0-4.4t0-4.4"/><path d="M36 49q-1.6-2.2 0-4.4t0-4.4"/></g><rect x="9" y="27" width="46" height="40" fill="url(#hc-mm)"/>' +
+    '<path d="M12 30l12 17" stroke="#fff" stroke-opacity=".16" stroke-width="3.5" stroke-linecap="round"/></g>' +
+    '<rect x="9" y="27" width="46" height="40" rx="3" fill="none" stroke="#9aa5b1" stroke-width="1"/>' +
     '<rect x="60" y="28" width="11" height="6" rx="1.5" fill="#1d2632"/><rect class="led" x="61.5" y="30" width="6" height="2" rx="1"/>' +
-    '<circle cx="65.5" cy="44" r="4" fill="#fff" stroke="#aeb7c2" stroke-width="1.2"/><g fill="#aeb7c2"><circle cx="62" cy="54" r="1.4"/>' +
+    '<circle cx="65.5" cy="44" r="4" fill="#fff" stroke="#aeb7c2" stroke-width="1.2"/>' +
+    '<path d="M65.5 44l1.8-2" stroke="#7d8894" stroke-width="1" stroke-linecap="round"/><g fill="#aeb7c2"><circle cx="62" cy="54" r="1.4"/>' +
     '<circle cx="66" cy="54" r="1.4"/><circle cx="70" cy="54" r="1.4"/><circle cx="62" cy="59" r="1.4"/><circle cx="66" cy="59" r="1.4"/>' +
-    '<circle cx="70" cy="59" r="1.4"/></g><path d="M13 30l10 14" stroke="#fff" stroke-opacity=".14" stroke-width="3" stroke-linecap="round"/>' +
-    '<rect x="10" y="72" width="8" height="3" rx="1" fill="#8f9aa6"/><rect x="62" y="72" width="8" height="3" rx="1" fill="#8f9aa6"/></svg>',
+    '<circle cx="70" cy="59" r="1.4"/></g><rect x="10" y="72" width="8" height="3" rx="1" fill="#8f9aa6"/>' +
+    '<rect x="62" y="72" width="8" height="3" rx="1" fill="#8f9aa6"/></svg>',
   // Freezer: frost sparkles and cold air flows while super freeze runs.
   freezer: '<svg viewBox="0 0 80 94" aria-hidden="true"><defs><linearGradient id="hc-zb" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#e3e7ec"/>' +
     '<stop offset=".5" stop-color="#ffffff"/><stop offset="1" stop-color="#d5dbe2"/></linearGradient></defs>' +
@@ -3608,12 +3620,18 @@ class HomeConnectBaseCard extends HTMLElement {
       '@keyframes hc-pour { 0%, 100% { opacity: 0; } 20%, 80% { opacity: 1; } }' +
       '@keyframes hc-fill { 0% { transform: scaleY(.4); } 70%, 100% { transform: scaleY(3.4); } }' +
       '.picture .zones { opacity: 0; transition: opacity .6s; } .picture .mwlight { opacity: 0; transition: opacity .6s; }' +
-      '.picture .plate, .picture .sway { transform-box: view-box; } .picture .plate { transform-origin: 32px 58px; } .picture .sway { transform-origin: 40px 16px; }' +
+      '.picture .food, .picture .mark, .picture .sway { transform-box: view-box; } .picture .food, .picture .mark { transform-origin: 32px 58px; } .picture .sway { transform-origin: 40px 16px; }' +
+      '.picture .waves path { opacity: 0; }' +
       '.picture.running .zones { opacity: 1; animation: hc-glow 1.6s ease-in-out infinite alternate; }' +
-      '.picture.running .mwlight { opacity: 1; animation: hc-glow 2s ease-in-out infinite alternate; }' +
-      '.picture.running .plate { animation: hc-turn 3s ease-in-out infinite; }' +
+      '.picture.running .mwlight { opacity: 1; animation: hc-hum 2.4s ease-in-out infinite alternate; }' +
+      '.picture.running .food { animation: hc-orbit 4s linear infinite; } .picture.running .mark { animation: hc-mark 4s linear infinite; }' +
+      '.picture.running .waves path { animation: hc-zap 1.2s ease-in-out infinite; } .picture.running .waves path:nth-child(2) { animation-delay: .6s; }' +
       '.picture.running .sway { animation: hc-sway 2.4s ease-in-out infinite; }' +
-      '@keyframes hc-turn { 0%, 100% { transform: scaleX(1); } 50% { transform: scaleX(-1); } }' +
+      // The bowl sits off-centre on the turntable: it circles a flattened ellipse, a little smaller at the back.
+      '@keyframes hc-orbit { 0.0% { transform: translate(0.00px, -1.10px) scale(0.950); } 8.33% { transform: translate(1.75px, -0.95px) scale(0.957); } 16.67% { transform: translate(3.03px, -0.55px) scale(0.975); } 25.0% { transform: translate(3.50px, -0.00px) scale(1.000); } 33.33% { transform: translate(3.03px, 0.55px) scale(1.025); } 41.67% { transform: translate(1.75px, 0.95px) scale(1.043); } 50.0% { transform: translate(0.00px, 1.10px) scale(1.050); } 58.33% { transform: translate(-1.75px, 0.95px) scale(1.043); } 66.67% { transform: translate(-3.03px, 0.55px) scale(1.025); } 75.0% { transform: translate(-3.50px, 0.00px) scale(1.000); } 83.33% { transform: translate(-3.03px, -0.55px) scale(0.975); } 91.67% { transform: translate(-1.75px, -0.95px) scale(0.957); } 100.0% { transform: translate(-0.00px, -1.10px) scale(0.950); } }' +
+      '@keyframes hc-mark { 0.0% { transform: translate(0.00px, -2.60px); opacity: 0.80; } 8.33% { transform: translate(7.00px, -2.25px); opacity: 0.77; } 16.67% { transform: translate(12.12px, -1.30px); opacity: 0.69; } 25.0% { transform: translate(14.00px, -0.00px); opacity: 0.57; } 33.33% { transform: translate(12.12px, 1.30px); opacity: 0.46; } 41.67% { transform: translate(7.00px, 2.25px); opacity: 0.38; } 50.0% { transform: translate(0.00px, 2.60px); opacity: 0.35; } 58.33% { transform: translate(-7.00px, 2.25px); opacity: 0.38; } 66.67% { transform: translate(-12.12px, 1.30px); opacity: 0.46; } 75.0% { transform: translate(-14.00px, 0.00px); opacity: 0.57; } 83.33% { transform: translate(-12.12px, -1.30px); opacity: 0.69; } 91.67% { transform: translate(-7.00px, -2.25px); opacity: 0.77; } 100.0% { transform: translate(-0.00px, -2.60px); opacity: 0.80; } }' +
+      '@keyframes hc-hum { from { opacity: .9; } to { opacity: 1; } }' +
+      '@keyframes hc-zap { 0%, 100% { opacity: 0; } 50% { opacity: .55; } }' +
       '@keyframes hc-sway { 0%, 100% { transform: rotate(-3deg); } 50% { transform: rotate(3deg); } }' +
       '@media (prefers-reduced-motion: reduce) { .picture.running *, .pbadge, .pbadge *, .sparkles path { animation: none !important; } .sparkles path { opacity: 1; } .picture.running .floor { opacity: 1; } }' +
       '.badge { width: 56px; height: 56px; border-radius: 50%; display: flex; align-items: center; justify-content: center;' +
