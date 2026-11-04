@@ -5,20 +5,20 @@
 [![Validate](https://github.com/juju35/ha-smart-appliance-card/actions/workflows/validate.yml/badge.svg)](https://github.com/juju35/ha-smart-appliance-card/actions/workflows/validate.yml)
 [![Lint](https://github.com/juju35/ha-smart-appliance-card/actions/workflows/lint.yml/badge.svg)](https://github.com/juju35/ha-smart-appliance-card/actions/workflows/lint.yml)
 [![Release](https://img.shields.io/github/v/release/juju35/ha-smart-appliance-card)](https://github.com/juju35/ha-smart-appliance-card/releases/latest)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://github.com/juju35/ha-smart-appliance-card/blob/main/LICENSE)
 [![Buy Me a Coffee](https://img.shields.io/badge/Buy%20Me%20a%20Coffee-FFDD00?logo=buymeacoffee&logoColor=black)](https://buymeacoffee.com/julienstep9)
 
 <p align="center">
-  <img src="logos/bosch.svg" alt="Bosch" height="20">&nbsp;&nbsp;
-  <img src="logos/siemens.svg" alt="Siemens" height="15">&nbsp;&nbsp;
-  <img src="logos/neff.svg" alt="Neff" height="22">&nbsp;&nbsp;
-  <img src="logos/gaggenau.svg" alt="Gaggenau" height="14">
+  <img src="https://raw.githubusercontent.com/juju35/ha-smart-appliance-card/main/logos/bosch.svg" alt="Bosch" height="20">&nbsp;&nbsp;
+  <img src="https://raw.githubusercontent.com/juju35/ha-smart-appliance-card/main/logos/siemens.svg" alt="Siemens" height="15">&nbsp;&nbsp;
+  <img src="https://raw.githubusercontent.com/juju35/ha-smart-appliance-card/main/logos/neff.svg" alt="Neff" height="22">&nbsp;&nbsp;
+  <img src="https://raw.githubusercontent.com/juju35/ha-smart-appliance-card/main/logos/gaggenau.svg" alt="Gaggenau" height="14">
   <br><br>
-  <img src="logos/miele.svg" alt="Miele" height="20">&nbsp;&nbsp;
-  <img src="logos/samsung.svg" alt="Samsung" height="15">&nbsp;&nbsp;
-  <img src="logos/lg.svg" alt="LG" height="26">&nbsp;&nbsp;
-  <img src="logos/whirlpool.svg" alt="Whirlpool" height="20">&nbsp;&nbsp;
-  <img src="logos/kitchenaid.svg" alt="KitchenAid" height="13">
+  <img src="https://raw.githubusercontent.com/juju35/ha-smart-appliance-card/main/logos/miele.svg" alt="Miele" height="20">&nbsp;&nbsp;
+  <img src="https://raw.githubusercontent.com/juju35/ha-smart-appliance-card/main/logos/samsung.svg" alt="Samsung" height="15">&nbsp;&nbsp;
+  <img src="https://raw.githubusercontent.com/juju35/ha-smart-appliance-card/main/logos/lg.svg" alt="LG" height="26">&nbsp;&nbsp;
+  <img src="https://raw.githubusercontent.com/juju35/ha-smart-appliance-card/main/logos/whirlpool.svg" alt="Whirlpool" height="20">&nbsp;&nbsp;
+  <img src="https://raw.githubusercontent.com/juju35/ha-smart-appliance-card/main/logos/kitchenaid.svg" alt="KitchenAid" height="13">
 </p>
 
 Animated Lovelace cards for home appliances in Home Assistant: washing machines, tumble dryers, washer-dryers, dishwashers, ovens, microwaves, hobs, coffee machines, cooker hoods, fridges, freezers, wine cabinets and the LG Styler. They work with [Home Connect](https://www.home-assistant.io/integrations/home_connect/), [Miele](https://www.home-assistant.io/integrations/miele/), [SmartThings](https://www.home-assistant.io/integrations/smartthings/), [LG ThinQ](https://www.home-assistant.io/integrations/lg_thinq/), [Whirlpool](https://www.home-assistant.io/integrations/whirlpool/) and [Matter](https://www.home-assistant.io/integrations/matter/).
@@ -27,7 +27,7 @@ Pick the appliance: the card works out its type and its brand, and finds all its
 
 [![Open your Home Assistant instance and open a repository inside the Home Assistant Community Store.](https://my.home-assistant.io/badges/hacs_repository.svg)](https://my.home-assistant.io/redirect/hacs_repository/?owner=juju35&repository=ha-smart-appliance-card&category=plugin)
 
-| <img src="logos/bosch.svg" alt="" height="14"> Dishwasher | <img src="logos/siemens.svg" alt="" height="11"> Washing machine | <img src="logos/miele.svg" alt="" height="14"> Tumble dryer |
+| <img src="https://raw.githubusercontent.com/juju35/ha-smart-appliance-card/main/logos/bosch.svg" alt="" height="14"> Dishwasher | <img src="https://raw.githubusercontent.com/juju35/ha-smart-appliance-card/main/logos/siemens.svg" alt="" height="11"> Washing machine | <img src="https://raw.githubusercontent.com/juju35/ha-smart-appliance-card/main/logos/miele.svg" alt="" height="14"> Tumble dryer |
 |---|---|---|
 | ![Dishwasher card](https://raw.githubusercontent.com/juju35/ha-smart-appliance-card/main/screenshots/dishwasher.png) | ![Washing machine card](https://raw.githubusercontent.com/juju35/ha-smart-appliance-card/main/screenshots/washer.png) | ![Tumble dryer card](https://raw.githubusercontent.com/juju35/ha-smart-appliance-card/main/screenshots/dryer.png) |
 
@@ -226,119 +226,119 @@ The other states animate the badge on the illustration, the same for every appli
 
 | | Dishwasher | Washing machine |
 |---|---|---|
-| Finished | ![dishwasher finished](screenshots/dishwasher-finished.gif) | ![washer finished](screenshots/washer-finished.gif) |
-| Finished, dark | ![dishwasher finished dark](screenshots/dishwasher-finished-dark.gif) | ![washer finished dark](screenshots/washer-finished-dark.gif) |
-| Paused | ![dishwasher paused](screenshots/dishwasher-paused.gif) | ![washer paused](screenshots/washer-paused.gif) |
-| Paused, dark | ![dishwasher paused dark](screenshots/dishwasher-paused-dark.gif) | ![washer paused dark](screenshots/washer-paused-dark.gif) |
-| Delayed start | ![dishwasher delayed start](screenshots/dishwasher-delayed.gif) | ![washer delayed start](screenshots/washer-delayed.gif) |
-| Delayed start, dark | ![dishwasher delayed start dark](screenshots/dishwasher-delayed-dark.gif) | ![washer delayed start dark](screenshots/washer-delayed-dark.gif) |
+| Finished | ![dishwasher finished](https://raw.githubusercontent.com/juju35/ha-smart-appliance-card/main/screenshots/dishwasher-finished.gif) | ![washer finished](https://raw.githubusercontent.com/juju35/ha-smart-appliance-card/main/screenshots/washer-finished.gif) |
+| Finished, dark | ![dishwasher finished dark](https://raw.githubusercontent.com/juju35/ha-smart-appliance-card/main/screenshots/dishwasher-finished-dark.gif) | ![washer finished dark](https://raw.githubusercontent.com/juju35/ha-smart-appliance-card/main/screenshots/washer-finished-dark.gif) |
+| Paused | ![dishwasher paused](https://raw.githubusercontent.com/juju35/ha-smart-appliance-card/main/screenshots/dishwasher-paused.gif) | ![washer paused](https://raw.githubusercontent.com/juju35/ha-smart-appliance-card/main/screenshots/washer-paused.gif) |
+| Paused, dark | ![dishwasher paused dark](https://raw.githubusercontent.com/juju35/ha-smart-appliance-card/main/screenshots/dishwasher-paused-dark.gif) | ![washer paused dark](https://raw.githubusercontent.com/juju35/ha-smart-appliance-card/main/screenshots/washer-paused-dark.gif) |
+| Delayed start | ![dishwasher delayed start](https://raw.githubusercontent.com/juju35/ha-smart-appliance-card/main/screenshots/dishwasher-delayed.gif) | ![washer delayed start](https://raw.githubusercontent.com/juju35/ha-smart-appliance-card/main/screenshots/washer-delayed.gif) |
+| Delayed start, dark | ![dishwasher delayed start dark](https://raw.githubusercontent.com/juju35/ha-smart-appliance-card/main/screenshots/dishwasher-delayed-dark.gif) | ![washer delayed start dark](https://raw.githubusercontent.com/juju35/ha-smart-appliance-card/main/screenshots/washer-delayed-dark.gif) |
 
 Door open, the dishwasher's door lowered on its racks, the washing machine's porthole swung aside; program options before starting; the mini card unfolded:
 
 | | Light | Dark |
 |---|---|---|
-| Dishwasher, door open | ![dishwasher door open](screenshots/dishwasher-open.png) | ![dishwasher door open dark](screenshots/dishwasher-open-dark.png) |
-| Washing machine, door open | ![washer door open](screenshots/washer-open.png) | ![washer door open dark](screenshots/washer-open-dark.png) |
-| Dishwasher program options | ![dishwasher with program options](screenshots/dishwasher-options.png) | ![dishwasher with program options dark](screenshots/dishwasher-options-dark.png) |
-| Mini card unfolded | ![washer mini card unfolded](screenshots/washer-mini-zoom.png) | ![washer mini card unfolded dark](screenshots/washer-mini-zoom-dark.png) |
+| Dishwasher, door open | ![dishwasher door open](https://raw.githubusercontent.com/juju35/ha-smart-appliance-card/main/screenshots/dishwasher-open.png) | ![dishwasher door open dark](https://raw.githubusercontent.com/juju35/ha-smart-appliance-card/main/screenshots/dishwasher-open-dark.png) |
+| Washing machine, door open | ![washer door open](https://raw.githubusercontent.com/juju35/ha-smart-appliance-card/main/screenshots/washer-open.png) | ![washer door open dark](https://raw.githubusercontent.com/juju35/ha-smart-appliance-card/main/screenshots/washer-open-dark.png) |
+| Dishwasher program options | ![dishwasher with program options](https://raw.githubusercontent.com/juju35/ha-smart-appliance-card/main/screenshots/dishwasher-options.png) | ![dishwasher with program options dark](https://raw.githubusercontent.com/juju35/ha-smart-appliance-card/main/screenshots/dishwasher-options-dark.png) |
+| Mini card unfolded | ![washer mini card unfolded](https://raw.githubusercontent.com/juju35/ha-smart-appliance-card/main/screenshots/washer-mini-zoom.png) | ![washer mini card unfolded dark](https://raw.githubusercontent.com/juju35/ha-smart-appliance-card/main/screenshots/washer-mini-zoom-dark.png) |
 
-### <img src="logos/bosch.svg" alt="" height="22"> Bosch
+### <img src="https://raw.githubusercontent.com/juju35/ha-smart-appliance-card/main/logos/bosch.svg" alt="" height="22"> Bosch
 
 Home Connect: a dishwasher mid-cycle, spraying water and glowing on the floor, and a fridge-freezer in super cooling with its two setpoints.
 
 | | Light | Dark |
 |---|---|---|
-| Dishwasher | ![dishwasher](screenshots/dishwasher.png) | ![dishwasher dark](screenshots/dishwasher-dark.png) |
-| Dishwasher, at work | ![dishwasher, at work](screenshots/dishwasher-running.gif) | ![dishwasher, at work dark](screenshots/dishwasher-running-dark.gif) |
-| Fridge-freezer | ![fridge-freezer](screenshots/fridge.png) | ![fridge-freezer dark](screenshots/fridge-dark.png) |
-| Fridge-freezer, at work | ![fridge-freezer, at work](screenshots/fridge-running.gif) | ![fridge-freezer, at work dark](screenshots/fridge-running-dark.gif) |
-| Dishwasher mini card | ![dishwasher mini card](screenshots/dishwasher-mini.png) | ![dishwasher mini card dark](screenshots/dishwasher-mini-dark.png) |
-| Fridge-freezer mini card | ![fridge-freezer mini card](screenshots/mini-bosch.png) | ![fridge-freezer mini card dark](screenshots/mini-bosch-dark.png) |
+| Dishwasher | ![dishwasher](https://raw.githubusercontent.com/juju35/ha-smart-appliance-card/main/screenshots/dishwasher.png) | ![dishwasher dark](https://raw.githubusercontent.com/juju35/ha-smart-appliance-card/main/screenshots/dishwasher-dark.png) |
+| Dishwasher, at work | ![dishwasher, at work](https://raw.githubusercontent.com/juju35/ha-smart-appliance-card/main/screenshots/dishwasher-running.gif) | ![dishwasher, at work dark](https://raw.githubusercontent.com/juju35/ha-smart-appliance-card/main/screenshots/dishwasher-running-dark.gif) |
+| Fridge-freezer | ![fridge-freezer](https://raw.githubusercontent.com/juju35/ha-smart-appliance-card/main/screenshots/fridge.png) | ![fridge-freezer dark](https://raw.githubusercontent.com/juju35/ha-smart-appliance-card/main/screenshots/fridge-dark.png) |
+| Fridge-freezer, at work | ![fridge-freezer, at work](https://raw.githubusercontent.com/juju35/ha-smart-appliance-card/main/screenshots/fridge-running.gif) | ![fridge-freezer, at work dark](https://raw.githubusercontent.com/juju35/ha-smart-appliance-card/main/screenshots/fridge-running-dark.gif) |
+| Dishwasher mini card | ![dishwasher mini card](https://raw.githubusercontent.com/juju35/ha-smart-appliance-card/main/screenshots/dishwasher-mini.png) | ![dishwasher mini card dark](https://raw.githubusercontent.com/juju35/ha-smart-appliance-card/main/screenshots/dishwasher-mini-dark.png) |
+| Fridge-freezer mini card | ![fridge-freezer mini card](https://raw.githubusercontent.com/juju35/ha-smart-appliance-card/main/screenshots/mini-bosch.png) | ![fridge-freezer mini card dark](https://raw.githubusercontent.com/juju35/ha-smart-appliance-card/main/screenshots/mini-bosch-dark.png) |
 
-### <img src="logos/siemens.svg" alt="" height="16"> Siemens
+### <img src="https://raw.githubusercontent.com/juju35/ha-smart-appliance-card/main/logos/siemens.svg" alt="" height="16"> Siemens
 
 Home Connect: a washing machine ready with its program options, and a coffee machine pouring a cappuccino.
 
 | | Light | Dark |
 |---|---|---|
-| Washing machine | ![washing machine](screenshots/washer.png) | ![washing machine dark](screenshots/washer-dark.png) |
-| Washing machine, at work | ![washing machine, at work](screenshots/washer-running.gif) | ![washing machine, at work dark](screenshots/washer-running-dark.gif) |
-| Coffee machine | ![coffee machine](screenshots/coffee-machine.png) | ![coffee machine dark](screenshots/coffee-machine-dark.png) |
-| Coffee machine, at work | ![coffee machine, at work](screenshots/coffee-machine-running.gif) | ![coffee machine, at work dark](screenshots/coffee-machine-running-dark.gif) |
-| Washing machine mini card | ![washing machine mini card](screenshots/washer-mini.png) | ![washing machine mini card dark](screenshots/washer-mini-dark.png) |
-| Coffee machine mini card | ![coffee machine mini card](screenshots/mini-siemens.png) | ![coffee machine mini card dark](screenshots/mini-siemens-dark.png) |
+| Washing machine | ![washing machine](https://raw.githubusercontent.com/juju35/ha-smart-appliance-card/main/screenshots/washer.png) | ![washing machine dark](https://raw.githubusercontent.com/juju35/ha-smart-appliance-card/main/screenshots/washer-dark.png) |
+| Washing machine, at work | ![washing machine, at work](https://raw.githubusercontent.com/juju35/ha-smart-appliance-card/main/screenshots/washer-running.gif) | ![washing machine, at work dark](https://raw.githubusercontent.com/juju35/ha-smart-appliance-card/main/screenshots/washer-running-dark.gif) |
+| Coffee machine | ![coffee machine](https://raw.githubusercontent.com/juju35/ha-smart-appliance-card/main/screenshots/coffee-machine.png) | ![coffee machine dark](https://raw.githubusercontent.com/juju35/ha-smart-appliance-card/main/screenshots/coffee-machine-dark.png) |
+| Coffee machine, at work | ![coffee machine, at work](https://raw.githubusercontent.com/juju35/ha-smart-appliance-card/main/screenshots/coffee-machine-running.gif) | ![coffee machine, at work dark](https://raw.githubusercontent.com/juju35/ha-smart-appliance-card/main/screenshots/coffee-machine-running-dark.gif) |
+| Washing machine mini card | ![washing machine mini card](https://raw.githubusercontent.com/juju35/ha-smart-appliance-card/main/screenshots/washer-mini.png) | ![washing machine mini card dark](https://raw.githubusercontent.com/juju35/ha-smart-appliance-card/main/screenshots/washer-mini-dark.png) |
+| Coffee machine mini card | ![coffee machine mini card](https://raw.githubusercontent.com/juju35/ha-smart-appliance-card/main/screenshots/mini-siemens.png) | ![coffee machine mini card dark](https://raw.githubusercontent.com/juju35/ha-smart-appliance-card/main/screenshots/mini-siemens-dark.png) |
 
-### <img src="logos/neff.svg" alt="" height="18"> Neff
+### <img src="https://raw.githubusercontent.com/juju35/ha-smart-appliance-card/main/logos/neff.svg" alt="" height="18"> Neff
 
 Home Connect: an oven on hot air, its cavity temperature as a chip.
 
 | | Light | Dark |
 |---|---|---|
-| Oven | ![oven](screenshots/oven.png) | ![oven dark](screenshots/oven-dark.png) |
-| Oven, at work | ![oven, at work](screenshots/oven-running.gif) | ![oven, at work dark](screenshots/oven-running-dark.gif) |
-| Oven mini card | ![oven mini card](screenshots/mini-neff.png) | ![oven mini card dark](screenshots/mini-neff-dark.png) |
+| Oven | ![oven](https://raw.githubusercontent.com/juju35/ha-smart-appliance-card/main/screenshots/oven.png) | ![oven dark](https://raw.githubusercontent.com/juju35/ha-smart-appliance-card/main/screenshots/oven-dark.png) |
+| Oven, at work | ![oven, at work](https://raw.githubusercontent.com/juju35/ha-smart-appliance-card/main/screenshots/oven-running.gif) | ![oven, at work dark](https://raw.githubusercontent.com/juju35/ha-smart-appliance-card/main/screenshots/oven-running-dark.gif) |
+| Oven mini card | ![oven mini card](https://raw.githubusercontent.com/juju35/ha-smart-appliance-card/main/screenshots/mini-neff.png) | ![oven mini card dark](https://raw.githubusercontent.com/juju35/ha-smart-appliance-card/main/screenshots/mini-neff-dark.png) |
 
-### <img src="logos/gaggenau.svg" alt="" height="14"> Gaggenau
+### <img src="https://raw.githubusercontent.com/juju35/ha-smart-appliance-card/main/logos/gaggenau.svg" alt="" height="14"> Gaggenau
 
 Home Connect: a cooker hood venting at stage 2 with its lights on.
 
 | | Light | Dark |
 |---|---|---|
-| Cooker hood | ![cooker hood](screenshots/hood.png) | ![cooker hood dark](screenshots/hood-dark.png) |
-| Cooker hood, at work | ![cooker hood, at work](screenshots/hood-running.gif) | ![cooker hood, at work dark](screenshots/hood-running-dark.gif) |
-| Cooker hood mini card | ![cooker hood mini card](screenshots/mini-gaggenau.png) | ![cooker hood mini card dark](screenshots/mini-gaggenau-dark.png) |
+| Cooker hood | ![cooker hood](https://raw.githubusercontent.com/juju35/ha-smart-appliance-card/main/screenshots/hood.png) | ![cooker hood dark](https://raw.githubusercontent.com/juju35/ha-smart-appliance-card/main/screenshots/hood-dark.png) |
+| Cooker hood, at work | ![cooker hood, at work](https://raw.githubusercontent.com/juju35/ha-smart-appliance-card/main/screenshots/hood-running.gif) | ![cooker hood, at work dark](https://raw.githubusercontent.com/juju35/ha-smart-appliance-card/main/screenshots/hood-running-dark.gif) |
+| Cooker hood mini card | ![cooker hood mini card](https://raw.githubusercontent.com/juju35/ha-smart-appliance-card/main/screenshots/mini-gaggenau.png) | ![cooker hood mini card dark](https://raw.githubusercontent.com/juju35/ha-smart-appliance-card/main/screenshots/mini-gaggenau-dark.png) |
 
-### <img src="logos/miele.svg" alt="" height="22"> Miele
+### <img src="https://raw.githubusercontent.com/juju35/ha-smart-appliance-card/main/logos/miele.svg" alt="" height="22"> Miele
 
 Miele integration: a tumble dryer drying (progress from the elapsed and remaining times), a freezer in super freezing and a two-zone wine cabinet with its light on.
 
 | | Light | Dark |
 |---|---|---|
-| Tumble dryer | ![tumble dryer](screenshots/dryer.png) | ![tumble dryer dark](screenshots/dryer-dark.png) |
-| Tumble dryer, at work | ![tumble dryer, at work](screenshots/dryer-running.gif) | ![tumble dryer, at work dark](screenshots/dryer-running-dark.gif) |
-| Freezer | ![freezer](screenshots/freezer.png) | ![freezer dark](screenshots/freezer-dark.png) |
-| Freezer, at work | ![freezer, at work](screenshots/freezer-running.gif) | ![freezer, at work dark](screenshots/freezer-running-dark.gif) |
-| Wine cabinet | ![wine cabinet](screenshots/wine-cabinet.png) | ![wine cabinet dark](screenshots/wine-cabinet-dark.png) |
-| Wine cabinet, at work | ![wine cabinet, at work](screenshots/wine-cabinet-running.gif) | ![wine cabinet, at work dark](screenshots/wine-cabinet-running-dark.gif) |
-| Tumble dryer mini card | ![tumble dryer mini card](screenshots/mini-miele.png) | ![tumble dryer mini card dark](screenshots/mini-miele-dark.png) |
+| Tumble dryer | ![tumble dryer](https://raw.githubusercontent.com/juju35/ha-smart-appliance-card/main/screenshots/dryer.png) | ![tumble dryer dark](https://raw.githubusercontent.com/juju35/ha-smart-appliance-card/main/screenshots/dryer-dark.png) |
+| Tumble dryer, at work | ![tumble dryer, at work](https://raw.githubusercontent.com/juju35/ha-smart-appliance-card/main/screenshots/dryer-running.gif) | ![tumble dryer, at work dark](https://raw.githubusercontent.com/juju35/ha-smart-appliance-card/main/screenshots/dryer-running-dark.gif) |
+| Freezer | ![freezer](https://raw.githubusercontent.com/juju35/ha-smart-appliance-card/main/screenshots/freezer.png) | ![freezer dark](https://raw.githubusercontent.com/juju35/ha-smart-appliance-card/main/screenshots/freezer-dark.png) |
+| Freezer, at work | ![freezer, at work](https://raw.githubusercontent.com/juju35/ha-smart-appliance-card/main/screenshots/freezer-running.gif) | ![freezer, at work dark](https://raw.githubusercontent.com/juju35/ha-smart-appliance-card/main/screenshots/freezer-running-dark.gif) |
+| Wine cabinet | ![wine cabinet](https://raw.githubusercontent.com/juju35/ha-smart-appliance-card/main/screenshots/wine-cabinet.png) | ![wine cabinet dark](https://raw.githubusercontent.com/juju35/ha-smart-appliance-card/main/screenshots/wine-cabinet-dark.png) |
+| Wine cabinet, at work | ![wine cabinet, at work](https://raw.githubusercontent.com/juju35/ha-smart-appliance-card/main/screenshots/wine-cabinet-running.gif) | ![wine cabinet, at work dark](https://raw.githubusercontent.com/juju35/ha-smart-appliance-card/main/screenshots/wine-cabinet-running-dark.gif) |
+| Tumble dryer mini card | ![tumble dryer mini card](https://raw.githubusercontent.com/juju35/ha-smart-appliance-card/main/screenshots/mini-miele.png) | ![tumble dryer mini card dark](https://raw.githubusercontent.com/juju35/ha-smart-appliance-card/main/screenshots/mini-miele-dark.png) |
 
-### <img src="logos/samsung.svg" alt="" height="16"> Samsung
+### <img src="https://raw.githubusercontent.com/juju35/ha-smart-appliance-card/main/logos/samsung.svg" alt="" height="16"> Samsung
 
 SmartThings: a washing machine rinsing, Pause and Stop sent through its operating state.
 
 | | Light | Dark |
 |---|---|---|
-| Washing machine | ![washing machine](screenshots/samsung-washer.png) | ![washing machine dark](screenshots/samsung-washer-dark.png) |
-| Washing machine, at work | ![washing machine, at work](screenshots/samsung-washer-running.gif) | ![washing machine, at work dark](screenshots/samsung-washer-running-dark.gif) |
-| Washing machine mini card | ![washing machine mini card](screenshots/mini-samsung.png) | ![washing machine mini card dark](screenshots/mini-samsung-dark.png) |
+| Washing machine | ![washing machine](https://raw.githubusercontent.com/juju35/ha-smart-appliance-card/main/screenshots/samsung-washer.png) | ![washing machine dark](https://raw.githubusercontent.com/juju35/ha-smart-appliance-card/main/screenshots/samsung-washer-dark.png) |
+| Washing machine, at work | ![washing machine, at work](https://raw.githubusercontent.com/juju35/ha-smart-appliance-card/main/screenshots/samsung-washer-running.gif) | ![washing machine, at work dark](https://raw.githubusercontent.com/juju35/ha-smart-appliance-card/main/screenshots/samsung-washer-running-dark.gif) |
+| Washing machine mini card | ![washing machine mini card](https://raw.githubusercontent.com/juju35/ha-smart-appliance-card/main/screenshots/mini-samsung.png) | ![washing machine mini card dark](https://raw.githubusercontent.com/juju35/ha-smart-appliance-card/main/screenshots/mini-samsung-dark.png) |
 
-### <img src="logos/lg.svg" alt="" height="28"> LG
+### <img src="https://raw.githubusercontent.com/juju35/ha-smart-appliance-card/main/logos/lg.svg" alt="" height="28"> LG
 
 LG ThinQ: a WashCombo drying (progress from the finish time and total duration), a microwave, a hob and a Styler.
 
 | | Light | Dark |
 |---|---|---|
-| Washer-dryer | ![washer-dryer](screenshots/washer-dryer.png) | ![washer-dryer dark](screenshots/washer-dryer-dark.png) |
-| Washer-dryer, at work | ![washer-dryer, at work](screenshots/washer-dryer-running.gif) | ![washer-dryer, at work dark](screenshots/washer-dryer-running-dark.gif) |
-| Microwave | ![microwave](screenshots/microwave.png) | ![microwave dark](screenshots/microwave-dark.png) |
-| Microwave, at work | ![microwave, at work](screenshots/microwave-running.gif) | ![microwave, at work dark](screenshots/microwave-running-dark.gif) |
-| Hob | ![hob](screenshots/hob.png) | ![hob dark](screenshots/hob-dark.png) |
-| Hob, at work | ![hob, at work](screenshots/hob-running.gif) | ![hob, at work dark](screenshots/hob-running-dark.gif) |
-| Styler | ![styler](screenshots/styler.png) | ![styler dark](screenshots/styler-dark.png) |
-| Styler, at work | ![styler, at work](screenshots/styler-running.gif) | ![styler, at work dark](screenshots/styler-running-dark.gif) |
-| Styler mini card | ![styler mini card](screenshots/mini-lg.png) | ![styler mini card dark](screenshots/mini-lg-dark.png) |
+| Washer-dryer | ![washer-dryer](https://raw.githubusercontent.com/juju35/ha-smart-appliance-card/main/screenshots/washer-dryer.png) | ![washer-dryer dark](https://raw.githubusercontent.com/juju35/ha-smart-appliance-card/main/screenshots/washer-dryer-dark.png) |
+| Washer-dryer, at work | ![washer-dryer, at work](https://raw.githubusercontent.com/juju35/ha-smart-appliance-card/main/screenshots/washer-dryer-running.gif) | ![washer-dryer, at work dark](https://raw.githubusercontent.com/juju35/ha-smart-appliance-card/main/screenshots/washer-dryer-running-dark.gif) |
+| Microwave | ![microwave](https://raw.githubusercontent.com/juju35/ha-smart-appliance-card/main/screenshots/microwave.png) | ![microwave dark](https://raw.githubusercontent.com/juju35/ha-smart-appliance-card/main/screenshots/microwave-dark.png) |
+| Microwave, at work | ![microwave, at work](https://raw.githubusercontent.com/juju35/ha-smart-appliance-card/main/screenshots/microwave-running.gif) | ![microwave, at work dark](https://raw.githubusercontent.com/juju35/ha-smart-appliance-card/main/screenshots/microwave-running-dark.gif) |
+| Hob | ![hob](https://raw.githubusercontent.com/juju35/ha-smart-appliance-card/main/screenshots/hob.png) | ![hob dark](https://raw.githubusercontent.com/juju35/ha-smart-appliance-card/main/screenshots/hob-dark.png) |
+| Hob, at work | ![hob, at work](https://raw.githubusercontent.com/juju35/ha-smart-appliance-card/main/screenshots/hob-running.gif) | ![hob, at work dark](https://raw.githubusercontent.com/juju35/ha-smart-appliance-card/main/screenshots/hob-running-dark.gif) |
+| Styler | ![styler](https://raw.githubusercontent.com/juju35/ha-smart-appliance-card/main/screenshots/styler.png) | ![styler dark](https://raw.githubusercontent.com/juju35/ha-smart-appliance-card/main/screenshots/styler-dark.png) |
+| Styler, at work | ![styler, at work](https://raw.githubusercontent.com/juju35/ha-smart-appliance-card/main/screenshots/styler-running.gif) | ![styler, at work dark](https://raw.githubusercontent.com/juju35/ha-smart-appliance-card/main/screenshots/styler-running-dark.gif) |
+| Styler mini card | ![styler mini card](https://raw.githubusercontent.com/juju35/ha-smart-appliance-card/main/screenshots/mini-lg.png) | ![styler mini card dark](https://raw.githubusercontent.com/juju35/ha-smart-appliance-card/main/screenshots/mini-lg-dark.png) |
 
-### <img src="logos/whirlpool.svg" alt="" height="18"> Whirlpool, Maytag, <img src="logos/kitchenaid.svg" alt="" height="14"> KitchenAid
+### <img src="https://raw.githubusercontent.com/juju35/ha-smart-appliance-card/main/logos/whirlpool.svg" alt="" height="18"> Whirlpool, Maytag, <img src="https://raw.githubusercontent.com/juju35/ha-smart-appliance-card/main/logos/kitchenaid.svg" alt="" height="14"> KitchenAid
 
 Whirlpool integration, which doesn't say the brand: `brand: maytag` on a dryer, `brand: kitchenaid` on a wall oven baking, Stop through its button. No progress from this integration: the state stands alone with the finish time.
 
 | | Light | Dark |
 |---|---|---|
-| Tumble dryer (Maytag) | ![tumble dryer (maytag)](screenshots/maytag-dryer.png) | ![tumble dryer (maytag) dark](screenshots/maytag-dryer-dark.png) |
-| Tumble dryer (Maytag), at work | ![tumble dryer (maytag), at work](screenshots/maytag-dryer-running.gif) | ![tumble dryer (maytag), at work dark](screenshots/maytag-dryer-running-dark.gif) |
-| Wall oven (KitchenAid) | ![wall oven (kitchenaid)](screenshots/kitchenaid-oven.png) | ![wall oven (kitchenaid) dark](screenshots/kitchenaid-oven-dark.png) |
-| Wall oven (KitchenAid), at work | ![wall oven (kitchenaid), at work](screenshots/kitchenaid-oven-running.gif) | ![wall oven (kitchenaid), at work dark](screenshots/kitchenaid-oven-running-dark.gif) |
-| Wall oven mini card | ![wall oven mini card](screenshots/mini-whirlpool.png) | ![wall oven mini card dark](screenshots/mini-whirlpool-dark.png) |
+| Tumble dryer (Maytag) | ![tumble dryer (maytag)](https://raw.githubusercontent.com/juju35/ha-smart-appliance-card/main/screenshots/maytag-dryer.png) | ![tumble dryer (maytag) dark](https://raw.githubusercontent.com/juju35/ha-smart-appliance-card/main/screenshots/maytag-dryer-dark.png) |
+| Tumble dryer (Maytag), at work | ![tumble dryer (maytag), at work](https://raw.githubusercontent.com/juju35/ha-smart-appliance-card/main/screenshots/maytag-dryer-running.gif) | ![tumble dryer (maytag), at work dark](https://raw.githubusercontent.com/juju35/ha-smart-appliance-card/main/screenshots/maytag-dryer-running-dark.gif) |
+| Wall oven (KitchenAid) | ![wall oven (kitchenaid)](https://raw.githubusercontent.com/juju35/ha-smart-appliance-card/main/screenshots/kitchenaid-oven.png) | ![wall oven (kitchenaid) dark](https://raw.githubusercontent.com/juju35/ha-smart-appliance-card/main/screenshots/kitchenaid-oven-dark.png) |
+| Wall oven (KitchenAid), at work | ![wall oven (kitchenaid), at work](https://raw.githubusercontent.com/juju35/ha-smart-appliance-card/main/screenshots/kitchenaid-oven-running.gif) | ![wall oven (kitchenaid), at work dark](https://raw.githubusercontent.com/juju35/ha-smart-appliance-card/main/screenshots/kitchenaid-oven-running-dark.gif) |
+| Wall oven mini card | ![wall oven mini card](https://raw.githubusercontent.com/juju35/ha-smart-appliance-card/main/screenshots/mini-whirlpool.png) | ![wall oven mini card dark](https://raw.githubusercontent.com/juju35/ha-smart-appliance-card/main/screenshots/mini-whirlpool-dark.png) |
 
 ## How it works
 
@@ -368,7 +368,7 @@ Brand logos live in `logos/`, one `<brand>.svg` or `.png` per key of the `brand`
 ### Releasing
 
 1. Bump `version` in `package.json`
-2. Add a `## <version>` section at the top of [CHANGELOG.md](CHANGELOG.md)
+2. Add a `## <version>` section at the top of [CHANGELOG.md](https://github.com/juju35/ha-smart-appliance-card/blob/main/CHANGELOG.md)
 3. Push to `main`: the **Release** workflow builds the card, creates the tag and the GitHub release with the changelog section as notes, and attaches `smart-appliance-card.js`
 
 ## Translations
@@ -404,7 +404,7 @@ Contributions for additional languages are welcome!
 
 ## License
 
-[MIT](LICENSE)
+[MIT](https://github.com/juju35/ha-smart-appliance-card/blob/main/LICENSE)
 
 ## Support
 
