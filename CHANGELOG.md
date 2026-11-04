@@ -1,5 +1,10 @@
 # Changelog
 
+## 2.0.3 - 2026-11-04
+
+### Fixes
+- Microwave picture while cooking: the plate and the food no longer flip and squash to a line. The inside lights up warm, the bowl circles the turntable, steam rises and microwaves flicker at the sides.
+
 ## 2.0.2 - 2026-11-04
 
 ### Changes
