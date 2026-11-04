@@ -185,7 +185,7 @@ test("editor lists the connectivity, salt and rinse aid overrides where they app
   assert.ok(!roles("washer").includes("salt"));
 });
 
-const NEW_LANGS = ["ro", "da", "sv", "bg", "ru", "uk", "hu", "ga", "sk", "cs", "sl", "mt", "lv", "el"];
+const NEW_LANGS = ["ro", "da", "sv", "bg", "ru", "uk", "hu", "sk", "cs", "sl", "lv", "el"];
 const LANGS = ["fr", "de", "es", "sr", "sr-Latn", "it", "nl", "pt", "pl", ...NEW_LANGS];
 
 test("I18N parity: every language has exactly the English keys, array lengths and placeholders, and no empty value", () => {
@@ -279,11 +279,9 @@ test("editor offers every language, from Français to Ελληνικά, and foll
     { value: "ru", label: "Русский" },
     { value: "uk", label: "Українська" },
     { value: "hu", label: "Magyar" },
-    { value: "ga", label: "Gaeilge" },
     { value: "sk", label: "Slovenčina" },
     { value: "cs", label: "Čeština" },
     { value: "sl", label: "Slovenščina" },
-    { value: "mt", label: "Malti" },
     { value: "lv", label: "Latviešu" },
     { value: "el", label: "Ελληνικά" },
   ]);
@@ -299,11 +297,9 @@ test("editor offers every language, from Français to Ελληνικά, and foll
   assert.equal(label("ru"), "Язык");
   assert.equal(label("uk"), "Мова");
   assert.equal(label("hu"), "Nyelv");
-  assert.equal(label("ga"), "Teanga");
   assert.equal(label("sk"), "Jazyk");
   assert.equal(label("cs"), "Jazyk");
   assert.equal(label("sl"), "Jezik");
-  assert.equal(label("mt"), "Lingwa");
   assert.equal(label("lv"), "Valoda");
   assert.equal(label("el"), "Γλώσσα");
   const card = new HomeConnectWasherCard();
