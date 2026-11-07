@@ -1,6 +1,6 @@
 # ha-smart-appliance-card
 
-[![HACS](https://img.shields.io/badge/HACS-Custom-41BDF5.svg)](https://github.com/hacs/integration)
+[![Marketplace](https://img.shields.io/badge/Marketplace-Custom-41BDF5.svg)](https://www.home-assistant.io/integrations/marketplace/)
 [![HACS Validation](https://github.com/juju35/ha-smart-appliance-card/actions/workflows/hacs.yml/badge.svg)](https://github.com/juju35/ha-smart-appliance-card/actions/workflows/hacs.yml)
 [![Validate](https://github.com/juju35/ha-smart-appliance-card/actions/workflows/validate.yml/badge.svg)](https://github.com/juju35/ha-smart-appliance-card/actions/workflows/validate.yml)
 [![Lint](https://github.com/juju35/ha-smart-appliance-card/actions/workflows/lint.yml/badge.svg)](https://github.com/juju35/ha-smart-appliance-card/actions/workflows/lint.yml)
@@ -25,7 +25,7 @@ Animated Lovelace cards for home appliances in Home Assistant: washing machines,
 
 Pick the appliance: the card works out its type and its brand, and finds all its entities by itself.
 
-[![Open your Home Assistant instance and open a repository inside the Home Assistant Community Store.](https://my.home-assistant.io/badges/hacs_repository.svg)](https://my.home-assistant.io/redirect/hacs_repository/?owner=juju35&repository=ha-smart-appliance-card&category=plugin)
+[![Open your Home Assistant instance and open a repository inside the Marketplace.](https://my.home-assistant.io/badges/hacs_repository.svg)](https://my.home-assistant.io/redirect/marketplace_repository/?owner=juju35&repository=ha-smart-appliance-card&category=plugin)
 
 | <img src="https://raw.githubusercontent.com/juju35/ha-smart-appliance-card/main/logos/bosch.svg" alt="" height="14"> Dishwasher | <img src="https://raw.githubusercontent.com/juju35/ha-smart-appliance-card/main/logos/siemens.svg" alt="" height="11"> Washing machine | <img src="https://raw.githubusercontent.com/juju35/ha-smart-appliance-card/main/logos/miele.svg" alt="" height="14"> Tumble dryer |
 |---|---|---|
@@ -47,7 +47,7 @@ Pick the appliance: the card works out its type and its brand, and finds all its
 - Visual editor in the dashboard UI (no YAML needed)
 - English, French, German, Spanish, Serbian (Cyrillic and Latin), Italian, Dutch, European Portuguese, Polish, Romanian, Danish, Swedish, Bulgarian, Russian, Ukrainian, Hungarian, Slovak, Czech, Slovenian, Latvian and Greek, follows the Home Assistant language
 - Light and dark theme compatible
-- Single file, no dependencies, HACS-ready
+- Single file, no dependencies, ready for the Marketplace
 
 ## Supported integrations
 
@@ -89,20 +89,20 @@ Each type is detected by itself; `kind` is the value to set when it can't be (a 
 
 ## Installation
 
-### Via HACS (recommended)
+### Via the Marketplace (recommended)
 
 Click the button below to add the repository directly:
 
-[![Add to HACS](https://my.home-assistant.io/badges/hacs_repository.svg)](https://my.home-assistant.io/redirect/hacs_repository/?owner=juju35&repository=ha-smart-appliance-card&category=plugin)
+[![Add to the Marketplace](https://my.home-assistant.io/badges/hacs_repository.svg)](https://my.home-assistant.io/redirect/marketplace_repository/?owner=juju35&repository=ha-smart-appliance-card&category=plugin)
 
 Or manually:
 
-1. Open HACS → **⋮** → **Custom repositories**
+1. Open **Settings → Marketplace → Add from link** (top right; this needs a GitHub account connected)
 2. Add `https://github.com/juju35/ha-smart-appliance-card` — Type: **Dashboard**
-3. Search for **Smart Appliance Card** and install it
+3. Open **Smart Appliance Card** and click **Install**
 4. Clear your browser cache and refresh
 
-HACS registers the dashboard resource for you.
+The Marketplace registers the dashboard resource for you.
 
 ### Manual
 
@@ -115,10 +115,10 @@ HACS registers the dashboard resource for you.
 
 ### Upgrading from ha-home-connect-card (1.x)
 
-The repository was renamed from `ha-home-connect-card` to `ha-smart-appliance-card` (GitHub redirects the former address, HACS keeps updating it) and the file from `home-connect-card.js` to `smart-appliance-card.js`. HACS may keep installing into the former folder until the repository is added again under its new name, so after the update check that **Settings → Dashboards → ⋮ → Resources** has exactly one resource for the card, pointing to the file that is really installed:
+The repository was renamed from `ha-home-connect-card` to `ha-smart-appliance-card` (GitHub redirects the former address, the Marketplace keeps updating it) and the file from `home-connect-card.js` to `smart-appliance-card.js`. The Marketplace may keep installing into the former folder until the repository is added again under its new name, so after the update check that **Settings → Dashboards → ⋮ → Resources** has exactly one resource for the card, pointing to the file that is really installed:
 
-- `/hacsfiles/ha-home-connect-card/smart-appliance-card.js` for an existing install updated in place,
-- `/hacsfiles/ha-smart-appliance-card/smart-appliance-card.js` for a new install (or after removing the card from HACS and adding `https://github.com/juju35/ha-smart-appliance-card` as a custom repository),
+- `/local/community/ha-home-connect-card/smart-appliance-card.js` for an existing install updated in place,
+- `/local/community/ha-smart-appliance-card/smart-appliance-card.js` for a new install (or after uninstalling the card and adding `https://github.com/juju35/ha-smart-appliance-card` again from a link in the Marketplace),
 
 and remove the former `home-connect-card.js` resource. A resource pointing to a file that isn't there shows `Custom element doesn't exist: smart-appliance-card`. For a manual install, replace the file and the resource URL as above; the releases still carry a `home-connect-card.js` copy for the transition. Dashboards using `custom:home-connect-*-card` keep working: the former types stay registered (see [Legacy card types](#legacy-card-types)).
 
@@ -363,7 +363,7 @@ npm run screenshots  # renders the cards (and the animation GIFs, needs ffmpeg) 
 
 Brand logos live in `logos/`, one `<brand>.svg` or `.png` per key of the `brand` option; the build embeds them in the card, which stays a single file. A brand without a file gets the badge with its initial. The logos are the trademarks of their owners, shown only to identify the appliance's brand.
 
-`dist/` is not committed: `npm run build` creates it locally, CI builds it on every push, and the release workflow attaches the built file to the release, which is where HACS downloads it from.
+`dist/` is not committed: `npm run build` creates it locally, CI builds it on every push, and the release workflow attaches the built file to the release, which is where the Marketplace installs it from.
 
 ### Releasing
 
